@@ -23,6 +23,7 @@
 
 #include "networks.h"
 #include "safeUtil.h"
+#include "lab2.h"
 
 #define MAXBUF 1024
 #define DEBUG_FLAG 1
@@ -56,7 +57,7 @@ void sendToServer(int socketNum)
 	sendLen = readFromStdin(sendBuf);
 	printf("read: %s string len: %d (including null)\n", sendBuf, sendLen);
 	
-	sent =  safeSend(socketNum, sendBuf, sendLen, 0);
+	sent =  sendPDU(socketNum, sendBuf, sendLen);
 	if (sent < 0)
 	{
 		perror("send call");

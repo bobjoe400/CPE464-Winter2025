@@ -1,1 +1,15 @@
+#global
+*.o
+*.tar
 *.tgz
+
+#ignoring old project
+project2/
+
+#project1
+trace
+out.txt
+
+#project2
+cclient
+server

@@ -23,7 +23,6 @@
 
 // This function sets the server socket. The function returns the server
 // socket number and prints the port number to the screen.  
-
 int tcpServerSetup(int serverPort)
 {
 	// Opens a server socket, binds that socket, prints out port, call listens
@@ -72,7 +71,6 @@ int tcpServerSetup(int serverPort)
 
 // This function waits for a client to ask for services.  It returns
 // the client socket number.   
-
 int tcpAccept(int mainServerSocket, int debugFlag)
 {
 	struct sockaddr_in6 clientAddress;   
@@ -97,7 +95,6 @@ int tcpAccept(int mainServerSocket, int debugFlag)
 
 // This funciton opens a TCP socket, and connects to the server
 // returns the socket number to the server
-
 int tcpClientSetup(char * serverName, char * serverPort, int debugFlag)
 {
 	// This is used by the client to connect to a server using TCP
@@ -140,7 +137,6 @@ int tcpClientSetup(char * serverName, char * serverPort, int debugFlag)
 
 // This funciton creates a UDP socket on the server side and binds to that socket.  
 // It prints out the port number and returns the socket number.
-
 int udpServerSetup(int serverPort)
 {
 	struct sockaddr_in6 serverAddress;
@@ -179,7 +175,6 @@ int udpServerSetup(int serverPort)
 // This function opens a socket and fills in the serverAdress structure using the hostName and serverPort.  
 // It assumes the address structure is created before calling this.
 // Returns the socket number and the filled in serverAddress struct.
-
 int setupUdpClientToServer(struct sockaddr_in6 *serverAddress, char * hostName, int serverPort)
 {
 	int socketNum = 0;

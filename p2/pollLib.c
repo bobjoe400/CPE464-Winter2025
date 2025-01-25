@@ -27,13 +27,18 @@ static int currentPollSetSize = 0;
 static void growPollSet(int newSetSize);
 
 // Poll functions (setup, add, remove, call)
+/**
+ * Initializes the poll set
+ */
 void setupPollSet()
 {
 	currentPollSetSize = POLL_SET_SIZE;
 	pollFileDescriptors = (struct pollfd *) sCalloc(POLL_SET_SIZE, sizeof(struct pollfd));
 }
 
-
+/**
+ * Adds `socketNumber` to the poll set
+ */
 void addToPollSet(int socketNumber)
 {
 	
@@ -54,20 +59,24 @@ void addToPollSet(int socketNumber)
 	pollFileDescriptors[socketNumber].events = POLLIN;
 }
 
+/**
+ * Removes `socketNumber` from the poll set
+ */
 void removeFromPollSet(int socketNumber)
 {
 	pollFileDescriptors[socketNumber].fd = 0;
 	pollFileDescriptors[socketNumber].events = 0;
 }
 
+/**
+ * returns the socket number if one is ready for read
+ * returns -1 if timeout occurred
+ * if timeInMilliSeconds == -1 blocks forever (until a socket ready)
+ * (this -1 is a feature of poll)
+ * If timeInMilliSeconds == 0 it will return immediately after looking at the poll set
+ */
 int pollCall(int timeInMilliSeconds)
 {
-	// returns the socket number if one is ready for read
-	// returns -1 if timeout occurred
-	// if timeInMilliSeconds == -1 blocks forever (until a socket ready)
-	// (this -1 is a feature of poll)
-	// If timeInMilliSeconds == 0 it will return immediately after looking at the poll set
-	
 	int i = 0;
 	int returnValue = -1;
 	int pollValue = 0;

@@ -24,13 +24,15 @@
 #include "networks.h"
 #include "safeUtil.h"
 #include "lab2.h"
+#include "pollLib.h"
 
 #define MAXBUF 1024
 #define DEBUG_FLAG 1
+#define BLOCKING_POLL -1
 
-void sendToServer(int socketNum);
-int readFromStdin(uint8_t * buffer);
+int sendToServer(int socketNum, uint8_t* sendBuf, int sendLen);
 void checkArgs(int argc, char * argv[]);
+void clientControl(int socketNum);
 
 int main(int argc, char * argv[])
 {
@@ -41,21 +43,18 @@ int main(int argc, char * argv[])
 	/* set up the TCP Client socket  */
 	socketNum = tcpClientSetup(argv[1], argv[2], DEBUG_FLAG);
 	
-	sendToServer(socketNum);
+	setupPollSet();
+
+	clientControl(socketNum);
 	
 	close(socketNum);
 	
 	return 0;
 }
 
-void sendToServer(int socketNum)
+int sendToServer(int socketNum, uint8_t* sendBuf, int sendLen)
 {
-	uint8_t sendBuf[MAXBUF];   //data buffer
-	int sendLen = 0;        //amount of data to send
 	int sent = 0;            //actual amount of data sent/* get the data and send it   */
-	
-	sendLen = readFromStdin(sendBuf);
-	printf("read: %s string len: %d (including null)\n", sendBuf, sendLen);
 	
 	sent =  sendPDU(socketNum, sendBuf, sendLen);
 	if (sent < 0)
@@ -65,10 +64,20 @@ void sendToServer(int socketNum)
 	}
 
 	printf("Amount of data sent is: %d\n", sent);
+	return 0;
 }
 
-int readFromStdin(uint8_t * buffer)
+void checkArgs(int argc, char * argv[])
 {
+	/* check command line arguments  */
+	if (argc != 3)
+	{
+		printf("usage: %s host-name port-number \n", argv[0]);
+		exit(1);
+	}
+}
+
+int processStdin(uint8_t* buffer){
 	char aChar = 0;
 	int inputLen = 0;        
 	
@@ -89,15 +98,35 @@ int readFromStdin(uint8_t * buffer)
 	buffer[inputLen] = '\0';
 	inputLen++;
 	
+	printf("read: %s string len: %d (including null)\n", buffer, inputLen);
+
 	return inputLen;
 }
 
-void checkArgs(int argc, char * argv[])
-{
-	/* check command line arguments  */
-	if (argc != 3)
-	{
-		printf("usage: %s host-name port-number \n", argv[0]);
-		exit(1);
+void processMsgFromServer(int sockNum){
+	uint8_t recvBuf[MAXBUF];
+	if(recvPDU(sockNum, recvBuf, MAXBUF) == 0){
+		printf("Server terminated\n");
+		exit(0);
+	}
+}
+
+void clientControl(int socketNum){
+	addToPollSet(STDIN_FILENO);
+	addToPollSet(socketNum);
+
+	while(1){
+		int currSock = pollCall(BLOCKING_POLL);
+
+		if(currSock < 0){
+			printf("pollCall() returned -1 (shouldn't happen)");
+			exit(-1);
+		}else if(currSock == STDIN_FILENO){
+			uint8_t sendBuf[MAXBUF];
+			int sendLen = processStdin(sendBuf);
+			sendToServer(socketNum, sendBuf, sendLen);
+		}else{
+			processMsgFromServer(currSock);
+		}
 	}
 }

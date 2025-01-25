@@ -2,6 +2,7 @@
 *.o
 *.tar
 *.tgz
+*.nfs
 
 #ignoring old project
 project2/

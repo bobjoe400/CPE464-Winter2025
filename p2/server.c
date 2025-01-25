@@ -16,6 +16,8 @@
 #include <fcntl.h>
 #include <string.h>
 #include <strings.h>
+#include <signal.h>
+#include <errno.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
@@ -24,17 +26,19 @@
 #include "networks.h"
 #include "safeUtil.h"
 #include "lab2.h"
+#include "pollLib.h"
 
 #define MAXBUF 1024
 #define DEBUG_FLAG 1
+#define BLOCKING_POLL -1
 
-void recvFromClient(int clientSocket);
+int recvFromClient(int clientSocket);
 int checkArgs(int argc, char *argv[]);
+void serverControl(int serverSocket);
 
 int main(int argc, char *argv[])
 {
 	int mainServerSocket = 0;   //socket descriptor for the server socket
-	int clientSocket = 0;   //socket descriptor for the client socket
 	int portNumber = 0;
 	
 	portNumber = checkArgs(argc, argv);
@@ -42,39 +46,37 @@ int main(int argc, char *argv[])
 	//create the server socket
 	mainServerSocket = tcpServerSetup(portNumber);
 
-	// wait for client to connect
-	clientSocket = tcpAccept(mainServerSocket, DEBUG_FLAG);
+	setupPollSet();
 
-	recvFromClient(clientSocket);
-	
-	/* close the sockets */
-	close(clientSocket);
+	serverControl(mainServerSocket);
+
 	close(mainServerSocket);
 
-	
 	return 0;
 }
 
-void recvFromClient(int clientSocket)
+int recvFromClient(int clientSocket)
 {
 	uint8_t dataBuffer[MAXBUF];
 	int messageLen = 0;
 	
 	//now get the data from the client_socket
-	if ((messageLen = recvPDU(clientSocket, dataBuffer, MAXBUF)) < 0)
-	{
+	if ((messageLen = recvPDU(clientSocket, dataBuffer, MAXBUF)) < 0){
+		if(errno == ECONNRESET){
+			return 0;
+		}
+		
 		perror("recv call");
 		exit(-1);
 	}
 
-	if (messageLen > 0)
-	{
-		printf("Message received, length: %d Data: %s\n", messageLen, dataBuffer);
-	}
-	else
-	{
+	if (messageLen == 0){
 		printf("Connection closed by other side\n");
+		return -1;
 	}
+	
+	printf("Message received, length: %d Data: %s\n", messageLen, dataBuffer);
+	return 0;
 }
 
 int checkArgs(int argc, char *argv[])
@@ -96,3 +98,34 @@ int checkArgs(int argc, char *argv[])
 	return portNumber;
 }
 
+void processClient(int clientSocket){
+	if(recvFromClient(clientSocket) < 0){
+		removeFromPollSet(clientSocket);
+	}
+}
+
+void addNewSocket(int serverSocket){
+	// wait for client to connect
+	int newSocket = tcpAccept(serverSocket, DEBUG_FLAG);
+
+	addToPollSet(newSocket);
+}
+
+void serverControl(int serverSocket){
+
+	addToPollSet(serverSocket);
+	int currSocket;
+
+	while(1){
+		currSocket = pollCall(BLOCKING_POLL);
+
+		if(currSocket < 0){
+			printf("pollCall() returned -1 (shouldn't happen)");
+			exit(-1);
+		}else if (currSocket == serverSocket){
+			addNewSocket(serverSocket);	
+		}else{
+			processClient(currSocket);
+		}
+	}
+}

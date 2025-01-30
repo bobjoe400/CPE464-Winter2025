@@ -83,7 +83,6 @@ int processStdin(uint8_t* buffer){
 	
 	// Important you don't input more characters than you have space 
 	buffer[0] = '\0';
-	printf("Enter data: ");
 	while (inputLen < (MAXBUF - 1) && aChar != '\n')
 	{
 		aChar = getchar();
@@ -116,8 +115,9 @@ void clientControl(int socketNum){
 	addToPollSet(socketNum);
 
 	while(1){
+		printf("Enter data: ");
+		fflush(stdout);
 		int currSock = pollCall(BLOCKING_POLL);
-
 		if(currSock < 0){
 			printf("pollCall() returned -1 (shouldn't happen)");
 			exit(-1);

@@ -104,10 +104,14 @@ int processStdin(uint8_t* buffer){
 
 void processMsgFromServer(int sockNum){
 	uint8_t recvBuf[MAXBUF];
-	if(recvPDU(sockNum, recvBuf, MAXBUF) == 0){
-		printf("Server terminated\n");
+	int messageLen = recvPDU(sockNum, recvBuf, MAXBUF);
+
+	if(messageLen == 0){
+		printf("\nServer terminated\n");
 		exit(0);
 	}
+
+	printf("\nMessage received, length: %d Data: %s\n", messageLen, recvBuf);
 }
 
 void clientControl(int socketNum){

@@ -76,6 +76,8 @@ int recvFromClient(int clientSocket)
 	}
 	
 	printf("Message received, length: %d Data: %s\n", messageLen, dataBuffer);
+
+	sendPDU(clientSocket, dataBuffer, messageLen);
 	return 0;
 }
 

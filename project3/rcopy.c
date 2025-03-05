@@ -18,8 +18,11 @@
 #include "gethostbyname.h"
 #include "networks.h"
 #include "safeUtil.h"
+#include "packet.h"
 
 #define MAXBUF 80
+
+#define BUFFER_SIZE_MAX PAYLOAD_MAX
 
 void talkToServer(int socketNum, struct sockaddr_in6 * server);
 int readFromStdin(char * buffer);

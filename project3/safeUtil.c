@@ -11,10 +11,7 @@
 #include <sys/socket.h>
 
 #include "safeUtil.h"
-
-#ifdef __LIBCPE464_
 #include "cpe464.h"
-#endif
 
 int safeRecvfrom(int socketNum, void * buf, int len, int flags, struct sockaddr *srcAddr, int * addrLen)
 {
@@ -31,7 +28,7 @@ int safeRecvfrom(int socketNum, void * buf, int len, int flags, struct sockaddr 
 int safeSendto(int socketNum, void * buf, int len, int flags, struct sockaddr *srcAddr, int addrLen)
 {
 	int returnValue = 0;
-	if ((returnValue = sendto(socketNum, buf, (size_t) len, flags, srcAddr, (socklen_t) addrLen)) < 0)
+	if ((returnValue = sendtoErr(socketNum, buf, (size_t) len, flags, srcAddr, (socklen_t) addrLen)) < 0)
 	{
 		perror("sendto: ");
 		exit(-1);

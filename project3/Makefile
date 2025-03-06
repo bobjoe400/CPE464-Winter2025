@@ -6,10 +6,10 @@
 
 
 CC= gcc
-CFLAGS= -g -Wall
+CFLAGS= -g -Wall -std=gnu99
 LIBS = 
 
-OBJS = networks.o gethostbyname.o pollLib.o safeUtil.o windowBuffer.o packet.o
+OBJS = networks.o gethostbyname.o pollLib.o safeUtil.o window.o packet.o
 
 #uncomment next two lines if your using sendtoErr() library
 LIBS += libcpe464.2.21.a -lstdc++ -ldl

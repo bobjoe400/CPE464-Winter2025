@@ -12,6 +12,8 @@
 
 #define FLAG_SIZE 8
 
+#define SEQ_NUM_START 0
+
 typedef uint32_t SeqNum_t;
 
 #pragma pack(push, 1)
@@ -28,8 +30,7 @@ typedef enum FlagTypes {
 	FLAG_TYPE_TIMEOUT_DATA = 18,
 	FLAG_TYPE_CUSTOM_START = 31,
 	// --- Custom Flags ---
-
-	FLAG_TYPE_MAX
+	
 } FlagTypes_e;
 
 // --- Packet Structures ---

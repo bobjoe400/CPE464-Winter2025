@@ -2,6 +2,7 @@
 #define WINDOWBUFFER_H
 
 #include <stdbool.h>
+#include <arpa/inet.h>
 
 #include "packet.h"
 
@@ -35,10 +36,14 @@ typedef struct {
 #pragma pack(pop)
 
 #define WINDOW_ELEMENT_SSIZE(x) (sizeof(WindowElement_t) - PAYLOAD_MAX + x.bufferSize)
+#define WINDOW_ELEMENT_PACKET_SSIZE(x) (WINDOW_ELEMENT_SSIZE(x) - sizeof(bool))
 #define WINDOW_SSIZE(x) (WINDOW_ELEMENT_SSIZE(x) * x.windowSize)
 
-#define WINDOW_INDEX(x, y) (x->header.seqNum % y.windowSize)
-#define WINDOW_NEXT_PACKET_INDEX(x) (x.windowState.current % x.windowSize)
+#define WINDOW_INDEX(x, y) (ntohl(x->header.seqNum) % y.windowSize)
+#define WINDOW_CURRENT_PACKET_INDEX(x) (x.windowState.current % x.windowSize)
+#define WINDOW_LOWEST_PACKET_INDEX(x) (x.windowState.lower % x.windowSize)
+
+#define WINDOW_ELEMENT_PACKET_INDEX(x, y) (&(x.elements[y].packet))
 
 void windowInit(uint32_t windowSize, uint16_t bufferSize);
 
@@ -48,8 +53,8 @@ bool isWindowOpen();
 bool addPacket(Packet_t* packetPtr);
 
 Packet_t* getPacket(Packet_t* packetPtr, SeqNum_t seqNum);
-Packet_t* getLowestPacket(Packet_t* packetPtr);
-Packet_t* getNextPacket(Packet_t* nextPacketPtr);
+Packet_t* getLowestPacket(Packet_t* lowestPacketPtr);
+
 void removePacket(SeqNum_t seqNum);
 
 uint32_t getInvalidPackets(InvalidPacket_t* invalidPacketArray);

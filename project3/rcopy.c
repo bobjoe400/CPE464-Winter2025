@@ -18,58 +18,9 @@
 #include "gethostbyname.h"
 #include "networks.h"
 #include "safeUtil.h"
+
 #include "packet.h"
-
-#define MAXBUF 80
-
-#define BUFFER_SIZE_MAX PAYLOAD_MAX
-
-void talkToServer(int socketNum, struct sockaddr_in6 * server);
-int readFromStdin(char * buffer);
-int checkArgs(int argc, char * argv[]);
-
-
-int main (int argc, char *argv[])
- {
-	int socketNum = 0;				
-	struct sockaddr_in6 server;		// Supports 4 and 6 but requires IPv6 struct
-	int portNumber = 0;
-	
-	portNumber = checkArgs(argc, argv);
-	
-	socketNum = setupUdpClientToServer(&server, argv[1], portNumber);
-	
-	talkToServer(socketNum, &server);
-	
-	close(socketNum);
-
-	return 0;
-}
-
-void talkToServer(int socketNum, struct sockaddr_in6 * server)
-{
-	int serverAddrLen = sizeof(struct sockaddr_in6);
-	char * ipString = NULL;
-	int dataLen = 0; 
-	char buffer[MAXBUF+1];
-	
-	buffer[0] = '\0';
-	while (buffer[0] != '.')
-	{
-		dataLen = readFromStdin(buffer);
-
-		printf("Sending: %s with len: %d\n", buffer,dataLen);
-	
-		safeSendto(socketNum, buffer, dataLen, 0, (struct sockaddr *) server, serverAddrLen);
-		
-		safeRecvfrom(socketNum, buffer, MAXBUF, 0, (struct sockaddr *) server, &serverAddrLen);
-		
-		// print out bytes received
-		ipString = ipAddressToString(server);
-		printf("Server with ip: %s and port %d said it received %s\n", ipString, ntohs(server->sin6_port), buffer);
-	      
-	}
-}
+#include "window.h"
 
 int readFromStdin(char * buffer)
 {
@@ -79,7 +30,7 @@ int readFromStdin(char * buffer)
 	// Important you don't input more characters than you have space 
 	buffer[0] = '\0';
 	printf("Enter data: ");
-	while (inputLen < (MAXBUF - 1) && aChar != '\n')
+	while (inputLen < (PAYLOAD_MAX - 1) && aChar != '\n')
 	{
 		aChar = getchar();
 		if (aChar != '\n')
@@ -94,6 +45,31 @@ int readFromStdin(char * buffer)
 	inputLen++;
 	
 	return inputLen;
+}
+
+void talkToServer(int socketNum, struct sockaddr_in6 * server)
+{
+	int serverAddrLen = sizeof(struct sockaddr_in6);
+	char * ipString = NULL;
+	int dataLen = 0; 
+	char buffer[PAYLOAD_MAX+1];
+	
+	buffer[0] = '\0';
+	while (buffer[0] != '.')
+	{
+		dataLen = readFromStdin(buffer);
+
+		printf("Sending: %s with len: %d\n", buffer,dataLen);
+	
+		safeSendto(socketNum, buffer, dataLen, 0, (struct sockaddr *) server, serverAddrLen);
+		
+		safeRecvfrom(socketNum, buffer, PAYLOAD_MAX, 0, (struct sockaddr *) server, &serverAddrLen);
+		
+		// print out bytes received
+		ipString = ipAddressToString(server);
+		printf("Server with ip: %s and port %d said it received %s\n", ipString, ntohs(server->sin6_port), buffer);
+	      
+	}
 }
 
 int checkArgs(int argc, char * argv[])
@@ -113,7 +89,19 @@ int checkArgs(int argc, char * argv[])
 	return portNumber;
 }
 
+int main (int argc, char *argv[])
+ {
+	int socketNum = 0;				
+	struct sockaddr_in6 server;		// Supports 4 and 6 but requires IPv6 struct
+	int portNumber = 0;
+	
+	portNumber = checkArgs(argc, argv);
+	
+	socketNum = setupUdpClientToServer(&server, argv[1], portNumber);
+	
+	talkToServer(socketNum, &server);
+	
+	close(socketNum);
 
-
-
-
+	return 0;
+}

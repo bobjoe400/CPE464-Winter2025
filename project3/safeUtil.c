@@ -11,7 +11,10 @@
 #include <sys/socket.h>
 
 #include "safeUtil.h"
+
+#ifdef __LIBCPE464_
 #include "cpe464.h"
+#endif // __LIBCPE464_
 
 int safeRecvfrom(int socketNum, void * buf, int len, int flags, struct sockaddr *srcAddr, int * addrLen)
 {

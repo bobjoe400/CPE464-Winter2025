@@ -14,38 +14,28 @@
 #include "networks.h"
 #include "safeUtil.h"
 
-#define MAXBUF 80
+#include "packet.h"
+#include "window.h"
 
-void processClient(int socketNum);
-int checkArgs(int argc, char *argv[]);
+#define MAX_ARGS 3
+#define MIN_ARGS 2
 
-int main ( int argc, char *argv[]  )
-{ 
-	int socketNum = 0;				
-	int portNumber = 0;
-
-	portNumber = checkArgs(argc, argv);
-		
-	socketNum = udpServerSetup(portNumber);
-
-	processClient(socketNum);
-
-	close(socketNum);
-	
-	return 0;
-}
+typedef struct{
+	float errorRate;
+	uint16_t portNum;
+}serverSettings;
 
 void processClient(int socketNum)
 {
 	int dataLen = 0; 
-	char buffer[MAXBUF + 1];	  
+	char buffer[PAYLOAD_MAX + 1];	  
 	struct sockaddr_in6 client;		
 	int clientAddrLen = sizeof(client);	
 	
 	buffer[0] = '\0';
 	while (buffer[0] != '.')
 	{
-		dataLen = safeRecvfrom(socketNum, buffer, MAXBUF, 0, (struct sockaddr *) &client, &clientAddrLen);
+		dataLen = safeRecvfrom(socketNum, buffer, PAYLOAD_MAX, 0, (struct sockaddr *) &client, &clientAddrLen);
 	
 		printf("Received message from client with ");
 		printIPInfo(&client);
@@ -77,4 +67,20 @@ int checkArgs(int argc, char *argv[])
 	return portNumber;
 }
 
+
+int main ( int argc, char *argv[]  )
+{ 
+	int socketNum = 0;				
+	int portNumber = 0;
+
+	portNumber = checkArgs(argc, argv);
+		
+	socketNum = udpServerSetup(portNumber);
+
+	processClient(socketNum);
+
+	close(socketNum);
+	
+	return 0;
+}
 

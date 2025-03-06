@@ -17,7 +17,7 @@ typedef struct{
 
 typedef struct {
 	bool valid;
-	Packet_t packet;
+	Packet_t* packet;
 } WindowElement_t;
 
 typedef struct {
@@ -35,20 +35,22 @@ typedef struct {
 
 #pragma pack(pop)
 
-#define WINDOW_ELEMENT_SSIZE(x) (sizeof(WindowElement_t) - PAYLOAD_MAX + x.bufferSize)
-#define WINDOW_ELEMENT_PACKET_SSIZE(x) (WINDOW_ELEMENT_SSIZE(x) - sizeof(bool))
+#define WINDOW_ELEMENT_SSIZE(x) (sizeof(WindowElement_t))
+#define WINDOW_ELEMENT_PACKET_SSIZE(x) (PACKET_MAX_SIZE - PAYLOAD_MAX + x.bufferSize)
 #define WINDOW_SSIZE(x) (WINDOW_ELEMENT_SSIZE(x) * x.windowSize)
 
 #define WINDOW_INDEX(x, y) (ntohl(x->header.seqNum) % y.windowSize)
 #define WINDOW_CURRENT_PACKET_INDEX(x) (x.windowState.current % x.windowSize)
 #define WINDOW_LOWEST_PACKET_INDEX(x) (x.windowState.lower % x.windowSize)
 
-#define WINDOW_ELEMENT_PACKET_INDEX(x, y) (&(x.elements[y].packet))
+#define WINDOW_ELEMENT_PACKET(x, y) (x.elements[y].packet)
 
 void windowInit(uint32_t windowSize, uint16_t bufferSize);
+void windowDestroy(void);
 
-uint32_t getWindowSize();
-bool isWindowOpen();
+uint32_t getWindowSize(void);
+uint16_t getPacketSize(void);
+bool isWindowOpen(void);
 
 bool addPacket(Packet_t* packetPtr);
 
@@ -57,6 +59,6 @@ Packet_t* getLowestPacket(Packet_t* lowestPacketPtr);
 
 void removePacket(SeqNum_t seqNum);
 
-uint32_t getInvalidPackets(InvalidPacket_t* invalidPacketArray);
+InvalidPacket_t* getInvalidPackets(InvalidPacket_t* invalidPacketArray, uint32_t* numPackets);
 
 #endif // WINDOWBUFFER_H

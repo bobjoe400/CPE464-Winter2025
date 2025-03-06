@@ -73,10 +73,19 @@ int main(void) {
 
     // --- Get and print the count of invalid packets ---
     InvalidPacket_t* invalidPacketArray = NULL;
+    uint32_t numPackets = 0;
 
-    uint32_t invalidCount = getInvalidPackets(invalidPacketArray);
-    printf("Number of invalid packets in window: %u\n", invalidCount);
+    invalidPacketArray = getInvalidPackets(invalidPacketArray, &numPackets);
+    printf("Number of invalid packets in window: %u\nSequence numbers not validated:\n", numPackets);
     
+    for(uint32_t i=0; i < numPackets; i++){
+        printf("\t%u", invalidPacketArray[i].seqNum);
+    }
+
+    printf("\n");
+
+    free(invalidPacketArray);
+
     // --- Build and test a FileName Packet ---
     Packet_t filePkt;
     uint8_t fileName[] = "example.txt";
@@ -85,6 +94,28 @@ int main(void) {
     printf("Filename packet built with buffer size: %u and window size: %u\n",
            filePkt.payload.fileName.bufferSize,
            filePkt.payload.fileName.windowSize);
+    
+    Packet_t srejPkt1;
+    buildSrejPacket(&srejPkt1, 4, 3);
+    Packet_t srejPkt2;
+    buildSrejPacket(&srejPkt2, 5, 4);
+    Packet_t srejPkt3;
+    buildSrejPacket(&srejPkt3, 6, 6);
+    Packet_t srejPkt4;
+    buildSrejPacket(&srejPkt4, 7, 7);
 
+    Packet_t* tryPackets[4] = {&srejPkt1, &srejPkt2, &srejPkt3, &srejPkt4};
+    
+    for(int i = 0; i < 4; i++){
+        Packet_t* currPacket = tryPackets[i];
+
+        if(addPacket(currPacket)){
+            printf("packet %i added to buffer\n", i);
+        } else {
+            printf("packet %i not added to buffer\n", i);
+        }
+    }
+
+    windowDestroy();
     return 0;
 }

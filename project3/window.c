@@ -5,7 +5,7 @@
 #include "window.h"
 #include "packet.h"
 
-static Window_t window;
+Window_t window;
 
 void windowInit(uint32_t windowSize, uint16_t bufferSize)
 {
@@ -15,19 +15,32 @@ void windowInit(uint32_t windowSize, uint16_t bufferSize)
 	window.windowState.lower = SEQ_NUM_START;
 	window.windowState.current = SEQ_NUM_START;
 	window.windowState.upper = window.windowState.lower + windowSize;
-
-	size_t elemSize = WINDOW_ELEMENT_SSIZE(window);
-    size_t packetSize = WINDOW_ELEMENT_PACKET_SSIZE(window);
-    printf("Allocated per element: %zu bytes, packet portion: %zu bytes\n", elemSize, packetSize);
 	
 	window.elements = (WindowElement_t*) malloc(WINDOW_SSIZE(window));
 
-	memset(window.elements, 0, WINDOW_SSIZE(window));
+	for(uint32_t i = 0; i < windowSize; i++){
+		window.elements[i % windowSize].valid = false;
+		
+		WINDOW_ELEMENT_PACKET(window, i % windowSize) = (Packet_t*) malloc(WINDOW_ELEMENT_PACKET_SSIZE(window));
+		memset(WINDOW_ELEMENT_PACKET(window, i % windowSize), 0, WINDOW_ELEMENT_PACKET_SSIZE(window));
+	}
+}
+
+void windowDestroy(){
+	for(uint32_t i = 0; i < window.windowSize; i++){
+		free(window.elements[i].packet);
+	}
+	free(window.elements);
 }
 
 uint32_t getWindowSize()
 {
 	return window.windowSize;
+}
+
+uint16_t getPacketSize()
+{
+	return WINDOW_ELEMENT_PACKET_SSIZE(window);
 }
 
 bool isWindowOpen()
@@ -41,8 +54,9 @@ bool addPacket(Packet_t* packetPtr)
 		return false;
 	}
 
-	memcpy(WINDOW_ELEMENT_PACKET_INDEX(window, WINDOW_INDEX(packetPtr, window)), packetPtr, WINDOW_ELEMENT_PACKET_SSIZE(window));
 	window.elements[WINDOW_INDEX(packetPtr, window)].valid = false;
+
+	memcpy(WINDOW_ELEMENT_PACKET(window, WINDOW_INDEX(packetPtr, window)), packetPtr, WINDOW_ELEMENT_PACKET_SSIZE(window));
 
 	window.windowState.current++;
 
@@ -51,14 +65,14 @@ bool addPacket(Packet_t* packetPtr)
 
 Packet_t* getPacket(Packet_t* packetPtr, SeqNum_t seqNum)
 {
-	memcpy(packetPtr, WINDOW_ELEMENT_PACKET_INDEX(window, seqNum % window.windowSize), WINDOW_ELEMENT_PACKET_SSIZE(window));
+	memcpy(packetPtr, WINDOW_ELEMENT_PACKET(window, seqNum % window.windowSize), WINDOW_ELEMENT_PACKET_SSIZE(window));
 
 	return packetPtr;
 }
 
 Packet_t* getLowestPacket(Packet_t* lowestPacketPtr)
 {
-	memcpy(lowestPacketPtr, WINDOW_ELEMENT_PACKET_INDEX(window, WINDOW_LOWEST_PACKET_INDEX(window)), WINDOW_ELEMENT_PACKET_SSIZE(window));
+	memcpy(lowestPacketPtr, WINDOW_ELEMENT_PACKET(window, WINDOW_LOWEST_PACKET_INDEX(window)), WINDOW_ELEMENT_PACKET_SSIZE(window));
 
 	return lowestPacketPtr;
 }
@@ -67,27 +81,26 @@ void removePacket(SeqNum_t seqNum)
 {	
 	for(uint32_t i = window.windowState.lower; i < seqNum; i++){
 		window.elements[i % window.windowSize].valid = true;
-		memset(WINDOW_ELEMENT_PACKET_INDEX(window, i % window.windowSize), 0, WINDOW_ELEMENT_PACKET_SSIZE(window));
 	}
 
 	window.windowState.lower = seqNum;
 	window.windowState.upper = seqNum + window.windowSize;
 }
 
-uint32_t getInvalidPackets(InvalidPacket_t* invalidPacketArray){
+InvalidPacket_t* getInvalidPackets(InvalidPacket_t* invalidPacketArray, uint32_t* numPackets){
 	uint32_t invalidPacketArrayIdx = 0;
 
 	invalidPacketArray = (InvalidPacket_t*) malloc(sizeof(InvalidPacket_t));
 
 	for(uint32_t i = window.windowState.lower; i <= window.windowState.current; i++){
-		WindowElement_t* currElement = &window.elements[i];
+		WindowElement_t currElement = window.elements[i % window.windowSize];
 
-		if (currElement->valid == false){
+		if (currElement.valid == false){
 			if (invalidPacketArrayIdx > 0) {
 				invalidPacketArray = (InvalidPacket_t*) realloc(invalidPacketArray, sizeof(InvalidPacket_t) *  (invalidPacketArrayIdx + 1));
 			}
 			
-			invalidPacketArray[invalidPacketArrayIdx].seqNum = currElement->packet.header.seqNum;
+			invalidPacketArray[invalidPacketArrayIdx].seqNum = ntohl(currElement.packet->header.seqNum);
 			invalidPacketArray[invalidPacketArrayIdx].valid = false;
 
 			invalidPacketArrayIdx++;
@@ -96,7 +109,9 @@ uint32_t getInvalidPackets(InvalidPacket_t* invalidPacketArray){
 
 	if (invalidPacketArrayIdx == 0){
 		free(invalidPacketArray);
+		return NULL;
 	}
 
-	return invalidPacketArrayIdx;
+	*numPackets = invalidPacketArrayIdx;
+	return invalidPacketArray;
 }

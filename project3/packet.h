@@ -84,6 +84,13 @@ typedef struct {
 #define FILENAME_PACKET_SIZE(x) (PACKET_HEADER_SIZE + sizeof(FileNamePacket_t) - FILENAME_MAX_LEN + x)
 
 Packet_t*
+buildPacketHeader(
+    Packet_t* packetPtr,
+    SeqNum_t seqNum,
+    uint8_t flag
+);
+
+Packet_t*
 buildRrPacket(
     Packet_t* packetPtr,
     SeqNum_t seqNum,

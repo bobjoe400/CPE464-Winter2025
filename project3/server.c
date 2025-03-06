@@ -41,13 +41,22 @@ processClient(
 	{
 		dataLen = safeRecvfrom(socketNum, buffer, PAYLOAD_MAX, 0, (struct sockaddr *) &client, &clientAddrLen);
 
+		Packet_t packet;
+		memset(&packet, 0, sizeof(Packet_t));
+		memcpy(&packet, buffer, dataLen);
+
 		printf("Received message from client with ");
 		printIPInfo(&client);
-		printf(" Len: %d \'%s\'\n", dataLen, buffer);
+		printf(" Len: %d\nData", dataLen);
+
+		for(int i=0; i < dataLen; i++){
+			printf("%02x ", buffer[i]);
+		}
+
+		printf("\n");
 
 		// just for fun send back to client number of bytes received
-		sprintf(buffer, "bytes: %d", dataLen);
-		safeSendto(socketNum, buffer, strlen(buffer)+1, 0, (struct sockaddr *) & client, clientAddrLen);
+		safeSendto(socketNum, buffer, dataLen, 0, (struct sockaddr *) & client, clientAddrLen);
 
 	}
 }

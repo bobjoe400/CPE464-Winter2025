@@ -72,22 +72,29 @@ talkToServer(
 ){
 	int serverAddrLen = sizeof(struct sockaddr_in6);
 	char * ipString = NULL;
-	int dataLen = 0; 
 	char buffer[PAYLOAD_MAX+1];
-	
-	buffer[0] = '\0';
-	while (buffer[0] != '.')
-	{
-		Packet_t packet;
-		buildFileNamePacket(&packet, 0, settings.windowSize, settings.bufferSize, settings.fromFilename, strlen(settings.fromFilename));
 
-		safeRecvfrom(socketNum, buffer, PAYLOAD_MAX, 0, (struct sockaddr *) server, &serverAddrLen);
-		
-		// print out bytes received
-		ipString = ipAddressToString(server);
-		printf("Server with ip: %s and port %d said it received %s\n", ipString, ntohs(server->sin6_port), buffer);
-	      
+	Packet_t packet;
+	int fileNameLen = strlen(settings.fromFilename);
+
+	buildFileNamePacket(&packet, 0, settings.windowSize, settings.bufferSize, (uint8_t*) settings.fromFilename, fileNameLen);
+
+	int packetSize = FILENAME_PACKET_SIZE(fileNameLen);
+
+	safeSendto(socketNum, (uint8_t*) &packet, packetSize, 0, (struct sockaddr*) server, serverAddrLen);
+
+	int dataLen = safeRecvfrom(socketNum, buffer, PAYLOAD_MAX, 0, (struct sockaddr *) server, &serverAddrLen);
+	
+	// print out bytes received
+	ipString = ipAddressToString(server);
+	printf("Server with ip: %s and port %d said it received:\n", ipString, ntohs(server->sin6_port));
+
+	for(int i=0; i < dataLen; i++){
+		printf("%02x ", buffer[i]);
 	}
+
+	printf("\n");
+	      
 }
 
 int 

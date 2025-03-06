@@ -7,14 +7,27 @@
 #include "window.h"
 
 Packet_t*
+buildPacketHeader(
+    Packet_t* packetPtr,
+    SeqNum_t seqNum,
+    uint8_t flag
+){
+    memset(packetPtr, 0, PACKET_MAX_SIZE);
+
+    packetPtr->header.seqNum = htonl(seqNum);
+    packetPtr->header.cksum = 0;
+    packetPtr->header.flag = flag;
+
+    return packetPtr;
+}
+
+Packet_t*
 buildRrPacket(
     Packet_t* packetPtr,
     SeqNum_t seqNum,
     SeqNum_t rrSeqNum
 ){
-    packetPtr->header.seqNum = htonl(seqNum);
-    packetPtr->header.cksum = 0;
-    packetPtr->header.flag = FLAG_TYPE_RR;
+    buildPacketHeader(packetPtr, seqNum, FLAG_TYPE_RR);
 
     packetPtr->payload.rr.seqNum = htonl(rrSeqNum);
 
@@ -29,9 +42,7 @@ buildSrejPacket(
     SeqNum_t seqNum,
     SeqNum_t srejSeqNum
 ){
-    packetPtr->header.seqNum = htonl(seqNum);
-    packetPtr->header.cksum = 0;
-    packetPtr->header.flag = FLAG_TYPE_RR;
+    buildPacketHeader(packetPtr, seqNum, FLAG_TYPE_SREJ);
 
     packetPtr->payload.srej.seqNum = htonl(srejSeqNum);
 
@@ -47,10 +58,9 @@ buildDataPacket(
     uint8_t* dataPtr,
     uint16_t dataSize
 ){
+    buildPacketHeader(packetPtr, seqNum, FLAG_TYPE_DATA);
+
     // Populate packet
-    packetPtr->header.seqNum = htonl(seqNum);
-    packetPtr->header.cksum = 0;
-    packetPtr->header.flag = FLAG_TYPE_DATA;
     memcpy(&packetPtr->payload, dataPtr, dataSize);
 
     // Calculate checksum
@@ -68,14 +78,14 @@ buildFileNamePacket(
     uint8_t* fileNamePtr,
     uint8_t fileNameSize
 ){
-    packetPtr->header.seqNum = htonl(seqNum);
-    packetPtr->header.cksum = 0;
-    packetPtr->header.flag = FLAG_TYPE_FILENAME;
+    buildPacketHeader(packetPtr, seqNum, FLAG_TYPE_FILENAME);
 
     packetPtr->payload.fileName.bufferSize = bufferSize;
     packetPtr->payload.fileName.windowSize = windowSize;
 
     memcpy(&packetPtr->payload.fileName.fileName, fileNamePtr, fileNameSize);
+
+    packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, FILENAME_PACKET_SIZE(fileNameSize));
 
     return packetPtr;
 }

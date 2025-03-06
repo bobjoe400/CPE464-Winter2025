@@ -45,20 +45,51 @@ typedef struct {
 
 #define WINDOW_ELEMENT_PACKET(x, y) (x.elements[y].packet)
 
-void windowInit(uint32_t windowSize, uint16_t bufferSize);
-void windowDestroy(void);
+void
+windowDestroy(
+	void
+);
+uint32_t
+getWindowSize(
+	void
+);
 
-uint32_t getWindowSize(void);
-uint16_t getPacketSize(void);
-bool isWindowOpen(void);
+uint16_t
+getPacketSize(
+	void
+);
 
-bool addPacket(Packet_t* packetPtr);
+bool
+isWindowOpen(
+	void
+);
 
-Packet_t* getPacket(Packet_t* packetPtr, SeqNum_t seqNum);
-Packet_t* getLowestPacket(Packet_t* lowestPacketPtr);
+bool
+addPacket(
+    Packet_t* packetPtr
+);
 
-void removePacket(SeqNum_t seqNum);
+Packet_t*
+getPacket(
+    Packet_t* packetPtr,
+    SeqNum_t seqNum
+);
 
-InvalidPacket_t* getInvalidPackets(InvalidPacket_t* invalidPacketArray, uint32_t* numPackets);
+Packet_t*
+getLowestPacket(
+    Packet_t* lowestPacketPtr
+);
+
+void
+removePacket(
+    SeqNum_t seqNum
+);
+
+InvalidPacket_t*
+getInvalidPackets(
+    InvalidPacket_t* invalidPacketArray,
+    uint32_t* numPackets
+);
+
 
 #endif // WINDOWBUFFER_H

@@ -25,12 +25,12 @@ typedef enum FlagTypes {
 	FLAG_TYPE_FILENAME = 8,
 	FLAG_TYPE_FILENAME_RESP = 9,
 	FLAG_TYPE_EOF = 10,
-	FLAG_TYPE_DATA = 16, 
+	FLAG_TYPE_DATA = 16,
 	FLAG_TYPE_SREJ_DATA = 17,
 	FLAG_TYPE_TIMEOUT_DATA = 18,
 	FLAG_TYPE_CUSTOM_START = 31,
 	// --- Custom Flags ---
-	
+
 } FlagTypes_e;
 
 // --- Packet Structures ---
@@ -83,11 +83,42 @@ typedef struct {
 #define DATA_PACKET_SIZE(x) (PACKET_HEADER_SIZE + x)
 #define FILENAME_PACKET_SIZE(x) (PACKET_HEADER_SIZE + sizeof(FileNamePacket_t) - FILENAME_MAX_LEN + x)
 
-Packet_t* buildRrPacket(Packet_t* packetPtr, SeqNum_t seqNum, SeqNum_t rrSeqNum);
-Packet_t* buildSrejPacket(Packet_t* packetPtr, SeqNum_t seqNum, SeqNum_t srejSeqNum);
-Packet_t* buildDataPacket(Packet_t* packetPtr, SeqNum_t seqNum, uint8_t* dataPtr, uint16_t dataSize);
-Packet_t* buildFileNamePacket(Packet_t* packetPtr, SeqNum_t seqNum, uint16_t bufferSize, uint8_t* fileNamePtr, uint8_t fileNameSize);
+Packet_t*
+buildRrPacket(
+    Packet_t* packetPtr,
+    SeqNum_t seqNum,
+    SeqNum_t rrSeqNum
+);
 
-bool isValidPacket(Packet_t* packetPtr, uint16_t packetSize);
+Packet_t*
+buildSrejPacket(
+    Packet_t* packetPtr,
+    SeqNum_t seqNum,
+    SeqNum_t srejSeqNum
+);
+
+Packet_t*
+buildDataPacket(
+    Packet_t* packetPtr,
+    SeqNum_t seqNum,
+    uint8_t* dataPtr,
+    uint16_t dataSize
+);
+
+Packet_t*
+buildFileNamePacket(
+    Packet_t* packetPtr,
+    SeqNum_t seqNum,
+    uint32_t windowSize,
+    uint16_t bufferSize,
+    uint8_t* fileNamePtr,
+    uint8_t fileNameSize
+);
+
+bool
+isValidPacket(
+	Packet_t* packetPtr,
+	uint16_t packetSize
+);
 
 #endif //PACKET_H

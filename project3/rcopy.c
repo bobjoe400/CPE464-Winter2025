@@ -28,6 +28,8 @@
 typedef struct{
 	char fromFileName[FILENAME_MAX_LEN + 1];
 	char toFileName[FILENAME_MAX_LEN + 1];
+
+	FILE* toFile;
 	
 	uint32_t windowSize;
 	uint16_t bufferSize;
@@ -63,6 +65,7 @@ static SeqNum_t seqNum = 0;
 bool 
 receiveAndValidateData(
 	Packet_t* packetPtr,
+	uint16_t* dataSize,
 	uint16_t expectedSize
 ){	
 	bool retVal = true;
@@ -73,26 +76,30 @@ receiveAndValidateData(
 
 	if(dataLen < expectedSize){
 		// Short Packet Received
-	#ifdef DEBUG_ON
+	#ifdef __DEBUG_ON
 		printf("Error: Less bytes received than expected!\n");
-	#endif // DEBUG_ON
+	#endif // __DEBUG_ON
 		retVal = false;
 	}
 
 	// Copy data from buffer into packet struct
 	memcpy(packetPtr, buffer, dataLen);
 
+	if(dataSize != NULL){
+		*dataSize = dataLen;
+	}
+
 	if(!isValidPacket(packetPtr, dataLen)){
 		// Invalid Packet Received
-	#ifdef DEBUG_ON
+	#ifdef __DEBUG_ON
 		printf("Error: Malformed packet receieved!\n");
-	#endif // DEBUG_ON
+	#endif // __DEBUG_ON
 		retVal = false;
 	}
 
 	retVal = true;
 	
-#ifdef DEBUG_ON
+#ifdef __DEBUG_ON
 	char * ipString = NULL;
 	ipString = ipAddressToString(settings.server);
 
@@ -104,7 +111,7 @@ receiveAndValidateData(
 	}
 
 	printf("\n");
-#endif // DEBUG_ON
+#endif // __DEBUG_ON
 
 	return retVal;
 }
@@ -115,9 +122,9 @@ sendFileName(
 ){
 	Packet_t packet;
 	int fileNameLen = strlen(settings.fromFileName);
-#ifdef DEBUG_ON
+#ifdef __DEBUG_ON
 	printf("Info: Sending filename: %s\n", settings.fromFileName);
-#endif // DEBUG_ON
+#endif // __DEBUG_ON
 
 	buildFileNamePacket(&packet, seqNum, settings.windowSize, settings.bufferSize, (uint8_t*) settings.fromFileName, fileNameLen);
 
@@ -132,34 +139,37 @@ waitForFileNameAck(
 ){
 	if(pollCall(1) < 0){
 		// Timeout
-	#ifdef DEBUG_ON
+	#ifdef __DEBUG_ON
 		printf("Timeout: Filename response timed out! Resending filename...\n");
-	#endif // DEBUG_ON
+	#endif // __DEBUG_ON
 
 		return STATE_SEND_FILENAME_TIMEOUT;
 	} else {
-		if(!receiveAndValidateData(packetPtr, FILENAME_RESP_PACKET_SSIZE)){
-		#ifdef DEBUG_ON
+		if(!receiveAndValidateData(packetPtr, NULL, FILENAME_RESP_PACKET_SSIZE)){
+		#ifdef __DEBUG_ON
 			printf("Error: Bad data received! Resending filename...\n");
-		#endif // DEBUG_ON
+		#endif // __DEBUG_ON
 			return STATE_SEND_FILENAME_TIMEOUT;
 		}
 
 		if(packetPtr->header.flag != FLAG_TYPE_FILENAME_RESP){
 			// Incorrect Packet Received
-		#ifdef DEBUG_ON
+		#ifdef __DEBUG_ON
 			printf("Error: Didn't recieve a filename response packet! Resending filename...\n");
-		#endif // DEBUG_ON
+		#endif // __DEBUG_ON
 			return STATE_SEND_FILENAME_TIMEOUT;
 		}
 
 		if(packetPtr->payload.fileNameResponse.response != true){
 			// Bad Filename
-		#ifdef DEBUG_ON
+		#ifdef __DEBUG_ON
 			printf("Error: Bad filename! Gracefully Exiting...\n");
-		#endif //DEBUG_ON
+		#endif //__DEBUG_ON
 			return STATE_KILL;
 		}
+	#ifdef __DEBUG_ON
+		printf("Info: Received filename ok! Waiting for first data...\n");
+	#endif // __DEBUG_ON
 
 		return STATE_RECEIVE_FIRST_DATA;
 	}
@@ -168,29 +178,50 @@ waitForFileNameAck(
 int
 recvData(
 	Packet_t* packetPtr,
+	uint16_t* dataSize,
 	bool firstPacket
 ){
 	if(pollCall(10) < 0){
 		// Timeout
 		if (firstPacket) {
-		#ifdef DEBUG_ON
+		#ifdef __DEBUG_ON
 			printf("Timeout: Timeout receiving first file data! Resending filename...\n");
-		#endif // DEBUG_ON
+		#endif // __DEBUG_ON
 			return STATE_SEND_FILENAME_TIMEOUT;
 		} else {
-		#ifdef DEBUG_ON
+		#ifdef __DEBUG_ON
 			printf("Timeout: Timeout receiving data!\n");
-		#endif // DEBUG_ON
+		#endif // __DEBUG_ON
 			return STATE_RECEIVE_DATA_TIMEOUT;
 		}
 	} else {
-		if(!receiveAndValidateData(packetPtr, DATA_PACKET_SSIZE(settings.bufferSize))){
+		if(!receiveAndValidateData(packetPtr, dataSize, (settings.bufferSize))){
 			// Bad data received
 			return STATE_BAD_DATA;
 		} else {
 			return STATE_PROCESS_DATA;
 		}
 	}
+}
+
+int
+processData(
+	Packet_t* packetPtr,
+	uint16_t dataSize,
+	bool buffering
+){
+
+	if(buffering){
+	#ifdef __DEBUG_ON
+		printf("Info: Data Receive in buffering mode\n");
+	#endif // __DEBUG_ON
+		// Buffer Data
+
+	}else{
+
+	}
+
+	return STATE_RECEIVE_DATA;
 }
 
 void 
@@ -200,15 +231,18 @@ stateMachine(
 	static int nextState = -1;
 	static int state = STATE_SEND_FILENAME;
 	static int timeout = 0;
-	//static bool buffering = false;
+	static bool buffering = false;
 
 	static Packet_t currPacket;
+	static uint16_t dataSize;
+
+	windowInit(settings.windowSize, settings.bufferSize);
 
 	while(1){
 		if(timeout >= TIMEOUT_MAX){
-		#ifdef DEBUG_ON
+		#ifdef __DEBUG_ON
 			printf("Timeout: Timeout maximum (%i) reached! Gracefully Exiting...", TIMEOUT_MAX);
-		#endif // DEBUG_ON
+		#endif // __DEBUG_ON
 			state = STATE_KILL;
 		}
 		
@@ -247,7 +281,7 @@ stateMachine(
 		}
 		case STATE_RECEIVE_FIRST_DATA:
 		{	
-			nextState = recvData(&currPacket, true);
+			nextState = recvData(&currPacket, &dataSize, true);
 			break;
 		}
 		case STATE_RECEIVE_DATA_TIMEOUT:
@@ -257,17 +291,22 @@ stateMachine(
 		}
 		case STATE_RECEIVE_DATA:
 		{
-			nextState = recvData(&currPacket, false);
+			nextState = recvData(&currPacket, &dataSize, false);
 			break;
 		}
 		case STATE_BAD_DATA:
-		{	
+		{
+			buffering = true;
+
+			//send SREJ
+
 			nextState = STATE_RECEIVE_DATA;
 			break;
 		}
 		case STATE_PROCESS_DATA:
-		{	
-			nextState = STATE_RECEIVE_DATA;
+		{
+			// Write file and send RR for packet (if not buffering)
+			nextState = processData(&currPacket, dataSize, buffering);
 			break;
 		}
 		case STATE_LAST_DATA:
@@ -281,7 +320,7 @@ stateMachine(
 
 		default:
 			// Shouldn't happen
-		#ifdef DEBUG_ON
+		#ifdef __DEBUG_ON
 			printf("Error: Invalid state reached! Exiting...\n");
 		#endif
 			exit(1);
@@ -324,7 +363,7 @@ checkArgs(
 
     // Parse and validate bufferSize (must be > 0 and fit in uint16_t)
     value = strtol(argv[4], &endptr, 10);
-    if (*endptr != '\0' || value <= 0 || value > UINT16_MAX) {
+    if (*endptr != '\0' || value < PAYLOAD_MIN || value > PAYLOAD_MAX) {
         fprintf(stderr, "Invalid buffer-size: %s\n", argv[4]);
         return -1;
     }
@@ -354,6 +393,19 @@ checkArgs(
     return 0;
 }
 
+void
+openToFile(
+	void
+){
+	settings.toFile = fopen(settings.toFileName, "w");
+
+	if(settings.toFile == NULL) {
+		perror("Error opening file");
+
+		exit(1);
+	}
+}
+
 int 
 main(
 	int argc, 
@@ -362,6 +414,8 @@ main(
 	if(checkArgs(argc, argv, &settings) != 0){
 		exit(1);
 	}
+
+	openToFile();
 	
 	struct sockaddr_in6 server;		// Supports 4 and 6 but requires IPv6 struct
 
@@ -369,6 +423,8 @@ main(
 
 	settings.server = &server;
 	settings.serverAddrLen = sizeof(struct sockaddr_in6);
+
+	//sendErr_init(settings.errorRate, DROP_ON, FLIP_ON, __DEBUG_ON, RSEED_ON);
 
 	setupPollSet();
 	addToPollSet(settings.socketNum);

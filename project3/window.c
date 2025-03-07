@@ -62,13 +62,16 @@ isWindowOpen(
 
 bool
 addPacket(
-	Packet_t* packetPtr
+	Packet_t* packetPtr,
+	uint16_t dataSize,
+	bool valid
 ){
 	if(!isWindowOpen()){
 		return false;
 	}
 
-	window.elements[WINDOW_INDEX(packetPtr, window)].valid = false;
+	window.elements[WINDOW_INDEX(packetPtr, window)].valid = valid;
+	window.elements[WINDOW_INDEX(packetPtr, window)].dataSize = dataSize;
 
 	memcpy(WINDOW_ELEMENT_PACKET(window, WINDOW_INDEX(packetPtr, window)), packetPtr, WINDOW_ELEMENT_PACKET_SSIZE(window));
 
@@ -80,8 +83,10 @@ addPacket(
 Packet_t*
 getPacket(
 	Packet_t* packetPtr,
+	uint16_t* dataSizePtr,
 	SeqNum_t seqNum
 ){
+	*dataSizePtr = window.elements[seqNum % window.windowSize].dataSize;
 	memcpy(packetPtr, WINDOW_ELEMENT_PACKET(window, seqNum % window.windowSize), WINDOW_ELEMENT_PACKET_SSIZE(window));
 
 	return packetPtr;
@@ -89,8 +94,10 @@ getPacket(
 
 Packet_t*
 getLowestPacket(
-	Packet_t* lowestPacketPtr
+	Packet_t* lowestPacketPtr,
+	uint16_t* dataSizePtr
 ){
+	*dataSizePtr = window.elements[WINDOW_LOWEST_PACKET_INDEX(window)].dataSize;
 	memcpy(lowestPacketPtr, WINDOW_ELEMENT_PACKET(window, WINDOW_LOWEST_PACKET_INDEX(window)), WINDOW_ELEMENT_PACKET_SSIZE(window));
 
 	return lowestPacketPtr;
@@ -108,35 +115,64 @@ removePacket(
 	window.windowState.upper = seqNum + window.windowSize;
 }
 
-InvalidPacket_t*
-getInvalidPackets(
-	InvalidPacket_t* invalidPacketArray,
-	uint32_t* numPackets
+void
+getWindowPacketState(
+	PacketState_t* validPacketArray,
+	PacketState_t* invalidPacketArray,
+	uint32_t* numValidPackets,
+	uint32_t* numInvalidPackets
 ){
 	uint32_t invalidPacketArrayIdx = 0;
+	uint32_t validPacketArrayIdx = 0;
 
-	invalidPacketArray = (InvalidPacket_t*) malloc(sizeof(InvalidPacket_t));
+	if(invalidPacketArray != NULL){
+		invalidPacketArray = (PacketState_t*) malloc(sizeof(PacketState_t));
+	}
+
+	if(validPacketArray != NULL){
+		validPacketArray = (PacketState_t*) malloc(sizeof(PacketState_t));
+	}
 
 	for(uint32_t i = window.windowState.lower; i <= window.windowState.current; i++){
 		WindowElement_t currElement = window.elements[i % window.windowSize];
 
-		if (currElement.valid == false){
-			if (invalidPacketArrayIdx > 0) {
-				invalidPacketArray = (InvalidPacket_t*) realloc(invalidPacketArray, sizeof(InvalidPacket_t) *  (invalidPacketArrayIdx + 1));
+		if (currElement.valid == false){ // Invalid Packet
+			if(invalidPacketArray != NULL){
+				if (invalidPacketArrayIdx > 0) {
+					invalidPacketArray = (PacketState_t*) realloc(invalidPacketArray, sizeof(PacketState_t) *  (invalidPacketArrayIdx + 1));
+				}
+	
+				invalidPacketArray[invalidPacketArrayIdx].seqNum = ntohl(currElement.packet->header.seqNum);
+				invalidPacketArray[invalidPacketArrayIdx].valid = false;
 			}
 
-			invalidPacketArray[invalidPacketArrayIdx].seqNum = ntohl(currElement.packet->header.seqNum);
-			invalidPacketArray[invalidPacketArrayIdx].valid = false;
-
 			invalidPacketArrayIdx++;
+		} else { // Valid Packet
+			if(validPacketArray != NULL){
+				if (validPacketArrayIdx > 0) {
+					validPacketArray = (PacketState_t*) realloc(validPacketArray, sizeof(PacketState_t) * (invalidPacketArrayIdx + 1));
+				}
+
+				validPacketArray[invalidPacketArrayIdx].seqNum = ntohl(currElement.packet->header.seqNum);
+				validPacketArray[invalidPacketArrayIdx].valid = false;
+			}
+
+			validPacketArrayIdx++;
 		}
 	}
 
 	if (invalidPacketArrayIdx == 0){
-		free(invalidPacketArray);
-		return NULL;
+		if(invalidPacketArray != NULL){
+			free(invalidPacketArray);
+		}
 	}
 
-	*numPackets = invalidPacketArrayIdx;
-	return invalidPacketArray;
+	if (validPacketArrayIdx == 0){
+		if(validPacketArray != NULL){
+			free(validPacketArray);
+		}
+	}
+
+	*numValidPackets = validPacketArrayIdx;
+	*numInvalidPackets = invalidPacketArrayIdx;
 }

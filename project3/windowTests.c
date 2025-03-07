@@ -72,7 +72,7 @@ int main(void) {
     printf("Removed packets with sequence numbers lower than 2.\n");
 
     // --- Get and print the count of invalid packets ---
-    InvalidPacket_t* invalidPacketArray = NULL;
+    PacketState_t* invalidPacketArray = NULL;
     uint32_t numPackets = 0;
 
     invalidPacketArray = getInvalidPackets(invalidPacketArray, &numPackets);

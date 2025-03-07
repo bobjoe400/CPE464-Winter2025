@@ -82,10 +82,10 @@
 	"Debug Guard": {
 		"prefix": "debug",
 		"body": [
-			"#ifdef DEBUG_ON",
-			"\tprintf(\"$0\");",
-			"#endif \/\/ DEBUG_ON"
+			"#ifdef __DEBUG_ON",
+			"\tprintf(\"$0\\n\");",
+			"#endif \/\/ __DEBUG_ON"
 		],
-		"description": "Insert a DEBUG_ON guard"
+		"description": "Insert a __DEBUG_ON guard"
 	}
 }	

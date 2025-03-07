@@ -29,5 +29,5 @@ clean:
 	rm -f server rcopy *.o
 
 # Target-specific variable assignment:
-debug: CFLAGS += -DDEBUG_ON
+debug: CFLAGS += -D__DEBUG_ON
 debug: all

@@ -13,10 +13,11 @@
 typedef struct{
 	bool valid;
 	SeqNum_t seqNum;
-} InvalidPacket_t;
+} PacketState_t;
 
 typedef struct {
 	bool valid;
+	uint16_t dataSize;
 	Packet_t* packet;
 } WindowElement_t;
 
@@ -46,9 +47,16 @@ typedef struct {
 #define WINDOW_ELEMENT_PACKET(x, y) (x.elements[y].packet)
 
 void
+windowInit(
+	uint32_t windowSize,
+	uint16_t bufferSize
+);
+
+void
 windowDestroy(
 	void
 );
+
 uint32_t
 getWindowSize(
 	void
@@ -66,18 +74,22 @@ isWindowOpen(
 
 bool
 addPacket(
-    Packet_t* packetPtr
+    Packet_t* packetPtr,
+	uint16_t dataSize, 
+	bool valid
 );
 
 Packet_t*
 getPacket(
     Packet_t* packetPtr,
+	uint16_t* dataSizePtr,
     SeqNum_t seqNum
 );
 
 Packet_t*
 getLowestPacket(
-    Packet_t* lowestPacketPtr
+    Packet_t* lowestPacketPtr,
+	uint16_t* dataSizePtr
 );
 
 void
@@ -85,10 +97,12 @@ removePacket(
     SeqNum_t seqNum
 );
 
-InvalidPacket_t*
-getInvalidPackets(
-    InvalidPacket_t* invalidPacketArray,
-    uint32_t* numPackets
+void
+getWindowPacketState(
+	PacketState_t* validPacketArray,
+	PacketState_t* invalidPacketArray,
+	uint32_t* numValidPackets,
+	uint32_t* numInvalidPackets
 );
 
 

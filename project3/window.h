@@ -11,7 +11,6 @@
 
 #pragma pack(push, 1)
 typedef struct{
-	bool valid;
 	SeqNum_t seqNum;
 } PacketState_t;
 
@@ -70,6 +69,11 @@ getPacketSize(
 bool
 isWindowOpen(
 	void
+);
+
+bool
+packetValidInWindow(
+	SeqNum_t seqNum
 );
 
 bool

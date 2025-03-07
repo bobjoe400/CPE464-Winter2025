@@ -11,7 +11,8 @@
 #define __POLLLIB_H__
 
 #define POLL_SET_SIZE 10
-#define POLL_WAIT_FOREVER -1
+#define POLL_FOREVER -1
+#define POLL_NO_BLOCK 0
 
 void setupPollSet();
 void addToPollSet(int socketNumber);

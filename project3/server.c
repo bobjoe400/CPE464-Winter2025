@@ -115,7 +115,7 @@ waitFileName(
 	Packet_t* packetPtr,
 	ClientSettings_t* client
 ){	
-	if(settings.socketNum == pollCall(POLL_WAIT_FOREVER)){
+	if(settings.socketNum == pollCall(POLL_FOREVER)){
 		if(!receiveAndValidateData(packetPtr, NULL, FILENAME_MAX_SSIZE, client, false)){
 		#ifdef __DEBUG_ON
 			printf("Error: Bad filename packet received! Throwing out...\n");
@@ -166,6 +166,22 @@ processFileName(
 	safeSendto(client->socketNum, (uint8_t*) &respPacket, FILENAME_RESP_PACKET_SSIZE, 0, (struct sockaddr*) client->client, client->clientAddrlen);
 
 	return retVal;
+}
+
+void
+processRrSrej(
+	Packet_t* packetPtr,
+	ClientSettings_t* client
+){
+	memset(packetPtr, 0, PACKET_MAX_SSIZE);
+
+	int dataSize;
+
+	if(!receiveAndValidateData(packetPtr, &dataSize, RR_PACKET_SSIZE, client, true)){
+	#ifdef __DEBUG_ON
+		printf("Info: Invalid RR/SREJ packet recieved! Throwing out...\n");
+	#endif // __DEBUG_ON
+	}
 }
 
 void
@@ -228,6 +244,9 @@ sendAndReceiveData(
 		#ifdef __DEBUG_ON
 			printf("Info: Checking for RR's or SREJ's\n");
 		#endif // __DEBUG_ON
+			while(pollCall(POLL_NO_BLOCK)){
+				processRrSrej(packetPtr, client);
+			}
 		}
 
 		if(atEof){
@@ -246,6 +265,8 @@ sendAndReceiveData(
 			#endif // __DEBUG_ON
 				memset(data, 0, client->bufferSize);
 				getLowestPacket(packetPtr, &dataSize);
+
+				packetPtr->header.flag = FLAG_TYPE_TIMEOUT_DATA;
 
 				safeSendto(client->socketNum, (uint8_t*) packetPtr, dataSize, 0, (struct sockaddr*) client->client, client->clientAddrlen);
 			}

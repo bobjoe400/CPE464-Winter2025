@@ -179,6 +179,7 @@ int
 recvData(
 	Packet_t* packetPtr,
 	uint16_t* dataSize,
+	bool* goodData,
 	bool firstPacket
 ){
 	if(pollCall(10) < 0){
@@ -197,28 +198,150 @@ recvData(
 	} else {
 		if(!receiveAndValidateData(packetPtr, dataSize, (settings.bufferSize))){
 			// Bad data received
+			*goodData = false;
 			return STATE_BAD_DATA;
 		} else {
+			*goodData = true;
 			return STATE_PROCESS_DATA;
 		}
 	}
+}
+
+void
+sendSREJ(
+	Packet_t* packetPtr
+){
+	Packet_t srejPacket;
+	buildSrejPacket(&srejPacket, seqNum++, packetPtr->header.seqNum);
+
+	safeSendto(settings.socketNum, (uint8_t*) &srejPacket, SREJ_PACKET_SSIZE, 0, (struct sockaddr*) settings.server, settings.serverAddrLen);
+}
+
+void
+badDataReceived(
+	Packet_t* packetPtr,
+	uint16_t dataSize,
+	bool* buffering
+){
+	addPacket(packetPtr, dataSize, false);
+
+	if(!*buffering){
+	#ifdef __DEBUG_ON
+		printf("Info: Bad data received! Sending SREJ for SeqNum: %i\n", packetPtr->header.seqNum);
+	#endif // __DEBUG_ON
+		sendSREJ(packetPtr);
+
+		*buffering = true;
+	} else {
+	#ifdef __DEBUG_ON
+		printf("Info: Already sent SREJ! Not sending again...\n");
+	#endif // __DEBUG_ON
+	}
+}
+
+
+void
+sendRR(
+	Packet_t* packetPtr
+){
+	Packet_t rrPacket;
+	buildRrPacket(&rrPacket, seqNum++, packetPtr->header.seqNum + 1);
+
+	safeSendto(settings.socketNum, (uint8_t*) &rrPacket, RR_PACKET_SSIZE, 0, (struct sockaddr*) settings.server, settings.serverAddrLen);
+}
+
+void
+writeDataToDisk(
+	uint8_t* data,
+	uint16_t dataSize
+){
+	int numBytes = fwrite(data, sizeof(uint8_t), dataSize, settings.toFile);
+
+	if(numBytes < dataSize){
+		perror("writeDataToDisk: Error writing data to disk. Exiting...");
+		exit(1);
+	}
+}
+
+void
+flushWindow(
+	PacketState_t* validPackets,
+	uint32_t numValidPackets
+){
+	Packet_t packetPtr;
+	uint16_t dataSize;
+	SeqNum_t currSeqNum;
+
+	for(uint32_t i = 0; i < numValidPackets; i++){
+		currSeqNum = validPackets[i].seqNum;
+
+		getPacket(&packetPtr, &dataSize, currSeqNum);
+
+		writeDataToDisk(packetPtr.payload.data.payload, dataSize);
+
+		removePacket(currSeqNum);
+	}
+
+	sendRR(&packetPtr);
 }
 
 int
 processData(
 	Packet_t* packetPtr,
 	uint16_t dataSize,
-	bool buffering
+	bool goodData,
+	bool* buffering
 ){
-
-	if(buffering){
+	if(*buffering){
 	#ifdef __DEBUG_ON
 		printf("Info: Data Receive in buffering mode\n");
 	#endif // __DEBUG_ON
 		// Buffer Data
+		if(!packetValidInWindow(ntohl(packetPtr->header.seqNum))){
+			if ((packetPtr->header.flag == FLAG_TYPE_SREJ_DATA 	|| 
+				packetPtr->header.flag == FLAG_TYPE_TIMEOUT_DATA) &&
+				goodData)
+			{
+				// Replace packet in buffer
+				addPacket(packetPtr, dataSize, goodData);
+			}
+		} else {
+		#ifdef __DEBUG_ON
+			printf("Info: Duplicate Data received! Throwing out...\n");
+		#endif // __DEBUG_ON
+		}
 
+		PacketState_t* validPackets = (PacketState_t*) malloc(sizeof(PacketState_t));
+		uint32_t numInvalidPackets;
+		uint32_t numValidPackets;
+		getWindowPacketState(NULL, validPackets, &numInvalidPackets, &numValidPackets);
+
+		if(numInvalidPackets == 0){
+		#ifdef __DEBUG_ON
+			printf("Info: All valid packets in window! Flushing window...\n");
+		#endif // __DEBUG_ON
+			flushWindow(validPackets, numValidPackets);
+		#ifdef __DEBUG_ON
+			printf("Info: Exiting buffering mode\n\n");
+		#endif // __DEBUG_ON
+			*buffering = false;
+		}
+
+		free(validPackets);
 	}else{
+		if(packetPtr->header.flag != FLAG_TYPE_DATA || packetPtr->header.flag != FLAG_TYPE_EOF){
+			writeDataToDisk(packetPtr->payload.data.payload, dataSize);
 
+			sendRR(packetPtr);
+		}else{
+		#ifdef __DEBUG_ON
+			printf("Info: Packet isn't of type regular or eof data! Throwing out...\n");
+		#endif // __DEBUG_ON
+		}
+	}
+
+	if(packetPtr->header.flag == FLAG_TYPE_EOF){
+		return STATE_LAST_DATA;
 	}
 
 	return STATE_RECEIVE_DATA;
@@ -232,6 +355,7 @@ stateMachine(
 	static int state = STATE_SEND_FILENAME;
 	static int timeout = 0;
 	static bool buffering = false;
+	static bool goodData = false;
 
 	static Packet_t currPacket;
 	static uint16_t dataSize;
@@ -281,7 +405,7 @@ stateMachine(
 		}
 		case STATE_RECEIVE_FIRST_DATA:
 		{	
-			nextState = recvData(&currPacket, &dataSize, true);
+			nextState = recvData(&currPacket, &dataSize, &goodData, true);
 			break;
 		}
 		case STATE_RECEIVE_DATA_TIMEOUT:
@@ -291,22 +415,20 @@ stateMachine(
 		}
 		case STATE_RECEIVE_DATA:
 		{
-			nextState = recvData(&currPacket, &dataSize, false);
+			nextState = recvData(&currPacket, &dataSize, &goodData, false);
 			break;
 		}
 		case STATE_BAD_DATA:
 		{
-			buffering = true;
+			badDataReceived(&currPacket, dataSize, &buffering);
 
-			//send SREJ
-
-			nextState = STATE_RECEIVE_DATA;
+			nextState = STATE_PROCESS_DATA;
 			break;
 		}
 		case STATE_PROCESS_DATA:
 		{
 			// Write file and send RR for packet (if not buffering)
-			nextState = processData(&currPacket, dataSize, buffering);
+			nextState = processData(&currPacket, dataSize, goodData, &buffering);
 			break;
 		}
 		case STATE_LAST_DATA:

@@ -61,6 +61,13 @@ isWindowOpen(
 }
 
 bool
+packetValidInWindow(
+	SeqNum_t seqNum
+){
+	return window.elements[seqNum % window.windowSize].valid;
+}
+
+bool
 addPacket(
 	Packet_t* packetPtr,
 	uint16_t dataSize,
@@ -125,14 +132,6 @@ getWindowPacketState(
 	uint32_t invalidPacketArrayIdx = 0;
 	uint32_t validPacketArrayIdx = 0;
 
-	if(invalidPacketArray != NULL){
-		invalidPacketArray = (PacketState_t*) malloc(sizeof(PacketState_t));
-	}
-
-	if(validPacketArray != NULL){
-		validPacketArray = (PacketState_t*) malloc(sizeof(PacketState_t));
-	}
-
 	for(uint32_t i = window.windowState.lower; i <= window.windowState.current; i++){
 		WindowElement_t currElement = window.elements[i % window.windowSize];
 
@@ -143,7 +142,6 @@ getWindowPacketState(
 				}
 	
 				invalidPacketArray[invalidPacketArrayIdx].seqNum = ntohl(currElement.packet->header.seqNum);
-				invalidPacketArray[invalidPacketArrayIdx].valid = false;
 			}
 
 			invalidPacketArrayIdx++;
@@ -154,25 +152,17 @@ getWindowPacketState(
 				}
 
 				validPacketArray[invalidPacketArrayIdx].seqNum = ntohl(currElement.packet->header.seqNum);
-				validPacketArray[invalidPacketArrayIdx].valid = false;
 			}
 
 			validPacketArrayIdx++;
 		}
 	}
+	
+	if (numValidPackets != NULL){
+		*numValidPackets = validPacketArrayIdx;
+	}	
 
-	if (invalidPacketArrayIdx == 0){
-		if(invalidPacketArray != NULL){
-			free(invalidPacketArray);
-		}
+	if (numInvalidPackets != NULL){
+		*numInvalidPackets = invalidPacketArrayIdx;
 	}
-
-	if (validPacketArrayIdx == 0){
-		if(validPacketArray != NULL){
-			free(validPacketArray);
-		}
-	}
-
-	*numValidPackets = validPacketArrayIdx;
-	*numInvalidPackets = invalidPacketArrayIdx;
 }

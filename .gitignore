@@ -20,3 +20,4 @@ rcopy
 server
 windowTests
 .server_*
+*.a

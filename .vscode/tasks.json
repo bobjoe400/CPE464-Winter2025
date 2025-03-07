@@ -1,0 +1,41 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Server Script",
+      "type": "shell",
+      "command": "${workspaceFolder}/project3/launch_server.sh",
+      "args": [
+        "0.5"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/project3"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "custom",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}/project3"
+        ],
+        "pattern": {
+          "regexp": "."
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Server PID:",
+          "endsPattern": "Captured port:"
+        }
+      }
+    },
+    {
+      "label": "Kill Server Process",
+      "type": "shell",
+      "command": "kill $(cat .server_pid)",
+      "options": {
+        "cwd": "${workspaceFolder}/project3"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

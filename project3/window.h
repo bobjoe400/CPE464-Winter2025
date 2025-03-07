@@ -11,13 +11,13 @@
 
 #pragma pack(push, 1)
 typedef struct{
-	bool valid;
 	SeqNum_t seqNum;
-} InvalidPacket_t;
+} PacketState_t;
 
 typedef struct {
 	bool valid;
-	Packet_t packet;
+	uint16_t dataSize;
+	Packet_t* packet;
 } WindowElement_t;
 
 typedef struct {
@@ -35,28 +35,79 @@ typedef struct {
 
 #pragma pack(pop)
 
-#define WINDOW_ELEMENT_SSIZE(x) (sizeof(WindowElement_t) - PAYLOAD_MAX + x.bufferSize)
-#define WINDOW_ELEMENT_PACKET_SSIZE(x) (WINDOW_ELEMENT_SSIZE(x) - sizeof(bool))
+#define WINDOW_ELEMENT_SSIZE(x) (sizeof(WindowElement_t))
+#define WINDOW_ELEMENT_PACKET_SSIZE(x) (PACKET_MAX_SSIZE - PAYLOAD_MAX + x.bufferSize)
 #define WINDOW_SSIZE(x) (WINDOW_ELEMENT_SSIZE(x) * x.windowSize)
 
 #define WINDOW_INDEX(x, y) (ntohl(x->header.seqNum) % y.windowSize)
 #define WINDOW_CURRENT_PACKET_INDEX(x) (x.windowState.current % x.windowSize)
 #define WINDOW_LOWEST_PACKET_INDEX(x) (x.windowState.lower % x.windowSize)
 
-#define WINDOW_ELEMENT_PACKET_INDEX(x, y) (&(x.elements[y].packet))
+#define WINDOW_ELEMENT_PACKET(x, y) (x.elements[y].packet)
 
-void windowInit(uint32_t windowSize, uint16_t bufferSize);
+void
+windowInit(
+	uint32_t windowSize,
+	uint16_t bufferSize
+);
 
-uint32_t getWindowSize();
-bool isWindowOpen();
+void
+windowDestroy(
+	void
+);
 
-bool addPacket(Packet_t* packetPtr);
+uint32_t
+getWindowSize(
+	void
+);
 
-Packet_t* getPacket(Packet_t* packetPtr, SeqNum_t seqNum);
-Packet_t* getLowestPacket(Packet_t* lowestPacketPtr);
+uint16_t
+getPacketSize(
+	void
+);
 
-void removePacket(SeqNum_t seqNum);
+bool
+isWindowOpen(
+	void
+);
 
-uint32_t getInvalidPackets(InvalidPacket_t* invalidPacketArray);
+bool
+packetValidInWindow(
+	SeqNum_t seqNum
+);
+
+bool
+addPacket(
+    Packet_t* packetPtr,
+	uint16_t dataSize, 
+	bool valid
+);
+
+Packet_t*
+getPacket(
+    Packet_t* packetPtr,
+	uint16_t* dataSizePtr,
+    SeqNum_t seqNum
+);
+
+Packet_t*
+getLowestPacket(
+    Packet_t* lowestPacketPtr,
+	uint16_t* dataSizePtr
+);
+
+void
+removePacket(
+    SeqNum_t seqNum
+);
+
+void
+getWindowPacketState(
+	PacketState_t* validPacketArray,
+	PacketState_t* invalidPacketArray,
+	uint32_t* numValidPackets,
+	uint32_t* numInvalidPackets
+);
+
 
 #endif // WINDOWBUFFER_H

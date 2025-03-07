@@ -6,65 +6,114 @@
 #include "checksum.h"
 #include "window.h"
 
-Packet_t* buildRrPacket(Packet_t* packetPtr, SeqNum_t seqNum, SeqNum_t rrSeqNum)
-{
-	packetPtr->header.seqNum = htonl(seqNum);
-	packetPtr->header.cksum = 0;
-	packetPtr->header.flag = FLAG_TYPE_RR;
+Packet_t*
+buildPacketHeader(
+    Packet_t* packetPtr,
+    SeqNum_t seqNum,
+    uint8_t flag
+){
+    memset(packetPtr, 0, PACKET_MAX_SSIZE);
 
-	packetPtr->payload.rr.seqNum = htonl(rrSeqNum);
-	
-	packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, RR_PACKET_SIZE);
+    packetPtr->header.seqNum = htonl(seqNum);
+    packetPtr->header.cksum = 0;
+    packetPtr->header.flag = flag;
 
-	return packetPtr;
+    return packetPtr;
 }
 
-Packet_t* buildSrejPacket(Packet_t* packetPtr, SeqNum_t seqNum, SeqNum_t srejSeqNum)
-{
-	packetPtr->header.seqNum = htonl(seqNum);
-	packetPtr->header.cksum = 0;
-	packetPtr->header.flag = FLAG_TYPE_RR;
+Packet_t*
+buildRrPacket(
+    Packet_t* packetPtr,
+    SeqNum_t seqNum,
+    SeqNum_t rrSeqNum
+){
+    buildPacketHeader(packetPtr, seqNum, FLAG_TYPE_RR);
 
-	packetPtr->payload.srej.seqNum = htonl(srejSeqNum);
-	
-	packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, SREJ_PACKET_SIZE);
+    packetPtr->payload.rr.seqNum = htonl(rrSeqNum);
 
-	return packetPtr;
+    packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, RR_PACKET_SSIZE);
+
+    return packetPtr;
 }
 
-Packet_t* buildDataPacket(Packet_t* packetPtr, SeqNum_t seqNum, uint8_t* dataPtr, uint16_t dataSize)
-{
-	// Populate packet
-	packetPtr->header.seqNum = htonl(seqNum);
-	packetPtr->header.cksum = 0;
-	packetPtr->header.flag = FLAG_TYPE_DATA;
-	memcpy(&packetPtr->payload, dataPtr, dataSize);
+Packet_t*
+buildSrejPacket(
+    Packet_t* packetPtr,
+    SeqNum_t seqNum,
+    SeqNum_t srejSeqNum
+){
+    buildPacketHeader(packetPtr, seqNum, FLAG_TYPE_SREJ);
 
-	// Calculate checksum
-	packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, DATA_PACKET_SIZE(dataSize));
+    packetPtr->payload.srej.seqNum = htonl(srejSeqNum);
 
-	return packetPtr;
+    packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, SREJ_PACKET_SSIZE);
+
+    return packetPtr;
 }
 
-Packet_t* buildFileNamePacket(Packet_t* packetPtr, SeqNum_t seqNum, uint16_t bufferSize, uint8_t* fileNamePtr, uint8_t fileNameSize)
-{	
-	packetPtr->header.seqNum = htonl(seqNum);
-	packetPtr->header.cksum = 0;
-	packetPtr->header.flag = FLAG_TYPE_FILENAME;
+Packet_t*
+buildDataPacket(
+    Packet_t* packetPtr,
+    SeqNum_t seqNum,
+    uint8_t* dataPtr,
+    uint16_t dataSize
+){
+    buildPacketHeader(packetPtr, seqNum, FLAG_TYPE_DATA);
 
-	packetPtr->payload.fileName.bufferSize = bufferSize;
-	packetPtr->payload.fileName.windowSize = getWindowSize();
+    // Populate packet
+    memcpy(&packetPtr->payload, dataPtr, dataSize);
 
-	memcpy(&packetPtr->payload.fileName.fileName, fileNamePtr, fileNameSize);
+    // Calculate checksum
+    packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, DATA_PACKET_SSIZE(dataSize));
 
-	return packetPtr;
+    return packetPtr;
 }
 
-bool isValidPacket(Packet_t* packetPtr, uint16_t packetSize)
-{
-	if(in_cksum((uint16_t*) packetPtr, packetSize) == 0) {
-		return true;
-	}
+Packet_t*
+buildFileNameRespPacket(
+    Packet_t* packetPtr,
+    SeqNum_t seqNum,
+    bool response
+){
+    buildPacketHeader(packetPtr, seqNum, FLAG_TYPE_FILENAME_RESP);
 
-	return false;
+    //Populate packet
+    packetPtr->payload.fileNameResponse.response = response;
+
+    // Calculate checksum
+    packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, FILENAME_RESP_PACKET_SSIZE);
+
+    return packetPtr;
+}
+
+Packet_t*
+buildFileNamePacket(
+    Packet_t* packetPtr,
+    SeqNum_t seqNum,
+    uint32_t windowSize,
+    uint16_t bufferSize,
+    uint8_t* fileNamePtr,
+    uint8_t fileNameSize
+){
+    buildPacketHeader(packetPtr, seqNum, FLAG_TYPE_FILENAME);
+
+    packetPtr->payload.fileName.bufferSize = bufferSize;
+    packetPtr->payload.fileName.windowSize = windowSize;
+
+    memcpy(&packetPtr->payload.fileName.fileName, fileNamePtr, fileNameSize);
+
+    packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, FILENAME_PACKET_SSIZE(fileNameSize));
+
+    return packetPtr;
+}
+
+bool
+isValidPacket(
+    Packet_t* packetPtr,
+    uint16_t packetSize
+){
+    if(in_cksum((uint16_t*) packetPtr, packetSize) == 0) {
+        return true;
+    }
+    return false;
 }

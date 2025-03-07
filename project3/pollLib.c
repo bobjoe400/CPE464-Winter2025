@@ -18,7 +18,6 @@
 #include "safeUtil.h"
 #include "pollLib.h"
 
-
 // Poll global variables 
 static struct pollfd * pollFileDescriptors;
 static int maxFileDescriptor = 0;

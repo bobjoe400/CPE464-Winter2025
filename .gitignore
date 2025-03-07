@@ -2,7 +2,7 @@
 *.o
 *.tar
 *.tgz
-*.nfs
+*.nfs*
 
 #ignoring old project
 project2/
@@ -14,3 +14,9 @@ out.txt
 #project2
 cclient
 server
+
+#project3
+rcopy
+server
+windowTests
+.server_*

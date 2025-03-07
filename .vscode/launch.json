@@ -23,7 +23,6 @@
 				"ignoreFailures": true
 			}
 			],
-			"preLaunchTask": "Run Server Script",
 			"postDebugTask": "Kill Server Process"
 		},
 		{
@@ -210,7 +209,8 @@
 	"compounds": [
 		{
 		  "name": "Debug Server and rcopy",
-		  "configurations": ["Debug Server", "Debug rcopy"]
+		  "configurations": ["Attach to Server", "Debug rcopy"],
+      "preLaunchTask": "Run Server Script"
 		}
 	]
 }

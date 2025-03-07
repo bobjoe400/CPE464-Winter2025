@@ -1,2 +1,5 @@
-Server using Port #: 43314
-Server PID: 489
+Server using Port #: 36897
+Server PID: 19271
+Server with ip: ::ffff:127.0.0.1 and port 53640 said it received:
+00 00 00 00 4c 45 08 7b 00 00 00 ffffffd7 11 79 6f 75 72 66 69 6c 65 2e 74 78 74 
+sendto: : Bad file descriptor

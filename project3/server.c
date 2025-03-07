@@ -177,7 +177,7 @@ processFileName(
 	Packet_t respPacket;
 	buildFileNameRespPacket(packetPtr, seqNum++, goodFile);
 
-	safeSendto(client->socketNum, (uint8_t*) &respPacket, FILENAME_RESP_PACKET_SSIZE, 0, (struct sockaddr*) client->client, client->clientAddrlen);
+	safeSendto(settings.socketNum, (uint8_t*) &respPacket, FILENAME_RESP_PACKET_SSIZE, 0, (struct sockaddr*) client->client, client->clientAddrlen);
 
 	return retVal;
 }

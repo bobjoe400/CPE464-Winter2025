@@ -44,6 +44,7 @@ typedef struct{
 
 enum rcopyState{
 	STATE_SEND_FILENAME = 0,
+	STATE_SEND_FILENAME_TIMEOUT,
 	STATE_WAIT_FOR_FILENAME_ACK,
 	STATE_RECEIVE_FIRST_DATA,
 	STATE_RECEIVE_DATA_TIMEOUT,
@@ -56,7 +57,8 @@ enum rcopyState{
 	NUM_STATES,
 };
 
-static rcopySettings_t settings;
+static rcopySettings_t settings = {0};
+static SeqNum_t seqNum = 0;
 
 bool 
 receiveAndValidateData(
@@ -114,10 +116,10 @@ sendFileName(
 	Packet_t packet;
 	int fileNameLen = strlen(settings.fromFileName);
 #ifdef DEBUG_ON
-	printf("Info: Sending filename: %s", settings.fromFileName);
+	printf("Info: Sending filename: %s\n", settings.fromFileName);
 #endif // DEBUG_ON
 
-	buildFileNamePacket(&packet, 0, settings.windowSize, settings.bufferSize, (uint8_t*) settings.fromFileName, fileNameLen);
+	buildFileNamePacket(&packet, seqNum, settings.windowSize, settings.bufferSize, (uint8_t*) settings.fromFileName, fileNameLen);
 
 	int packetSize = FILENAME_PACKET_SSIZE(fileNameLen);
 
@@ -134,13 +136,13 @@ waitForFileNameAck(
 		printf("Timeout: Filename response timed out! Resending filename...\n");
 	#endif // DEBUG_ON
 
-		return STATE_SEND_FILENAME;
+		return STATE_SEND_FILENAME_TIMEOUT;
 	} else {
 		if(!receiveAndValidateData(packetPtr, FILENAME_RESP_PACKET_SSIZE)){
 		#ifdef DEBUG_ON
 			printf("Error: Bad data received! Resending filename...\n");
 		#endif // DEBUG_ON
-			return STATE_SEND_FILENAME;
+			return STATE_SEND_FILENAME_TIMEOUT;
 		}
 
 		if(packetPtr->header.flag != FLAG_TYPE_FILENAME_RESP){
@@ -148,7 +150,7 @@ waitForFileNameAck(
 		#ifdef DEBUG_ON
 			printf("Error: Didn't recieve a filename response packet! Resending filename...\n");
 		#endif // DEBUG_ON
-			return STATE_SEND_FILENAME;
+			return STATE_SEND_FILENAME_TIMEOUT;
 		}
 
 		if(packetPtr->payload.fileNameResponse.response != true){
@@ -174,7 +176,7 @@ recvData(
 		#ifdef DEBUG_ON
 			printf("Timeout: Timeout receiving first file data! Resending filename...\n");
 		#endif // DEBUG_ON
-			return STATE_SEND_FILENAME;
+			return STATE_SEND_FILENAME_TIMEOUT;
 		} else {
 		#ifdef DEBUG_ON
 			printf("Timeout: Timeout receiving data!\n");
@@ -198,6 +200,7 @@ stateMachine(
 	static int nextState = -1;
 	static int state = STATE_SEND_FILENAME;
 	static int timeout = 0;
+	//static bool buffering = false;
 
 	static Packet_t currPacket;
 
@@ -223,14 +226,24 @@ stateMachine(
 			nextState = STATE_WAIT_FOR_FILENAME_ACK;
 			break;
 		}
+		case STATE_SEND_FILENAME_TIMEOUT:
+		{
+			// Timeout
+			timeout++;
+
+			removeFromPollSet(settings.socketNum);
+			close(settings.socketNum);
+			
+			settings.socketNum = setupUdpClientToServer(settings.server, (char*) settings.serverName, settings.serverPort);
+
+			addToPollSet(settings.socketNum);
+			
+			nextState = STATE_SEND_FILENAME;
+			break;
+		}
 		case STATE_WAIT_FOR_FILENAME_ACK:
 		{	
 			nextState = waitForFileNameAck(&currPacket);
-			
-			if(nextState == STATE_SEND_FILENAME){
-				// Timeout
-				timeout++;
-			}
 		}
 		case STATE_RECEIVE_FIRST_DATA:
 		{	

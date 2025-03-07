@@ -49,7 +49,7 @@ typedef struct {
 } DataPacket_t;
 
 typedef struct {
-	uint8_t response;
+	bool response;
 } FileNameRespPacket_t;
 
 typedef struct {
@@ -81,15 +81,16 @@ typedef struct {
 #pragma pack(pop)
 
 // --- Packet Sizes ---
-#define PACKET_MAX_SSIZE sizeof(Packet_t)
-
 #define PACKET_HEADER_SSIZE sizeof(PacketHeader_t)
+
+#define PACKET_MAX_SSIZE sizeof(Packet_t)
+#define FILENAME_MAX_SSIZE (PACKET_HEADER_SSIZE + sizeof(FileNamePacket_t))
 
 #define FILENAME_RESP_PACKET_SSIZE (PACKET_HEADER_SSIZE + sizeof(FileNameRespPacket_t))
 #define RR_PACKET_SSIZE (PACKET_HEADER_SSIZE + sizeof(RrPacket_t))
 #define SREJ_PACKET_SSIZE (PACKET_HEADER_SSIZE + sizeof(SrejPacket_t))
 #define DATA_PACKET_SSIZE(x) (PACKET_HEADER_SSIZE + x)
-#define FILENAME_PACKET_SSIZE(x) (PACKET_HEADER_SSIZE + sizeof(FileNamePacket_t) - FILENAME_MAX_LEN + x)
+#define FILENAME_PACKET_SSIZE(x) (FILENAME_MAX_SSIZE - FILENAME_MAX_LEN + x)
 
 Packet_t*
 buildPacketHeader(
@@ -118,6 +119,13 @@ buildDataPacket(
     SeqNum_t seqNum,
     uint8_t* dataPtr,
     uint16_t dataSize
+);
+
+Packet_t*
+buildFileNameRespPacket(
+	Packet_t* packetPtr,
+	SeqNum_t seqNum,
+	bool response
 );
 
 Packet_t*

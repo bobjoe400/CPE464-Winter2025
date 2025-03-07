@@ -70,6 +70,23 @@ buildDataPacket(
 }
 
 Packet_t*
+buildFileNameRespPacket(
+    Packet_t* packetPtr,
+    SeqNum_t seqNum,
+    bool response
+){
+    buildPacketHeader(packetPtr, seqNum, FLAG_TYPE_FILENAME_RESP);
+
+    //Populate packet
+    packetPtr->payload.fileNameResponse.response = response;
+
+    // Calculate checksum
+    packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, FILENAME_RESP_PACKET_SSIZE);
+
+    return packetPtr;
+}
+
+Packet_t*
 buildFileNamePacket(
     Packet_t* packetPtr,
     SeqNum_t seqNum,

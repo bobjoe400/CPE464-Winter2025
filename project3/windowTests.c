@@ -20,7 +20,7 @@ int main(void) {
     uint16_t dataSize = strlen((char*)testData) + 1; // include null terminator
     buildDataPacket(&dataPkt, 0, testData, dataSize);
     
-    if(isValidPacket(&dataPkt, DATA_PACKET_SIZE(dataSize))) {
+    if(isValidPacket(&dataPkt, DATA_PACKET_SSIZE(dataSize))) {
         printf("Data packet built and is valid.\n");
     } else {
         printf("Data packet built but is invalid.\n");
@@ -35,7 +35,7 @@ int main(void) {
     // --- Build and test a RR Packet ---
     Packet_t rrPkt;
     buildRrPacket(&rrPkt, 1, 0);
-    if(isValidPacket(&rrPkt, RR_PACKET_SIZE)) {
+    if(isValidPacket(&rrPkt, RR_PACKET_SSIZE)) {
         printf("RR packet built and is valid.\n");
     } else {
         printf("RR packet built but is invalid.\n");
@@ -50,7 +50,7 @@ int main(void) {
     // --- Build and test a SREJ Packet ---
     Packet_t srejPkt;
     buildSrejPacket(&srejPkt, 2, 1);
-    if(isValidPacket(&srejPkt, SREJ_PACKET_SIZE)) {
+    if(isValidPacket(&srejPkt, SREJ_PACKET_SSIZE)) {
         printf("SREJ packet built and is valid.\n");
     } else {
         printf("SREJ packet built but is invalid.\n");

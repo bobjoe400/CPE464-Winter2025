@@ -36,7 +36,7 @@ typedef struct {
 #pragma pack(pop)
 
 #define WINDOW_ELEMENT_SSIZE(x) (sizeof(WindowElement_t))
-#define WINDOW_ELEMENT_PACKET_SSIZE(x) (PACKET_MAX_SIZE - PAYLOAD_MAX + x.bufferSize)
+#define WINDOW_ELEMENT_PACKET_SSIZE(x) (PACKET_MAX_SSIZE - PAYLOAD_MAX + x.bufferSize)
 #define WINDOW_SSIZE(x) (WINDOW_ELEMENT_SSIZE(x) * x.windowSize)
 
 #define WINDOW_INDEX(x, y) (ntohl(x->header.seqNum) % y.windowSize)

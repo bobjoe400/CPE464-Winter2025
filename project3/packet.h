@@ -5,6 +5,8 @@
 #include <stdbool.h>
 
 // --- Constants ---
+#define TIMEOUT_MAX 10
+
 #define PAYLOAD_MIN 1
 #define PAYLOAD_MAX 1400
 
@@ -47,6 +49,10 @@ typedef struct {
 } DataPacket_t;
 
 typedef struct {
+	uint8_t response;
+} FileNameRespPacket_t;
+
+typedef struct {
 	uint32_t windowSize;
 	uint16_t bufferSize;
 	uint8_t fileName[FILENAME_MAX_LEN];
@@ -56,6 +62,7 @@ typedef union {
 	RrPacket_t rr;
 	SrejPacket_t srej;
 	DataPacket_t data;
+	FileNameRespPacket_t fileNameResponse;
 	FileNamePacket_t fileName;
 } PacketTypes_u;
 
@@ -74,14 +81,15 @@ typedef struct {
 #pragma pack(pop)
 
 // --- Packet Sizes ---
-#define PACKET_MAX_SIZE sizeof(Packet_t)
+#define PACKET_MAX_SSIZE sizeof(Packet_t)
 
-#define PACKET_HEADER_SIZE sizeof(PacketHeader_t)
+#define PACKET_HEADER_SSIZE sizeof(PacketHeader_t)
 
-#define RR_PACKET_SIZE (PACKET_HEADER_SIZE + sizeof(RrPacket_t))
-#define SREJ_PACKET_SIZE (PACKET_HEADER_SIZE + sizeof(SrejPacket_t))
-#define DATA_PACKET_SIZE(x) (PACKET_HEADER_SIZE + x)
-#define FILENAME_PACKET_SIZE(x) (PACKET_HEADER_SIZE + sizeof(FileNamePacket_t) - FILENAME_MAX_LEN + x)
+#define FILENAME_RESP_PACKET_SSIZE (PACKET_HEADER_SSIZE + sizeof(FileNameRespPacket_t))
+#define RR_PACKET_SSIZE (PACKET_HEADER_SSIZE + sizeof(RrPacket_t))
+#define SREJ_PACKET_SSIZE (PACKET_HEADER_SSIZE + sizeof(SrejPacket_t))
+#define DATA_PACKET_SSIZE(x) (PACKET_HEADER_SSIZE + x)
+#define FILENAME_PACKET_SSIZE(x) (PACKET_HEADER_SSIZE + sizeof(FileNamePacket_t) - FILENAME_MAX_LEN + x)
 
 Packet_t*
 buildPacketHeader(

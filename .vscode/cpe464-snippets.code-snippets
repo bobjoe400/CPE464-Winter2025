@@ -78,5 +78,14 @@
             "${1:return_type} ${2:function_name}(${3:parameters});"
         ],
         "description": "Insert a C function declaration prototype"
-    }
+    },
+	"Debug Guard": {
+		"prefix": "debug",
+		"body": [
+			"#ifdef DEBUG_ON",
+			"\tprintf(\"$0\");",
+			"#endif \/\/ DEBUG_ON"
+		],
+		"description": "Insert a DEBUG_ON guard"
+	}
 }	

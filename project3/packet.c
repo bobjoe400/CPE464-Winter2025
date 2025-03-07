@@ -12,7 +12,7 @@ buildPacketHeader(
     SeqNum_t seqNum,
     uint8_t flag
 ){
-    memset(packetPtr, 0, PACKET_MAX_SIZE);
+    memset(packetPtr, 0, PACKET_MAX_SSIZE);
 
     packetPtr->header.seqNum = htonl(seqNum);
     packetPtr->header.cksum = 0;
@@ -31,7 +31,7 @@ buildRrPacket(
 
     packetPtr->payload.rr.seqNum = htonl(rrSeqNum);
 
-    packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, RR_PACKET_SIZE);
+    packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, RR_PACKET_SSIZE);
 
     return packetPtr;
 }
@@ -46,7 +46,7 @@ buildSrejPacket(
 
     packetPtr->payload.srej.seqNum = htonl(srejSeqNum);
 
-    packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, SREJ_PACKET_SIZE);
+    packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, SREJ_PACKET_SSIZE);
 
     return packetPtr;
 }
@@ -64,7 +64,7 @@ buildDataPacket(
     memcpy(&packetPtr->payload, dataPtr, dataSize);
 
     // Calculate checksum
-    packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, DATA_PACKET_SIZE(dataSize));
+    packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, DATA_PACKET_SSIZE(dataSize));
 
     return packetPtr;
 }
@@ -85,7 +85,7 @@ buildFileNamePacket(
 
     memcpy(&packetPtr->payload.fileName.fileName, fileNamePtr, fileNameSize);
 
-    packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, FILENAME_PACKET_SIZE(fileNameSize));
+    packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, FILENAME_PACKET_SSIZE(fileNameSize));
 
     return packetPtr;
 }

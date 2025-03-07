@@ -175,7 +175,7 @@ processRrSrej(
 ){
 	memset(packetPtr, 0, PACKET_MAX_SSIZE);
 
-	int dataSize;
+	uint16_t dataSize;
 
 	if(!receiveAndValidateData(packetPtr, &dataSize, RR_PACKET_SSIZE, client, true)){
 	#ifdef __DEBUG_ON

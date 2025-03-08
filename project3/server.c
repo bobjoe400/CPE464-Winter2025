@@ -144,7 +144,7 @@ processFileName(
 		// Bad filename
 	#ifdef __DEBUG_ON
 		printf("Bad filename received! Sending response...\n");
-	#endif // __DEBUG_ON
+	#endif // __DEBUG_ONf
 		goodFile = false;
 
 		retVal = STATE_WAIT_FILENAME;
@@ -181,6 +181,31 @@ processRrSrej(
 	#ifdef __DEBUG_ON
 		printf("Info: Invalid RR/SREJ packet recieved! Throwing out...\n");
 	#endif // __DEBUG_ON
+		return;
+	}
+
+	switch (packetPtr->header.flag)
+	{
+	case FLAG_TYPE_RR:
+	{
+		removePacket(ntohl(packetPtr->payload.rr.seqNum));
+		break;
+	}
+	case FLAG_TYPE_SREJ:
+	{
+		Packet_t srejDataPacket;
+		getPacket(&srejDataPacket, &dataSize, (packetPtr->payload.srej.seqNum));
+
+		srejDataPacket.header.flag = FLAG_TYPE_SREJ_DATA;
+
+		safeSendto(client->socketNum, (uint8_t*) &srejDataPacket, dataSize, 0, (struct sockaddr*) client->client, client->clientAddrlen);
+		break;
+	}
+	default:
+	#ifdef __DEBUG_ON
+		printf("Info: Recieved packet not SREJ or RR Type! Throwing out...\n");
+	#endif // __DEBUG_ON
+		break;
 	}
 }
 

@@ -33,6 +33,7 @@ typedef enum FlagTypes {
 	FLAG_TYPE_CUSTOM_START = 31,
 	// --- Custom Flags ---
 
+	FLAG_TYPE_EOF_ACK,
 } FlagTypes_e;
 
 // --- Packet Structures ---

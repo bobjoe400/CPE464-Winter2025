@@ -11,11 +11,12 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+#include "checksum.h"
 #include "gethostbyname.h"
 #include "networks.h"
 #include "safeUtil.h"
 #include "pollLib.h"
-#include "cpe464.h"
+// #include "cpe464.h"
 
 #include "packet.h"
 #include "window.h"
@@ -60,13 +61,19 @@ receiveAndValidateData(
 	uint16_t* dataSize,
 	uint16_t expectedSize,
 	ClientSettings_t* client,
-	bool validateSize
+	bool validateSize,
+	bool serverSocket
 ){	
 	bool retVal = true;
 	char buffer[expectedSize];
 
+	int socketNum = (serverSocket) ? settings.socketNum : client->socketNum;
+
 	// call safeRecvFrom
-	int dataLen = safeRecvfrom(settings.socketNum, buffer, expectedSize, 0, (struct sockaddr*) client->client, &client->clientAddrlen);
+	int dataLen = safeRecvfrom(socketNum, buffer, expectedSize, 0, (struct sockaddr*) client->client, &client->clientAddrlen);
+
+	// Copy data from buffer into packet struct
+	memcpy(packetPtr, buffer, dataLen);
 
 	if(validateSize && dataLen < expectedSize){
 		// Short Packet Received
@@ -75,9 +82,6 @@ receiveAndValidateData(
 	#endif // __DEBUG_ON
 		retVal = false;
 	}
-
-	// Copy data from buffer into packet struct
-	memcpy(packetPtr, buffer, dataLen);
 
 	if(dataSize != NULL){
 		*dataSize = dataLen;
@@ -116,7 +120,7 @@ waitFileName(
 	ClientSettings_t* client
 ){	
 	if(settings.socketNum == pollCall(POLL_FOREVER)){
-		if(!receiveAndValidateData(packetPtr, NULL, FILENAME_MAX_SSIZE, client, false)){
+		if(!receiveAndValidateData(packetPtr, NULL, FILENAME_MAX_SSIZE, client, false, true)){
 		#ifdef __DEBUG_ON
 			printf("Error: Bad filename packet received! Throwing out...\n");
 		#endif // __DEBUG_ON
@@ -168,7 +172,7 @@ processFileName(
 	return retVal;
 }
 
-void
+int
 processRrSrej(
 	Packet_t* packetPtr,
 	ClientSettings_t* client
@@ -177,36 +181,50 @@ processRrSrej(
 
 	uint16_t dataSize;
 
-	if(!receiveAndValidateData(packetPtr, &dataSize, RR_PACKET_SSIZE, client, true)){
+	if(!receiveAndValidateData(packetPtr, &dataSize, RR_PACKET_SSIZE, client, true, false)){
 	#ifdef __DEBUG_ON
 		printf("Info: Invalid RR/SREJ packet recieved! Throwing out...\n");
 	#endif // __DEBUG_ON
-		return;
+
+		return -1;
 	}
 
 	switch (packetPtr->header.flag)
 	{
 	case FLAG_TYPE_RR:
 	{
+	#ifdef __DEBUG_ON
+		printf("Info: Received RR# %i. Removing from window...\n", ntohl(packetPtr->payload.rr.seqNum));
+	#endif // __DEBUG_ON
+
 		removePacket(ntohl(packetPtr->payload.rr.seqNum));
-		break;
+		return FLAG_TYPE_RR;
 	}
 	case FLAG_TYPE_SREJ:
 	{
 		Packet_t srejDataPacket;
 		getPacket(&srejDataPacket, &dataSize, (packetPtr->payload.srej.seqNum));
 
+		srejDataPacket.header.cksum = 0;
 		srejDataPacket.header.flag = FLAG_TYPE_SREJ_DATA;
 
+		srejDataPacket.header.cksum = in_cksum((uint16_t*) &srejDataPacket, dataSize);
+
 		safeSendto(client->socketNum, (uint8_t*) &srejDataPacket, dataSize, 0, (struct sockaddr*) client->client, client->clientAddrlen);
-		break;
+		return FLAG_TYPE_SREJ;
 	}
+	case FLAG_TYPE_EOF_ACK:
+	{
+		return FLAG_TYPE_EOF_ACK;
+	}
+	
 	default:
 	#ifdef __DEBUG_ON
 		printf("Info: Recieved packet not SREJ or RR Type! Throwing out...\n");
 	#endif // __DEBUG_ON
-		break;
 	}
+
+	return -1;
 }
 
 void
@@ -220,13 +238,14 @@ readFromDiskAndSend(
 	memset(data, 0, client->bufferSize);
 	memset(packetPtr, 0, PACKET_MAX_SSIZE);
 
-	*dataSize = (uint16_t) fread(data, sizeof(char), client->bufferSize, client->file);
+	uint16_t dataLen = (uint16_t) fread(data, sizeof(char), client->bufferSize, client->file);
 
-	if(*dataSize < client->bufferSize){
+	if(dataLen < client->bufferSize){
 		if(feof(client->file)){
 		#ifdef __DEBUG_ON
 			printf("Info: End of file reached! Moving to teardown...\n");
 		#endif // __DEBUG_ON
+
 			*atEof = true;
 		}
 
@@ -236,7 +255,21 @@ readFromDiskAndSend(
 		}
 	}
 	
-	buildDataPacket(packetPtr, seqNum++, data, *dataSize);
+	*dataSize = DATA_PACKET_SSIZE(dataLen);
+
+#ifdef __DEBUG_ON
+printf("Info: Sending data %i\n", seqNum);
+#endif // __DEBUG_ON
+
+	buildDataPacket(packetPtr, seqNum++, data, dataLen);
+
+	if(*atEof){
+		packetPtr->header.cksum = 0;
+		packetPtr->header.flag = FLAG_TYPE_EOF;
+
+		packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, *dataSize);
+	}
+
 	safeSendto(client->socketNum, (uint8_t*) packetPtr, *dataSize, 0, (struct sockaddr*) client->client, client->clientAddrlen);
 
 	addPacket(packetPtr, *dataSize, false);
@@ -265,11 +298,16 @@ sendAndReceiveData(
 			
 			readFromDiskAndSend(packetPtr, client, data, &dataSize, &atEof);
 
-			//Handle RR's and SREJ's
+			if(atEof){
+				return STATE_LAST_DATA;
+			}
+
 		#ifdef __DEBUG_ON
 			printf("Info: Checking for RR's or SREJ's\n");
 		#endif // __DEBUG_ON
-			while(pollCall(POLL_NO_BLOCK)){
+
+			//Handle RR's and SREJ's
+			while(pollCall(POLL_NO_BLOCK) > 0){
 				processRrSrej(packetPtr, client);
 			}
 		}
@@ -282,28 +320,58 @@ sendAndReceiveData(
 		#ifdef __DEBUG_ON
 			printf("Info: Window closed. Waiting on RR/SREJs...\n");
 		#endif // __DEBUG_ON
-			memset(data, 0, client->bufferSize);
 
-			while(pollCall(1) < 0){
+			if(pollCall(1) < 0){
 			#ifdef __DEBUG_ON
 				printf("Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...\n");
 			#endif // __DEBUG_ON
-				memset(data, 0, client->bufferSize);
+				
+				memset(packetPtr, 0, PACKET_MAX_SSIZE);
+
 				getLowestPacket(packetPtr, &dataSize);
 
+				packetPtr->header.cksum = 0;
 				packetPtr->header.flag = FLAG_TYPE_TIMEOUT_DATA;
 
-				safeSendto(client->socketNum, (uint8_t*) packetPtr, dataSize, 0, (struct sockaddr*) client->client, client->clientAddrlen);
-			}
+				packetPtr->header.cksum = in_cksum((uint16_t*) packetPtr, dataSize);
 
-			//Handle RR's and SREJs
+				safeSendto(client->socketNum, (uint8_t*) packetPtr, dataSize, 0, (struct sockaddr*) client->client, client->clientAddrlen);
+			} else {
+				processRrSrej(packetPtr, client);
+			}
 		}
 	}
 
 #ifdef __DEBUG_ON
 	printf("Error: Sending data failed!\n");
 #endif // __DEBUG_ON
+
 	return STATE_KILL;
+}
+
+void
+lastData(
+	ClientSettings_t* client
+){
+#ifdef __DEBUG_ON
+	printf("Entering last data teardown state...\n");
+#endif // __DEBUG_ON
+
+	Packet_t currPacket;
+	int timeout = 0;
+
+	do{
+		memset(&currPacket, 0, sizeof(Packet_t));
+
+		if(pollCall(1) < 0){
+			timeout++;
+		} else {			
+			if (processRrSrej(&currPacket, client) == FLAG_TYPE_EOF_ACK){
+				fclose(client->file);
+				return;
+			}
+		}
+	}while(timeout < TIMEOUT_MAX);
 }
 
 void
@@ -357,13 +425,16 @@ stateMachine(
 		}
 		case STATE_LAST_DATA: 
 		{
-			nextState = STATE_KILL;
+			lastData(&client);
 
 			close(client.socketNum);
 			windowDestroy();
+
+			nextState = STATE_KILL;
 			break;
 		}
 		case STATE_KILL:
+			exit(1);
 			break;
 		default:
 			break;
@@ -425,6 +496,7 @@ main(
 #ifdef __DEBUG_ON
 	printf("Server PID: %i\n", getpid());
 #endif // __DEBUG_ON
+
 	settings.socketNum = udpServerSetup(settings.port);
 
 	//sendErr_init(settings.errorRate, DROP_ON, FLIP_ON, __DEBUG_ON, RSEED_ON);

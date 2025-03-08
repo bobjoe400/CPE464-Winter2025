@@ -15,10 +15,12 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
+#include "checksum.h"
 #include "gethostbyname.h"
 #include "networks.h"
 #include "safeUtil.h"
 #include "pollLib.h"
+//#include "cpe464.h"
 
 #include "packet.h"
 #include "window.h"
@@ -49,8 +51,8 @@ enum rcopyState{
 	STATE_SEND_FILENAME_TIMEOUT,
 	STATE_WAIT_FOR_FILENAME_ACK,
 	STATE_RECEIVE_FIRST_DATA,
-	STATE_RECEIVE_DATA_TIMEOUT,
 	STATE_RECEIVE_DATA,
+	STATE_RECEIVE_DATA_TIMEOUT,
 	STATE_BAD_DATA,
 	STATE_PROCESS_DATA,
 	STATE_LAST_DATA,
@@ -75,16 +77,16 @@ receiveAndValidateData(
 	// call safeRecvFrom
 	int dataLen = safeRecvfrom(settings.socketNum, buffer, expectedSize, 0, (struct sockaddr*) settings.server, &settings.serverAddrLen);
 
-	if(dataLen < expectedSize){
+	// Copy data from buffer into packet struct
+	memcpy(packetPtr, buffer, dataLen);
+
+	if(dataLen < expectedSize && packetPtr->header.flag != FLAG_TYPE_EOF){
 		// Short Packet Received
 	#ifdef __DEBUG_ON
 		printf("Error: Less bytes received than expected!\n");
 	#endif // __DEBUG_ON
 		retVal = false;
 	}
-
-	// Copy data from buffer into packet struct
-	memcpy(packetPtr, buffer, dataLen);
 
 	if(dataSize != NULL){
 		*dataSize = dataLen;
@@ -172,6 +174,7 @@ waitForFileNameAck(
 		printf("Info: Received filename ok! Waiting for first data...\n");
 	#endif // __DEBUG_ON
 
+		currentRR++;
 		return STATE_RECEIVE_FIRST_DATA;
 	}
 }
@@ -188,15 +191,17 @@ recvData(
 		#ifdef __DEBUG_ON
 			printf("Timeout: Timeout receiving first file data! Resending filename...\n");
 		#endif // __DEBUG_ON
+
 			return STATE_SEND_FILENAME_TIMEOUT;
 		} else {
 		#ifdef __DEBUG_ON
 			printf("Timeout: Timeout receiving data!\n");
 		#endif // __DEBUG_ON
+		
 			return STATE_RECEIVE_DATA_TIMEOUT;
 		}
 	} else {
-		if(!receiveAndValidateData(packetPtr, dataSize, (settings.bufferSize))){
+		if(!receiveAndValidateData(packetPtr, dataSize, DATA_PACKET_SSIZE(settings.bufferSize))){
 			// Bad data received
 			return STATE_BAD_DATA;
 		} else {
@@ -212,6 +217,10 @@ sendSREJ(
 	Packet_t srejPacket;
 	buildSrejPacket(&srejPacket, seqNum++, srejNum);
 
+#ifdef __DEBUG_ON
+	printf("Sending SREJ: %i\n", srejNum);
+#endif // __DEBUG_ON
+
 	safeSendto(settings.socketNum, (uint8_t*) &srejPacket, SREJ_PACKET_SSIZE, 0, (struct sockaddr*) settings.server, settings.serverAddrLen);
 }
 
@@ -221,6 +230,10 @@ sendRR(
 ){
 	Packet_t rrPacket;
 	buildRrPacket(&rrPacket, seqNum++, currentRR);
+
+#ifdef __DEBUG_ON
+	printf("Sending RR: %i...\n", currentRR);
+#endif // __DEBUG_ON
 
 	safeSendto(settings.socketNum, (uint8_t*) &rrPacket, RR_PACKET_SSIZE, 0, (struct sockaddr*) settings.server, settings.serverAddrLen);
 }
@@ -252,19 +265,18 @@ flushWindow(
 
 		getPacket(&packetPtr, &dataSize, currSeqNum);
 
-		writeDataToDisk(packetPtr.payload.data.payload, dataSize);
+		writeDataToDisk(packetPtr.payload.data.payload, dataSize - sizeof(PacketHeader_t));
 	}
 
 	currentRR = packetPtr.header.seqNum + 1;
 
 	removePacket(currentRR);
-
-	sendRR();
 }
 
 void
 checkWindowState(
-	bool* buffering
+	bool* buffering,
+	bool lastData
 ){
 	PacketState_t* invalidPackets = (PacketState_t*) malloc(sizeof(PacketState_t));
 	PacketState_t* validPackets = (PacketState_t*) malloc(sizeof(PacketState_t));
@@ -277,13 +289,23 @@ checkWindowState(
 	#ifdef __DEBUG_ON
 		printf("Info: All valid packets in window! Flushing window...\n");
 	#endif // __DEBUG_ON
+
 		flushWindow(validPackets, numValidPackets);
+	
+	if(!lastData){
+		sendRR();
+	}
+
 	#ifdef __DEBUG_ON
-		printf("Info: Exiting buffering mode\n\n");
+		printf("Info: Exiting buffering mode\n");
 	#endif // __DEBUG_ON
+
 		*buffering = false;
 	} else {
-		// Still missing packets, update and send lowest SREJ
+	#ifdef __DEBUG_ON
+		printf("Info: Still missing packets in buffer. SREJing lowest invalid packet...\n");
+	#endif // __DEBUG_ON
+
 		int lowestSREJ = invalidPackets[0].seqNum;
 
 		sendSREJ(lowestSREJ);
@@ -313,6 +335,7 @@ processData(
 				#ifdef __DEBUG_ON
 					printf("Error: Failure to add packet to buffer! Shouldn't happen. Exiting...\n");
 				#endif // __DEBUG_ON
+
 					exit(1);
 				}
 			}
@@ -320,29 +343,37 @@ processData(
 		#ifdef __DEBUG_ON
 			printf("Info: Duplicate Data received! Throwing out...\n");
 		#endif // __DEBUG_ON
-			checkWindowState(buffering);
 		}
+
+		checkWindowState(buffering, false);
 	}else{
-		if(packetPtr->header.flag != FLAG_TYPE_DATA || packetPtr->header.flag != FLAG_TYPE_EOF){
-			if (packetPtr->header.seqNum == currentRR) {
+		if(packetPtr->header.flag == FLAG_TYPE_DATA || packetPtr->header.flag == FLAG_TYPE_EOF){
+			if (htonl(packetPtr->header.seqNum) == currentRR) {
 			#ifdef __DEBUG_ON
 				printf("Info: Regular data packet recieved! Writing to disk...\n");
 			#endif // __DEBUG_ON
-				writeDataToDisk(packetPtr->payload.data.payload, dataSize);
 
-				currentRR = packetPtr->header.seqNum + 1;
+				writeDataToDisk(packetPtr->payload.data.payload, dataSize - sizeof(PacketHeader_t));
+
+				currentRR = htonl(packetPtr->header.seqNum) + 1;
+
+				if(packetPtr->header.flag == FLAG_TYPE_EOF){
+					return STATE_LAST_DATA;
+				}
 
 				sendRR();
 			} else if (packetPtr->header.seqNum > currentRR) {
 			#ifdef __DEBUG_ON
 				printf("Info: Greater than expected data packet received! Sending SREJ for current RR and entering buffering mode...\n");
 			#endif // __DEBUG_ON
+
 				*buffering = true;
 
 				if(!addPacket(packetPtr, dataSize, true)){
 				#ifdef __DEBUG_ON
 					printf("Error: Failure to add packet to buffer! Shouldn't happen. Exiting...\n");
 				#endif // __DEBUG_ON
+
 					exit(1);
 				}
 
@@ -351,6 +382,7 @@ processData(
 			#ifdef __DEBUG_ON
 				printf("Info: Lower than expected data packet received! Sending current RR...\n");
 			#endif // __DEBUG_ON
+
 				sendRR();
 			}
 		}else{
@@ -360,11 +392,74 @@ processData(
 		}
 	}
 
-	if(packetPtr->header.flag == FLAG_TYPE_EOF){
-		return STATE_LAST_DATA;
-	}
-
 	return STATE_RECEIVE_DATA;
+}
+
+void
+lastData(
+	bool buffering
+){
+#ifdef __DEBUG_ON
+	printf("Info: Last data packet received! Entering teardown...\n");
+#endif // __DEBUG_ON
+
+	Packet_t packet;
+	int timeout = 0;
+	uint16_t dataSize = 0;
+
+	do{
+		if(!buffering){
+		#ifdef __DEBUG_ON
+			printf("Info: All data written to disk! Sending Ack and closing file...\n");
+		#endif // __DEBUG_ON
+			buildRrPacket(&packet, seqNum++, currentRR);
+
+			packet.header.cksum = 0;
+			packet.header.flag = FLAG_TYPE_EOF_ACK;
+
+			packet.header.cksum = in_cksum((uint16_t*) &packet, RR_PACKET_SSIZE);
+
+			safeSendto(settings.socketNum, (uint8_t*) &packet, RR_PACKET_SSIZE, 0, (struct sockaddr*) settings.server, settings.serverAddrLen);
+			
+			fclose(settings.toFile);
+			return;
+		}
+
+		if(pollCall(10) < 0){
+		#ifdef __DEBUG_ON
+			printf("Timeout: Timedout while receiving last data packets! Trying again...\n");
+		#endif // __DEBUG_ON
+			timeout++;
+		}else{
+			if(!receiveAndValidateData(&packet, &dataSize, DATA_PACKET_SSIZE(settings.bufferSize))){
+				sendSREJ(ntohl(packet.header.seqNum));
+			} else {
+				if(!packetValidInWindow(ntohl(packet.header.seqNum))){
+					if ((packet.header.flag == FLAG_TYPE_SREJ_DATA 	|| 
+						packet.header.flag == FLAG_TYPE_TIMEOUT_DATA))
+					{
+						if(!addPacket(&packet, dataSize, true)){
+							#ifdef __DEBUG_ON
+							printf("Error: Failure to add packet to buffer! Shouldn't happen. Exiting...\n");
+						#endif // __DEBUG_ON
+		
+							exit(1);
+						}
+					} else {
+					#ifdef __DEBUG_ON
+						printf("Info: Duplicate Data received! Throwing out...\n");
+					#endif // __DEBUG_ON
+					}
+				}
+
+				checkWindowState(&buffering, true);
+			}
+		}
+
+	}while(timeout < TIMEOUT_MAX);
+#ifdef __DEBUG_ON
+	printf("Timeout: Timeout maximum (%i) reached while receiving last data packets!\n", TIMEOUT_MAX);
+#endif // __DEBUG_ON
 }
 
 void 
@@ -384,8 +479,9 @@ stateMachine(
 	while(1){
 		if(timeout >= TIMEOUT_MAX){
 		#ifdef __DEBUG_ON
-			printf("Timeout: Timeout maximum (%i) reached! Gracefully Exiting...", TIMEOUT_MAX);
+			printf("Timeout: Timeout maximum (%i) reached! Gracefully Exiting...\n", TIMEOUT_MAX);
 		#endif // __DEBUG_ON
+
 			state = STATE_KILL;
 		}
 		
@@ -427,14 +523,15 @@ stateMachine(
 			nextState = recvData(&currPacket, &dataSize, true);
 			break;
 		}
+		case STATE_RECEIVE_DATA:
+		{
+			nextState = recvData(&currPacket, &dataSize, false);
+			break;
+		}
 		case STATE_RECEIVE_DATA_TIMEOUT:
 		{
 			timeout++;
 			nextState = STATE_RECEIVE_DATA;
-		}
-		case STATE_RECEIVE_DATA:
-		{
-			nextState = recvData(&currPacket, &dataSize, false);
 			break;
 		}
 		case STATE_BAD_DATA:
@@ -454,6 +551,9 @@ stateMachine(
 		}
 		case STATE_LAST_DATA:
 		{
+			lastData(buffering);
+
+			nextState = STATE_KILL;	
 			break;
 		}
 		case STATE_KILL:
@@ -466,6 +566,7 @@ stateMachine(
 		#ifdef __DEBUG_ON
 			printf("Error: Invalid state reached! Exiting...\n");
 		#endif
+
 			exit(1);
 		}
 

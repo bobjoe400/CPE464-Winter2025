@@ -97,8 +97,8 @@ buildFileNamePacket(
 ){
     buildPacketHeader(packetPtr, seqNum, FLAG_TYPE_FILENAME);
 
-    packetPtr->payload.fileName.bufferSize = bufferSize;
-    packetPtr->payload.fileName.windowSize = windowSize;
+    packetPtr->payload.fileName.bufferSize = htons(bufferSize);
+    packetPtr->payload.fileName.windowSize = htonl(windowSize);
 
     memcpy(&packetPtr->payload.fileName.fileName, fileNamePtr, fileNameSize);
 

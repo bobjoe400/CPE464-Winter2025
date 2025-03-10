@@ -193,7 +193,7 @@ recvData(
 		#ifdef __DEBUG_ON
 			printf("Timeout: Timeout receiving data!\n");
 		#endif // __DEBUG_ON
-		
+
 			return STATE_RECEIVE_DATA_TIMEOUT;
 		}
 	} else {
@@ -359,11 +359,21 @@ processDataBuffering(
 			}
 
 			highest = ntohl(packetPtr->header.seqNum);
-		} 
+		} else {
+		#ifdef __DEBUG_ON
+			printf("Info: Received lower (%i) than expected (%i) when buffering! Sending lowest SREJ and RR\n", ntohl(packetPtr->header.seqNum), expected);
+		#endif // __DEBUG_ON
+
+			sendSREJ(expected);
+			sendRR();
+		}
 	} else{
 	#ifdef __DEBUG_ON
 		printf("Info: Duplicate data (SeqNum: %i) received! Throwing out...\n", ntohl(packetPtr->header.seqNum));
 	#endif // __DEBUG_ON
+		
+		sendSREJ(expected);
+		sendRR();
 	}
 
 	if(packetPtr->header.flag == FLAG_TYPE_EOF){
@@ -486,6 +496,7 @@ lastData(
 			printf("Timeout: Timedout while receiving last data packets! Trying again...\n");
 		#endif // __DEBUG_ON
 			timeout++;
+
 		}else{
 			timeout = 0;
 
@@ -577,6 +588,7 @@ stateMachine(
 		case STATE_RECEIVE_DATA_TIMEOUT:
 		{
 			timeout++;
+
 			nextState = STATE_RECEIVE_DATA;
 			break;
 		}

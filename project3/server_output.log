@@ -1,3 +1,3663 @@
-Server PID: 7324
-Server using Port #: 45475
-Send Err-INIT ErrRate: 0.20 Drop: Y Flip: Y Rand: Y Debug: Y
+Server PID: 11199
+Server using Port #: 42497
+Send Err-INIT ErrRate: 0.15 Drop: Y Flip: Y Rand: Y Debug: Y
+RECV          SEQ#   0 LEN   32 FLAGS  8   -FNAME request - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Bad filename packet received! Throwing out...
+RECV          SEQ#   0 LEN   32 FLAGS  8   -FNAME request
+Info: Filename received! Processing filename...
+Info: Client window size received as: 5 buffer size received as: 1000
+SEND MSG#   1 SEQ#   0 LEN    8 FLAGS  9   -FNAME response
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 1
+SEND MSG#   2 SEQ#   1 LEN 1007 FLAGS 16   -Data #:    1 - DROPPED 
+Info: addPacket(): Window state (1, 2, 6)
+Info: Checking for RR's or SREJ's
+Info: Sending data 2
+SEND MSG#   3 SEQ#   2 LEN 1007 FLAGS 16   -Data #:    2
+Info: addPacket(): Window state (1, 3, 6)
+Info: Checking for RR's or SREJ's
+Info: Sending data 3
+SEND MSG#   4 SEQ#   3 LEN 1007 FLAGS 16   -Data #:    3
+Info: addPacket(): Window state (1, 4, 6)
+Info: Checking for RR's or SREJ's
+Info: Sending data 4
+SEND MSG#   5 SEQ#   4 LEN 1007 FLAGS 16   -Data #:    4
+Info: addPacket(): Window state (1, 5, 6)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 254 LEN   11 FLAGS  6   -SREJ #:    1 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+Info: Sending data 5
+SEND MSG#   6 SEQ#   5 LEN 1007 FLAGS 16   -Data #:    5
+Info: addPacket(): Window state (1, 6, 6)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG#   7 SEQ#   1 LEN 1007 FLAGS 18   -Timeout resent data #:    1
+Info: Waiting on RR/SREJs...
+RECV          SEQ#   2 LEN   11 FLAGS  5   -RR #:      6
+Info: Received RR# 6. Removing from window...
+Info: removePacket(): Window state (6, 6, 11)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 6
+SEND MSG#   8 SEQ#   6 LEN 1007 FLAGS 16   -Data #:    6 - DROPPED 
+Info: addPacket(): Window state (6, 7, 11)
+Info: Checking for RR's or SREJ's
+Info: Sending data 7
+SEND MSG#   9 SEQ#   7 LEN 1007 FLAGS 16   -Data #:    7
+Info: addPacket(): Window state (6, 8, 11)
+Info: Checking for RR's or SREJ's
+Info: Sending data 8
+SEND MSG#  10 SEQ#   8 LEN 1007 FLAGS 16   -Data #:    8
+Info: addPacket(): Window state (6, 9, 11)
+Info: Checking for RR's or SREJ's
+Info: Sending data 9
+SEND MSG#  11 SEQ#   9 LEN 1007 FLAGS 16   -Data #:    9
+Info: addPacket(): Window state (6, 10, 11)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#   3 LEN   11 FLAGS  6   -SREJ #:    6
+SEND MSG#  12 SEQ#   6 LEN 1007 FLAGS 17   -Resent Data #:    6
+Info: Sending data 10
+SEND MSG#  13 SEQ#  10 LEN 1007 FLAGS 16   -Data #:   10
+Info: addPacket(): Window state (6, 11, 11)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ#   4 LEN   11 FLAGS  5   -RR #:     10
+Info: Received RR# 10. Removing from window...
+Info: removePacket(): Window state (10, 11, 15)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 11
+SEND MSG#  14 SEQ#  11 LEN 1007 FLAGS 16   -Data #:   11
+Info: addPacket(): Window state (10, 12, 15)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#   5 LEN   11 FLAGS  5   -RR #:     11
+Info: Received RR# 11. Removing from window...
+Info: removePacket(): Window state (11, 12, 16)
+Info: Sending data 12
+SEND MSG#  15 SEQ#  12 LEN 1007 FLAGS 16   -Data #:   12
+Info: addPacket(): Window state (11, 13, 16)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#   6 LEN   11 FLAGS  5   -RR #:     12
+Info: Received RR# 12. Removing from window...
+Info: removePacket(): Window state (12, 13, 17)
+Info: Sending data 13
+SEND MSG#  16 SEQ#  13 LEN 1007 FLAGS 16   -Data #:   13
+Info: addPacket(): Window state (12, 14, 17)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#   7 LEN   11 FLAGS  5   -RR #:     13
+Info: Received RR# 13. Removing from window...
+Info: removePacket(): Window state (13, 14, 18)
+Info: Sending data 14
+SEND MSG#  17 SEQ#  14 LEN 1007 FLAGS 16   -Data #:   14
+Info: addPacket(): Window state (13, 15, 18)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#   8 LEN   11 FLAGS  5   -RR #:     14
+Info: Received RR# 14. Removing from window...
+Info: removePacket(): Window state (14, 15, 19)
+Info: Sending data 15
+SEND MSG#  18 SEQ#  15 LEN 1007 FLAGS 16   -Data #:   15
+Info: addPacket(): Window state (14, 16, 19)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#   9 LEN   11 FLAGS  5   -RR #:     15
+Info: Received RR# 15. Removing from window...
+Info: removePacket(): Window state (15, 16, 20)
+Info: Sending data 16
+SEND MSG#  19 SEQ#  16 LEN 1007 FLAGS 16   -Data #:   16
+Info: addPacket(): Window state (15, 17, 20)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  10 LEN   11 FLAGS  5   -RR #:     16
+Info: Received RR# 16. Removing from window...
+Info: removePacket(): Window state (16, 17, 21)
+Info: Sending data 17
+SEND MSG#  20 SEQ#  17 LEN 1007 FLAGS 16   -Data #:   17
+Info: addPacket(): Window state (16, 18, 21)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  11 LEN   11 FLAGS  5   -RR #:     17
+Info: Received RR# 17. Removing from window...
+Info: removePacket(): Window state (17, 18, 22)
+Info: Sending data 18
+SEND MSG#  21 SEQ#  18 LEN 1007 FLAGS 16   -Data #:   18
+Info: addPacket(): Window state (17, 19, 22)
+Info: Checking for RR's or SREJ's
+Info: Sending data 19
+SEND MSG#  22 SEQ#  19 LEN 1007 FLAGS 16   -Data #:   19
+Info: addPacket(): Window state (17, 20, 22)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  12 LEN   11 FLAGS  5   -RR #:     18
+Info: Received RR# 18. Removing from window...
+Info: removePacket(): Window state (18, 20, 23)
+Info: Sending data 20
+SEND MSG#  23 SEQ#  20 LEN 1007 FLAGS 16   -Data #:   20 - FLIPPED BITS 
+Info: addPacket(): Window state (18, 21, 23)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  13 LEN   11 FLAGS  5   -RR #:     19
+Info: Received RR# 19. Removing from window...
+Info: removePacket(): Window state (19, 21, 24)
+Info: Sending data 21
+SEND MSG#  24 SEQ#  21 LEN 1007 FLAGS 16   -Data #:   21 - DROPPED 
+Info: addPacket(): Window state (19, 22, 24)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  14 LEN   11 FLAGS  5   -RR #:     20
+Info: Received RR# 20. Removing from window...
+Info: removePacket(): Window state (20, 22, 25)
+Info: Sending data 22
+SEND MSG#  25 SEQ#  22 LEN 1007 FLAGS 16   -Data #:   22 - DROPPED 
+Info: addPacket(): Window state (20, 23, 25)
+Info: Checking for RR's or SREJ's
+Info: Sending data 23
+SEND MSG#  26 SEQ#  23 LEN 1007 FLAGS 16   -Data #:   23
+Info: addPacket(): Window state (20, 24, 25)
+Info: Checking for RR's or SREJ's
+Info: Sending data 24
+SEND MSG#  27 SEQ#  24 LEN 1007 FLAGS 16   -Data #:   24
+Info: addPacket(): Window state (20, 25, 25)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  15 LEN   11 FLAGS  6   -SREJ #:   20
+SEND MSG#  28 SEQ#  20 LEN 1007 FLAGS 17   -Resent Data #:   20
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  16 LEN   11 FLAGS  6   -SREJ #:   21
+SEND MSG#  29 SEQ#  21 LEN 1007 FLAGS 17   -Resent Data #:   21
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  17 LEN   11 FLAGS  5   -RR #:     21
+Info: Received RR# 21. Removing from window...
+Info: removePacket(): Window state (21, 25, 26)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 25
+SEND MSG#  30 SEQ#  25 LEN 1007 FLAGS 16   -Data #:   25
+Info: addPacket(): Window state (21, 26, 26)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  18 LEN   11 FLAGS  6   -SREJ #:   22
+SEND MSG#  31 SEQ#  22 LEN 1007 FLAGS 17   -Resent Data #:   22
+RECV          SEQ#  19 LEN   11 FLAGS  5   -RR #:     22
+Info: Received RR# 22. Removing from window...
+Info: removePacket(): Window state (22, 26, 27)
+Info: Sending data 26
+SEND MSG#  32 SEQ#  26 LEN 1007 FLAGS 16   -Data #:   26
+Info: addPacket(): Window state (22, 27, 27)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  20 LEN   11 FLAGS  6   -SREJ #: 16711703 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  21 LEN   11 FLAGS  5   -RR #:     23
+Info: Received RR# 23. Removing from window...
+Info: removePacket(): Window state (23, 27, 28)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 27
+SEND MSG#  33 SEQ#  27 LEN 1007 FLAGS 16   -Data #:   27 - DROPPED 
+Info: addPacket(): Window state (23, 28, 28)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG#  34 SEQ#  23 LEN 1007 FLAGS 18   -Timeout resent data #:   23
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 65302 LEN   11 FLAGS  5   -RR #:     27 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG#  35 SEQ#  23 LEN 1007 FLAGS 18   -Timeout resent data #:   23
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  23 LEN   11 FLAGS  5   -RR #:     27
+Info: Received RR# 27. Removing from window...
+Info: removePacket(): Window state (27, 28, 32)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 28
+SEND MSG#  36 SEQ#  28 LEN 1007 FLAGS 16   -Data #:   28
+Info: addPacket(): Window state (27, 29, 32)
+Info: Checking for RR's or SREJ's
+Info: Sending data 29
+SEND MSG#  37 SEQ#  29 LEN 1007 FLAGS 16   -Data #:   29
+Info: addPacket(): Window state (27, 30, 32)
+Info: Checking for RR's or SREJ's
+Info: Sending data 30
+SEND MSG#  38 SEQ#  30 LEN 1007 FLAGS 16   -Data #:   30
+Info: addPacket(): Window state (27, 31, 32)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  24 LEN   11 FLAGS  6   -SREJ #:   27
+SEND MSG#  39 SEQ#  27 LEN 1007 FLAGS 17   -Resent Data #:   27 - DROPPED 
+Info: Sending data 31
+SEND MSG#  40 SEQ#  31 LEN 1007 FLAGS 16   -Data #:   31
+Info: addPacket(): Window state (27, 32, 32)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG#  41 SEQ#  27 LEN 1007 FLAGS 18   -Timeout resent data #:   27
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  25 LEN   11 FLAGS  5   -RR #:     32
+Info: Received RR# 32. Removing from window...
+Info: removePacket(): Window state (32, 32, 37)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 32
+SEND MSG#  42 SEQ#  32 LEN 1007 FLAGS 16   -Data #:   32
+Info: addPacket(): Window state (32, 33, 37)
+Info: Checking for RR's or SREJ's
+Info: Sending data 33
+SEND MSG#  43 SEQ#  33 LEN 1007 FLAGS 16   -Data #:   33
+Info: addPacket(): Window state (32, 34, 37)
+Info: Checking for RR's or SREJ's
+Info: Sending data 34
+SEND MSG#  44 SEQ#  34 LEN 1007 FLAGS 16   -Data #:   34
+Info: addPacket(): Window state (32, 35, 37)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  26 LEN   11 FLAGS  5   -RR #:     33
+Info: Received RR# 33. Removing from window...
+Info: removePacket(): Window state (33, 35, 38)
+Info: Sending data 35
+SEND MSG#  45 SEQ#  35 LEN 1007 FLAGS 16   -Data #:   35
+Info: addPacket(): Window state (33, 36, 38)
+Info: Checking for RR's or SREJ's
+Info: Sending data 36
+SEND MSG#  46 SEQ#  36 LEN 1007 FLAGS 16   -Data #:   36
+Info: addPacket(): Window state (33, 37, 38)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  27 LEN   11 FLAGS  5   -RR #:     34
+Info: Received RR# 34. Removing from window...
+Info: removePacket(): Window state (34, 37, 39)
+Info: Sending data 37
+SEND MSG#  47 SEQ#  37 LEN 1007 FLAGS 16   -Data #:   37
+Info: addPacket(): Window state (34, 38, 39)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  28 LEN   11 FLAGS  5   -RR #:     35
+Info: Received RR# 35. Removing from window...
+Info: removePacket(): Window state (35, 38, 40)
+RECV          SEQ#  29 LEN   11 FLAGS  5   -RR #:     36
+Info: Received RR# 36. Removing from window...
+Info: removePacket(): Window state (36, 38, 41)
+Info: Sending data 38
+SEND MSG#  48 SEQ#  38 LEN 1007 FLAGS 16   -Data #:   38
+Info: addPacket(): Window state (36, 39, 41)
+Info: Checking for RR's or SREJ's
+Info: Sending data 39
+SEND MSG#  49 SEQ#  39 LEN 1007 FLAGS 16   -Data #:   39
+Info: addPacket(): Window state (36, 40, 41)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  30 LEN   11 FLAGS  5   -RR #:     37
+Info: Received RR# 37. Removing from window...
+Info: removePacket(): Window state (37, 40, 42)
+Info: Sending data 40
+SEND MSG#  50 SEQ#  40 LEN 1007 FLAGS 16   -Data #:   40
+Info: addPacket(): Window state (37, 41, 42)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  31 LEN   11 FLAGS  5   -RR #:     38
+Info: Received RR# 38. Removing from window...
+Info: removePacket(): Window state (38, 41, 43)
+Info: Sending data 41
+SEND MSG#  51 SEQ#  41 LEN 1007 FLAGS 16   -Data #:   41
+Info: addPacket(): Window state (38, 42, 43)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  32 LEN   11 FLAGS  5   -RR #:     39
+Info: Received RR# 39. Removing from window...
+Info: removePacket(): Window state (39, 42, 44)
+Info: Sending data 42
+SEND MSG#  52 SEQ#  42 LEN 1007 FLAGS 16   -Data #:   42
+Info: addPacket(): Window state (39, 43, 44)
+Info: Checking for RR's or SREJ's
+Info: Sending data 43
+SEND MSG#  53 SEQ#  43 LEN 1007 FLAGS 16   -Data #:   43
+Info: addPacket(): Window state (39, 44, 44)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  34 LEN   11 FLAGS  5   -RR #:     41
+Info: Received RR# 41. Removing from window...
+Info: removePacket(): Window state (41, 44, 46)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 44
+SEND MSG#  54 SEQ#  44 LEN 1007 FLAGS 16   -Data #:   44 - DROPPED 
+Info: addPacket(): Window state (41, 45, 46)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  35 LEN   11 FLAGS  5   -RR #:     42
+Info: Received RR# 42. Removing from window...
+Info: removePacket(): Window state (42, 45, 47)
+Info: Sending data 45
+SEND MSG#  55 SEQ#  45 LEN 1007 FLAGS 16   -Data #:   45
+Info: addPacket(): Window state (42, 46, 47)
+Info: Checking for RR's or SREJ's
+Info: Sending data 46
+SEND MSG#  56 SEQ#  46 LEN 1007 FLAGS 16   -Data #:   46
+Info: addPacket(): Window state (42, 47, 47)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  37 LEN   11 FLAGS  5   -RR #:     44
+Info: Received RR# 44. Removing from window...
+Info: removePacket(): Window state (44, 47, 49)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 47
+SEND MSG#  57 SEQ#  47 LEN 1007 FLAGS 16   -Data #:   47
+Info: addPacket(): Window state (44, 48, 49)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  38 LEN   11 FLAGS  6   -SREJ #:   44
+SEND MSG#  58 SEQ#  44 LEN 1007 FLAGS 17   -Resent Data #:   44
+Info: Sending data 48
+SEND MSG#  59 SEQ#  48 LEN 1007 FLAGS 16   -Data #:   48
+Info: addPacket(): Window state (44, 49, 49)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  39 LEN   11 FLAGS  6   -SREJ #:   45
+SEND MSG#  60 SEQ#  45 LEN 1007 FLAGS 17   -Resent Data #:   45
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  40 LEN   11 FLAGS  5   -RR #:     45
+Info: Received RR# 45. Removing from window...
+Info: removePacket(): Window state (45, 49, 50)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 49
+SEND MSG#  61 SEQ#  49 LEN 1007 FLAGS 16   -Data #:   49
+Info: addPacket(): Window state (45, 50, 50)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  41 LEN   11 FLAGS  5   -RR #:     49
+Info: Received RR# 49. Removing from window...
+Info: removePacket(): Window state (49, 50, 54)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 50
+SEND MSG#  62 SEQ#  50 LEN 1007 FLAGS 16   -Data #:   50
+Info: addPacket(): Window state (49, 51, 54)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  42 LEN   11 FLAGS  5   -RR #:     50
+Info: Received RR# 50. Removing from window...
+Info: removePacket(): Window state (50, 51, 55)
+Info: Sending data 51
+SEND MSG#  63 SEQ#  51 LEN 1007 FLAGS 16   -Data #:   51
+Info: addPacket(): Window state (50, 52, 55)
+Info: Checking for RR's or SREJ's
+Info: Sending data 52
+SEND MSG#  64 SEQ#  52 LEN 1007 FLAGS 16   -Data #:   52
+Info: addPacket(): Window state (50, 53, 55)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  43 LEN   11 FLAGS  5   -RR #:     51
+Info: Received RR# 51. Removing from window...
+Info: removePacket(): Window state (51, 53, 56)
+Info: Sending data 53
+SEND MSG#  65 SEQ#  53 LEN 1007 FLAGS 16   -Data #:   53
+Info: addPacket(): Window state (51, 54, 56)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  44 LEN   11 FLAGS  5   -RR #:     52
+Info: Received RR# 52. Removing from window...
+Info: removePacket(): Window state (52, 54, 57)
+RECV          SEQ#  45 LEN   11 FLAGS  5   -RR #:     53
+Info: Received RR# 53. Removing from window...
+Info: removePacket(): Window state (53, 54, 58)
+Info: Sending data 54
+SEND MSG#  66 SEQ#  54 LEN 1007 FLAGS 16   -Data #:   54
+Info: addPacket(): Window state (53, 55, 58)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  46 LEN   11 FLAGS  5   -RR #:     54
+Info: Received RR# 54. Removing from window...
+Info: removePacket(): Window state (54, 55, 59)
+Info: Sending data 55
+SEND MSG#  67 SEQ#  55 LEN 1007 FLAGS 16   -Data #:   55
+Info: addPacket(): Window state (54, 56, 59)
+Info: Checking for RR's or SREJ's
+Info: Sending data 56
+SEND MSG#  68 SEQ#  56 LEN 1007 FLAGS 16   -Data #:   56
+Info: addPacket(): Window state (54, 57, 59)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  47 LEN   11 FLAGS  5   -RR #:     55
+Info: Received RR# 55. Removing from window...
+Info: removePacket(): Window state (55, 57, 60)
+Info: Sending data 57
+SEND MSG#  69 SEQ#  57 LEN 1007 FLAGS 16   -Data #:   57
+Info: addPacket(): Window state (55, 58, 60)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  48 LEN   11 FLAGS  5   -RR #:     56
+Info: Received RR# 56. Removing from window...
+Info: removePacket(): Window state (56, 58, 61)
+Info: Sending data 58
+SEND MSG#  70 SEQ#  58 LEN 1007 FLAGS 16   -Data #:   58
+Info: addPacket(): Window state (56, 59, 61)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  49 LEN   11 FLAGS  5   -RR #:     57
+Info: Received RR# 57. Removing from window...
+Info: removePacket(): Window state (57, 59, 62)
+Info: Sending data 59
+SEND MSG#  71 SEQ#  59 LEN 1007 FLAGS 16   -Data #:   59
+Info: addPacket(): Window state (57, 60, 62)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  50 LEN   11 FLAGS  5   -RR #:     58
+Info: Received RR# 58. Removing from window...
+Info: removePacket(): Window state (58, 60, 63)
+Info: Sending data 60
+SEND MSG#  72 SEQ#  60 LEN 1007 FLAGS 16   -Data #:   60
+Info: addPacket(): Window state (58, 61, 63)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  51 LEN   11 FLAGS  5   -RR #:     59
+Info: Received RR# 59. Removing from window...
+Info: removePacket(): Window state (59, 61, 64)
+Info: Sending data 61
+SEND MSG#  73 SEQ#  61 LEN 1007 FLAGS 16   -Data #:   61 - DROPPED 
+Info: addPacket(): Window state (59, 62, 64)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  52 LEN   11 FLAGS  5   -RR #:     60
+Info: Received RR# 60. Removing from window...
+Info: removePacket(): Window state (60, 62, 65)
+Info: Sending data 62
+SEND MSG#  74 SEQ#  62 LEN 1007 FLAGS 16   -Data #:   62
+Info: addPacket(): Window state (60, 63, 65)
+Info: Checking for RR's or SREJ's
+Info: Sending data 63
+SEND MSG#  75 SEQ#  63 LEN 1007 FLAGS 16   -Data #:   63
+Info: addPacket(): Window state (60, 64, 65)
+Info: Checking for RR's or SREJ's
+Info: Sending data 64
+SEND MSG#  76 SEQ#  64 LEN 1007 FLAGS 16   -Data #:   64 - FLIPPED BITS 
+Info: addPacket(): Window state (60, 65, 65)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  54 LEN   11 FLAGS  6   -SREJ #:   61
+SEND MSG#  77 SEQ#  61 LEN 1007 FLAGS 17   -Resent Data #:   61
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  55 LEN   11 FLAGS  6   -SREJ #:   62
+SEND MSG#  78 SEQ#  62 LEN 1007 FLAGS 17   -Resent Data #:   62
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  56 LEN   11 FLAGS  5   -RR #:     62
+Info: Received RR# 62. Removing from window...
+Info: removePacket(): Window state (62, 65, 67)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 65
+SEND MSG#  79 SEQ#  65 LEN 1007 FLAGS 16   -Data #:   65
+Info: addPacket(): Window state (62, 66, 67)
+Info: Checking for RR's or SREJ's
+Info: Sending data 66
+SEND MSG#  80 SEQ#  66 LEN 1007 FLAGS 16   -Data #:   66
+Info: addPacket(): Window state (62, 67, 67)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  57 LEN   11 FLAGS  5   -RR #:     64
+Info: Received RR# 64. Removing from window...
+Info: removePacket(): Window state (64, 67, 69)
+Info: Sending data 67
+SEND MSG#  81 SEQ#  67 LEN 1007 FLAGS 16   -Data #:   67
+Info: addPacket(): Window state (64, 68, 69)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 4278190138 LEN   11 FLAGS  6   -SREJ #:   64 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+Info: Sending data 68
+SEND MSG#  82 SEQ#  68 LEN 1007 FLAGS 16   -Data #:   68
+Info: addPacket(): Window state (64, 69, 69)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG#  83 SEQ#  64 LEN 1007 FLAGS 18   -Timeout resent data #:   64
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  59 LEN   11 FLAGS  5   -RR #:     69
+Info: Received RR# 69. Removing from window...
+Info: removePacket(): Window state (69, 69, 74)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 69
+SEND MSG#  84 SEQ#  69 LEN 1007 FLAGS 16   -Data #:   69
+Info: addPacket(): Window state (69, 70, 74)
+Info: Checking for RR's or SREJ's
+Info: Sending data 70
+SEND MSG#  85 SEQ#  70 LEN 1007 FLAGS 16   -Data #:   70
+Info: addPacket(): Window state (69, 71, 74)
+Info: Checking for RR's or SREJ's
+Info: Sending data 71
+SEND MSG#  86 SEQ#  71 LEN 1007 FLAGS 16   -Data #:   71
+Info: addPacket(): Window state (69, 72, 74)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  60 LEN   11 FLAGS  5   -RR #:     70
+Info: Received RR# 70. Removing from window...
+Info: removePacket(): Window state (70, 72, 75)
+Info: Sending data 72
+SEND MSG#  87 SEQ#  72 LEN 1007 FLAGS 16   -Data #:   72
+Info: addPacket(): Window state (70, 73, 75)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  61 LEN   11 FLAGS  5   -RR #:     71
+Info: Received RR# 71. Removing from window...
+Info: removePacket(): Window state (71, 73, 76)
+Info: Sending data 73
+SEND MSG#  88 SEQ#  73 LEN 1007 FLAGS 16   -Data #:   73
+Info: addPacket(): Window state (71, 74, 76)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  62 LEN   11 FLAGS  5   -RR #:     72
+Info: Received RR# 72. Removing from window...
+Info: removePacket(): Window state (72, 74, 77)
+Info: Sending data 74
+SEND MSG#  89 SEQ#  74 LEN 1007 FLAGS 16   -Data #:   74
+Info: addPacket(): Window state (72, 75, 77)
+Info: Checking for RR's or SREJ's
+Info: Sending data 75
+SEND MSG#  90 SEQ#  75 LEN 1007 FLAGS 16   -Data #:   75
+Info: addPacket(): Window state (72, 76, 77)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  63 LEN   11 FLAGS  5   -RR #:     73
+Info: Received RR# 73. Removing from window...
+Info: removePacket(): Window state (73, 76, 78)
+RECV          SEQ#  64 LEN   11 FLAGS  5   -RR #:     74
+Info: Received RR# 74. Removing from window...
+Info: removePacket(): Window state (74, 76, 79)
+Info: Sending data 76
+SEND MSG#  91 SEQ#  76 LEN 1007 FLAGS 16   -Data #:   76
+Info: addPacket(): Window state (74, 77, 79)
+Info: Checking for RR's or SREJ's
+Info: Sending data 77
+SEND MSG#  92 SEQ#  77 LEN 1007 FLAGS 16   -Data #:   77
+Info: addPacket(): Window state (74, 78, 79)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  65 LEN   11 FLAGS  5   -RR #:     75
+Info: Received RR# 75. Removing from window...
+Info: removePacket(): Window state (75, 78, 80)
+Info: Sending data 78
+SEND MSG#  93 SEQ#  78 LEN 1007 FLAGS 16   -Data #:   78
+Info: addPacket(): Window state (75, 79, 80)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  66 LEN   11 FLAGS  5   -RR #:     76
+Info: Received RR# 76. Removing from window...
+Info: removePacket(): Window state (76, 79, 81)
+Info: Sending data 79
+SEND MSG#  94 SEQ#  79 LEN 1007 FLAGS 16   -Data #:   79
+Info: addPacket(): Window state (76, 80, 81)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  67 LEN   11 FLAGS  5   -RR #:     77
+Info: Received RR# 77. Removing from window...
+Info: removePacket(): Window state (77, 80, 82)
+Info: Sending data 80
+SEND MSG#  95 SEQ#  80 LEN 1007 FLAGS 16   -Data #:   80
+Info: addPacket(): Window state (77, 81, 82)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  68 LEN   11 FLAGS  5   -RR #:     78
+Info: Received RR# 78. Removing from window...
+Info: removePacket(): Window state (78, 81, 83)
+Info: Sending data 81
+SEND MSG#  96 SEQ#  81 LEN 1007 FLAGS 16   -Data #:   81
+Info: addPacket(): Window state (78, 82, 83)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  69 LEN   11 FLAGS  5   -RR #:     79
+Info: Received RR# 79. Removing from window...
+Info: removePacket(): Window state (79, 82, 84)
+Info: Sending data 82
+SEND MSG#  97 SEQ#  82 LEN 1007 FLAGS 16   -Data #:   82
+Info: addPacket(): Window state (79, 83, 84)
+Info: Checking for RR's or SREJ's
+Info: Sending data 83
+SEND MSG#  98 SEQ#  83 LEN 1007 FLAGS 16   -Data #:   83
+Info: addPacket(): Window state (79, 84, 84)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  70 LEN   11 FLAGS  5   -RR #:     80
+Info: Received RR# 80. Removing from window...
+Info: removePacket(): Window state (80, 84, 85)
+Info: Sending data 84
+SEND MSG#  99 SEQ#  84 LEN 1007 FLAGS 16   -Data #:   84
+Info: addPacket(): Window state (80, 85, 85)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  71 LEN   11 FLAGS  5   -RR #:     81
+Info: Received RR# 81. Removing from window...
+Info: removePacket(): Window state (81, 85, 86)
+Info: Sending data 85
+SEND MSG# 100 SEQ#  85 LEN 1007 FLAGS 16   -Data #:   85
+Info: addPacket(): Window state (81, 86, 86)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  72 LEN   11 FLAGS  5   -RR #:     82
+Info: Received RR# 82. Removing from window...
+Info: removePacket(): Window state (82, 86, 87)
+Info: Sending data 86
+SEND MSG# 101 SEQ#  86 LEN 1007 FLAGS 16   -Data #:   86
+Info: addPacket(): Window state (82, 87, 87)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  73 LEN   11 FLAGS  5   -RR #:     83
+Info: Received RR# 83. Removing from window...
+Info: removePacket(): Window state (83, 87, 88)
+Info: Sending data 87
+SEND MSG# 102 SEQ#  87 LEN 1007 FLAGS 16   -Data #:   87
+Info: addPacket(): Window state (83, 88, 88)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  74 LEN   11 FLAGS  5   -RR #:     84
+Info: Received RR# 84. Removing from window...
+Info: removePacket(): Window state (84, 88, 89)
+Info: Sending data 88
+SEND MSG# 103 SEQ#  88 LEN 1007 FLAGS 16   -Data #:   88
+Info: addPacket(): Window state (84, 89, 89)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  75 LEN   11 FLAGS  5   -RR #:     85
+Info: Received RR# 85. Removing from window...
+Info: removePacket(): Window state (85, 89, 90)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 89
+SEND MSG# 104 SEQ#  89 LEN 1007 FLAGS 16   -Data #:   89
+Info: addPacket(): Window state (85, 90, 90)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  76 LEN   11 FLAGS  5   -RR #:     86
+Info: Received RR# 86. Removing from window...
+Info: removePacket(): Window state (86, 90, 91)
+RECV          SEQ#  77 LEN   11 FLAGS  5   -RR #:     87
+Info: Received RR# 87. Removing from window...
+Info: removePacket(): Window state (87, 90, 92)
+Info: Sending data 90
+SEND MSG# 105 SEQ#  90 LEN 1007 FLAGS 16   -Data #:   90
+Info: addPacket(): Window state (87, 91, 92)
+Info: Checking for RR's or SREJ's
+Info: Sending data 91
+SEND MSG# 106 SEQ#  91 LEN 1007 FLAGS 16   -Data #:   91
+Info: addPacket(): Window state (87, 92, 92)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  78 LEN   11 FLAGS  5   -RR #:     88
+Info: Received RR# 88. Removing from window...
+Info: removePacket(): Window state (88, 92, 93)
+Info: Sending data 92
+SEND MSG# 107 SEQ#  92 LEN 1007 FLAGS 16   -Data #:   92
+Info: addPacket(): Window state (88, 93, 93)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  79 LEN   11 FLAGS  5   -RR #:     89
+Info: Received RR# 89. Removing from window...
+Info: removePacket(): Window state (89, 93, 94)
+Info: Sending data 93
+SEND MSG# 108 SEQ#  93 LEN 1007 FLAGS 16   -Data #:   93
+Info: addPacket(): Window state (89, 94, 94)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  80 LEN   11 FLAGS  5   -RR #:     90
+Info: Received RR# 90. Removing from window...
+Info: removePacket(): Window state (90, 94, 95)
+Info: Sending data 94
+SEND MSG# 109 SEQ#  94 LEN 1007 FLAGS 16   -Data #:   94
+Info: addPacket(): Window state (90, 95, 95)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  81 LEN   11 FLAGS  5   -RR #:     91
+Info: Received RR# 91. Removing from window...
+Info: removePacket(): Window state (91, 95, 96)
+Info: Sending data 95
+SEND MSG# 110 SEQ#  95 LEN 1007 FLAGS 16   -Data #:   95
+Info: addPacket(): Window state (91, 96, 96)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  82 LEN   11 FLAGS  5   -RR #:     92
+Info: Received RR# 92. Removing from window...
+Info: removePacket(): Window state (92, 96, 97)
+Info: Sending data 96
+SEND MSG# 111 SEQ#  96 LEN 1007 FLAGS 16   -Data #:   96
+Info: addPacket(): Window state (92, 97, 97)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  83 LEN   11 FLAGS  5   -RR #:     93
+Info: Received RR# 93. Removing from window...
+Info: removePacket(): Window state (93, 97, 98)
+Info: Sending data 97
+SEND MSG# 112 SEQ#  97 LEN 1007 FLAGS 16   -Data #:   97 - DROPPED 
+Info: addPacket(): Window state (93, 98, 98)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  84 LEN   11 FLAGS  5   -RR #:     94
+Info: Received RR# 94. Removing from window...
+Info: removePacket(): Window state (94, 98, 99)
+Info: Sending data 98
+SEND MSG# 113 SEQ#  98 LEN 1007 FLAGS 16   -Data #:   98 - FLIPPED BITS 
+Info: addPacket(): Window state (94, 99, 99)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  85 LEN   11 FLAGS  5   -RR #:     95
+Info: Received RR# 95. Removing from window...
+Info: removePacket(): Window state (95, 99, 100)
+Info: Sending data 99
+SEND MSG# 114 SEQ#  99 LEN 1007 FLAGS 16   -Data #:   99
+Info: addPacket(): Window state (95, 100, 100)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  86 LEN   11 FLAGS  5   -RR #:     96
+Info: Received RR# 96. Removing from window...
+Info: removePacket(): Window state (96, 100, 101)
+Info: Sending data 100
+SEND MSG# 115 SEQ# 100 LEN 1007 FLAGS 16   -Data #:  100
+Info: addPacket(): Window state (96, 101, 101)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  87 LEN   11 FLAGS  5   -RR #:    158 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  88 LEN   11 FLAGS  6   -SREJ #:   97
+SEND MSG# 116 SEQ#  97 LEN 1007 FLAGS 17   -Resent Data #:   97
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  89 LEN   11 FLAGS  6   -SREJ #:   98
+SEND MSG# 117 SEQ#  98 LEN 1007 FLAGS 17   -Resent Data #:   98
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  90 LEN   11 FLAGS  5   -RR #:   16711778 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  91 LEN   11 FLAGS  6   -SREJ #:   99
+SEND MSG# 118 SEQ#  99 LEN 1007 FLAGS 17   -Resent Data #:   99
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  92 LEN   11 FLAGS  5   -RR #:     99
+Info: Received RR# 99. Removing from window...
+Info: removePacket(): Window state (99, 101, 104)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 101
+SEND MSG# 119 SEQ# 101 LEN 1007 FLAGS 16   -Data #:  101
+Info: addPacket(): Window state (99, 102, 104)
+Info: Checking for RR's or SREJ's
+Info: Sending data 102
+SEND MSG# 120 SEQ# 102 LEN 1007 FLAGS 16   -Data #:  102
+Info: addPacket(): Window state (99, 103, 104)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  93 LEN   11 FLAGS  5   -RR #:    101
+Info: Received RR# 101. Removing from window...
+Info: removePacket(): Window state (101, 103, 106)
+Info: Sending data 103
+SEND MSG# 121 SEQ# 103 LEN 1007 FLAGS 16   -Data #:  103
+Info: addPacket(): Window state (101, 104, 106)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  94 LEN   11 FLAGS  5   -RR #:    102
+Info: Received RR# 102. Removing from window...
+Info: removePacket(): Window state (102, 104, 107)
+Info: Sending data 104
+SEND MSG# 122 SEQ# 104 LEN 1007 FLAGS 16   -Data #:  104
+Info: addPacket(): Window state (102, 105, 107)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  95 LEN   11 FLAGS  5   -RR #:    103
+Info: Received RR# 103. Removing from window...
+Info: removePacket(): Window state (103, 105, 108)
+Info: Sending data 105
+SEND MSG# 123 SEQ# 105 LEN 1007 FLAGS 16   -Data #:  105 - DROPPED 
+Info: addPacket(): Window state (103, 106, 108)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  96 LEN   11 FLAGS  5   -RR #:    104
+Info: Received RR# 104. Removing from window...
+Info: removePacket(): Window state (104, 106, 109)
+Info: Sending data 106
+SEND MSG# 124 SEQ# 106 LEN 1007 FLAGS 16   -Data #:  106
+Info: addPacket(): Window state (104, 107, 109)
+Info: Checking for RR's or SREJ's
+Info: Sending data 107
+SEND MSG# 125 SEQ# 107 LEN 1007 FLAGS 16   -Data #:  107 - DROPPED 
+Info: addPacket(): Window state (104, 108, 109)
+Info: Checking for RR's or SREJ's
+Info: Sending data 108
+SEND MSG# 126 SEQ# 108 LEN 1007 FLAGS 16   -Data #:  108
+Info: addPacket(): Window state (104, 109, 109)
+Info: Checking for RR's or SREJ's
+RECV          SEQ#  98 LEN   11 FLAGS  6   -SREJ #:  105
+SEND MSG# 127 SEQ# 105 LEN 1007 FLAGS 17   -Resent Data #:  105
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ#  99 LEN   11 FLAGS  6   -SREJ #:  106
+SEND MSG# 128 SEQ# 106 LEN 1007 FLAGS 17   -Resent Data #:  106
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 100 LEN   11 FLAGS  5   -RR #:    106
+Info: Received RR# 106. Removing from window...
+Info: removePacket(): Window state (106, 109, 111)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 109
+SEND MSG# 129 SEQ# 109 LEN 1007 FLAGS 16   -Data #:  109
+Info: addPacket(): Window state (106, 110, 111)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 101 LEN   11 FLAGS  6   -SREJ #:  107
+SEND MSG# 130 SEQ# 107 LEN 1007 FLAGS 17   -Resent Data #:  107
+RECV          SEQ# 102 LEN   11 FLAGS 250   -User defined  - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+Info: Sending data 110
+SEND MSG# 131 SEQ# 110 LEN 1007 FLAGS 16   -Data #:  110
+Info: addPacket(): Window state (106, 111, 111)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 104 LEN   11 FLAGS  5   -RR #:    111
+Info: Received RR# 111. Removing from window...
+Info: removePacket(): Window state (111, 111, 116)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 111
+SEND MSG# 132 SEQ# 111 LEN 1007 FLAGS 16   -Data #:  111
+Info: addPacket(): Window state (111, 112, 116)
+Info: Checking for RR's or SREJ's
+Info: Sending data 112
+SEND MSG# 133 SEQ# 112 LEN 1007 FLAGS 16   -Data #:  112
+Info: addPacket(): Window state (111, 113, 116)
+Info: Checking for RR's or SREJ's
+Info: Sending data 113
+SEND MSG# 134 SEQ# 113 LEN 1007 FLAGS 16   -Data #:  113
+Info: addPacket(): Window state (111, 114, 116)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 105 LEN   11 FLAGS  5   -RR #:    112
+Info: Received RR# 112. Removing from window...
+Info: removePacket(): Window state (112, 114, 117)
+RECV          SEQ# 106 LEN   11 FLAGS  5   -RR #:    113
+Info: Received RR# 113. Removing from window...
+Info: removePacket(): Window state (113, 114, 118)
+Info: Sending data 114
+SEND MSG# 135 SEQ# 114 LEN 1007 FLAGS 16   -Data #:  114
+Info: addPacket(): Window state (113, 115, 118)
+Info: Checking for RR's or SREJ's
+Info: Sending data 115
+SEND MSG# 136 SEQ# 115 LEN 1007 FLAGS 16   -Data #:  115
+Info: addPacket(): Window state (113, 116, 118)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 107 LEN   11 FLAGS  5   -RR #:    114
+Info: Received RR# 114. Removing from window...
+Info: removePacket(): Window state (114, 116, 119)
+Info: Sending data 116
+SEND MSG# 137 SEQ# 116 LEN 1007 FLAGS 16   -Data #:  116
+Info: addPacket(): Window state (114, 117, 119)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 108 LEN   11 FLAGS  5   -RR #:    115
+Info: Received RR# 115. Removing from window...
+Info: removePacket(): Window state (115, 117, 120)
+Info: Sending data 117
+SEND MSG# 138 SEQ# 117 LEN 1007 FLAGS 16   -Data #:  117
+Info: addPacket(): Window state (115, 118, 120)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 109 LEN   11 FLAGS  5   -RR #:    116
+Info: Received RR# 116. Removing from window...
+Info: removePacket(): Window state (116, 118, 121)
+Info: Sending data 118
+SEND MSG# 139 SEQ# 118 LEN 1007 FLAGS 16   -Data #:  118
+Info: addPacket(): Window state (116, 119, 121)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 110 LEN   11 FLAGS  5   -RR #:    117
+Info: Received RR# 117. Removing from window...
+Info: removePacket(): Window state (117, 119, 122)
+Info: Sending data 119
+SEND MSG# 140 SEQ# 119 LEN 1007 FLAGS 16   -Data #:  119
+Info: addPacket(): Window state (117, 120, 122)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 111 LEN   11 FLAGS  5   -RR #:    118
+Info: Received RR# 118. Removing from window...
+Info: removePacket(): Window state (118, 120, 123)
+Info: Sending data 120
+SEND MSG# 141 SEQ# 120 LEN 1007 FLAGS 16   -Data #:  120
+Info: addPacket(): Window state (118, 121, 123)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 112 LEN   11 FLAGS  5   -RR #:    119
+Info: Received RR# 119. Removing from window...
+Info: removePacket(): Window state (119, 121, 124)
+Info: Sending data 121
+SEND MSG# 142 SEQ# 121 LEN 1007 FLAGS 16   -Data #:  121
+Info: addPacket(): Window state (119, 122, 124)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 113 LEN   11 FLAGS  5   -RR #:    120
+Info: Received RR# 120. Removing from window...
+Info: removePacket(): Window state (120, 122, 125)
+Info: Sending data 122
+SEND MSG# 143 SEQ# 122 LEN 1007 FLAGS 16   -Data #:  122
+Info: addPacket(): Window state (120, 123, 125)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 114 LEN   11 FLAGS  5   -RR #:    121
+Info: Received RR# 121. Removing from window...
+Info: removePacket(): Window state (121, 123, 126)
+Info: Sending data 123
+SEND MSG# 144 SEQ# 123 LEN 1007 FLAGS 16   -Data #:  123 - DROPPED 
+Info: addPacket(): Window state (121, 124, 126)
+Info: Checking for RR's or SREJ's
+Info: Sending data 124
+SEND MSG# 145 SEQ# 124 LEN 1007 FLAGS 16   -Data #:  124
+Info: addPacket(): Window state (121, 125, 126)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 115 LEN   11 FLAGS  5   -RR #:    133 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+RECV          SEQ# 116 LEN   11 FLAGS  5   -RR #:    123
+Info: Received RR# 123. Removing from window...
+Info: removePacket(): Window state (123, 125, 128)
+Info: Sending data 125
+SEND MSG# 146 SEQ# 125 LEN 1007 FLAGS 16   -Data #:  125
+Info: addPacket(): Window state (123, 126, 128)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 117 LEN   11 FLAGS  6   -SREJ #:  123
+SEND MSG# 147 SEQ# 123 LEN 1007 FLAGS 17   -Resent Data #:  123 - DROPPED 
+Info: Sending data 126
+SEND MSG# 148 SEQ# 126 LEN 1007 FLAGS 16   -Data #:  126 - DROPPED 
+Info: addPacket(): Window state (123, 127, 128)
+Info: Checking for RR's or SREJ's
+Info: Sending data 127
+SEND MSG# 149 SEQ# 127 LEN 1007 FLAGS 16   -Data #:  127
+Info: addPacket(): Window state (123, 128, 128)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 150 SEQ# 123 LEN 1007 FLAGS 18   -Timeout resent data #:  123 - FLIPPED BITS 
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 151 SEQ# 123 LEN 1007 FLAGS 18   -Timeout resent data #:  123
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 118 LEN   11 FLAGS  6   -SREJ #:  124
+SEND MSG# 152 SEQ# 124 LEN 1007 FLAGS 17   -Resent Data #:  124
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 119 LEN   11 FLAGS  5   -RR #:    124
+Info: Received RR# 124. Removing from window...
+Info: removePacket(): Window state (124, 128, 129)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 128
+SEND MSG# 153 SEQ# 128 LEN 1007 FLAGS 16   -Data #:  128
+Info: addPacket(): Window state (124, 129, 129)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 120 LEN   11 FLAGS  6   -SREJ #:  126
+SEND MSG# 154 SEQ# 126 LEN 1007 FLAGS 17   -Resent Data #:  126
+RECV          SEQ# 121 LEN   11 FLAGS  5   -RR #:    126
+Info: Received RR# 126. Removing from window...
+Info: removePacket(): Window state (126, 129, 131)
+Info: Sending data 129
+SEND MSG# 155 SEQ# 129 LEN 1007 FLAGS 16   -Data #:  129
+Info: addPacket(): Window state (126, 130, 131)
+Info: Checking for RR's or SREJ's
+Info: Sending data 130
+SEND MSG# 156 SEQ# 130 LEN 1007 FLAGS 16   -Data #:  130
+Info: addPacket(): Window state (126, 131, 131)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 122 LEN   11 FLAGS  5   -RR #:    129
+Info: Received RR# 129. Removing from window...
+Info: removePacket(): Window state (129, 131, 134)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 131
+SEND MSG# 157 SEQ# 131 LEN 1007 FLAGS 16   -Data #:  131 - DROPPED 
+Info: addPacket(): Window state (129, 132, 134)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 123 LEN   11 FLAGS  5   -RR #:    130
+Info: Received RR# 130. Removing from window...
+Info: removePacket(): Window state (130, 132, 135)
+Info: Sending data 132
+SEND MSG# 158 SEQ# 132 LEN 1007 FLAGS 16   -Data #:  132
+Info: addPacket(): Window state (130, 133, 135)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 124 LEN   11 FLAGS  5   -RR #:    131
+Info: Received RR# 131. Removing from window...
+Info: removePacket(): Window state (131, 133, 136)
+Info: Sending data 133
+SEND MSG# 159 SEQ# 133 LEN 1007 FLAGS 16   -Data #:  133 - FLIPPED BITS 
+Info: addPacket(): Window state (131, 134, 136)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 125 LEN   11 FLAGS  6   -SREJ #:  131
+SEND MSG# 160 SEQ# 131 LEN 1007 FLAGS 17   -Resent Data #:  131
+Info: Sending data 134
+SEND MSG# 161 SEQ# 134 LEN 1007 FLAGS 16   -Data #:  134
+Info: addPacket(): Window state (131, 135, 136)
+Info: Checking for RR's or SREJ's
+Info: Sending data 135
+SEND MSG# 162 SEQ# 135 LEN 1007 FLAGS 16   -Data #:  135
+Info: addPacket(): Window state (131, 136, 136)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 126 LEN   11 FLAGS  5   -RR #:    133
+Info: Received RR# 133. Removing from window...
+Info: removePacket(): Window state (133, 136, 138)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 136
+SEND MSG# 163 SEQ# 136 LEN 1007 FLAGS 16   -Data #:  136
+Info: addPacket(): Window state (133, 137, 138)
+Info: Checking for RR's or SREJ's
+Info: Sending data 137
+SEND MSG# 164 SEQ# 137 LEN 1007 FLAGS 16   -Data #:  137
+Info: addPacket(): Window state (133, 138, 138)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 165 SEQ# 133 LEN 1007 FLAGS 18   -Timeout resent data #:  133
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 128 LEN   11 FLAGS  5   -RR #:    138
+Info: Received RR# 138. Removing from window...
+Info: removePacket(): Window state (138, 138, 143)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 138
+SEND MSG# 166 SEQ# 138 LEN 1007 FLAGS 16   -Data #:  138
+Info: addPacket(): Window state (138, 139, 143)
+Info: Checking for RR's or SREJ's
+Info: Sending data 139
+SEND MSG# 167 SEQ# 139 LEN 1007 FLAGS 16   -Data #:  139
+Info: addPacket(): Window state (138, 140, 143)
+Info: Checking for RR's or SREJ's
+Info: Sending data 140
+SEND MSG# 168 SEQ# 140 LEN 1007 FLAGS 16   -Data #:  140
+Info: addPacket(): Window state (138, 141, 143)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 129 LEN   11 FLAGS  5   -RR #:    139
+Info: Received RR# 139. Removing from window...
+Info: removePacket(): Window state (139, 141, 144)
+Info: Sending data 141
+SEND MSG# 169 SEQ# 141 LEN 1007 FLAGS 16   -Data #:  141
+Info: addPacket(): Window state (139, 142, 144)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 130 LEN   11 FLAGS  5   -RR #:    140
+Info: Received RR# 140. Removing from window...
+Info: removePacket(): Window state (140, 142, 145)
+Info: Sending data 142
+SEND MSG# 170 SEQ# 142 LEN 1007 FLAGS 16   -Data #:  142
+Info: addPacket(): Window state (140, 143, 145)
+Info: Checking for RR's or SREJ's
+Info: Sending data 143
+SEND MSG# 171 SEQ# 143 LEN 1007 FLAGS 16   -Data #:  143
+Info: addPacket(): Window state (140, 144, 145)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 131 LEN   11 FLAGS  5   -RR #:    141
+Info: Received RR# 141. Removing from window...
+Info: removePacket(): Window state (141, 144, 146)
+Info: Sending data 144
+SEND MSG# 172 SEQ# 144 LEN 1007 FLAGS 16   -Data #:  144
+Info: addPacket(): Window state (141, 145, 146)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 4278190212 LEN   11 FLAGS  5   -RR #:    142 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+Info: Sending data 145
+SEND MSG# 173 SEQ# 145 LEN 1007 FLAGS 16   -Data #:  145
+Info: addPacket(): Window state (141, 146, 146)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 133 LEN   11 FLAGS  5   -RR #:    143
+Info: Received RR# 143. Removing from window...
+Info: removePacket(): Window state (143, 146, 148)
+Info: Sending data 146
+SEND MSG# 174 SEQ# 146 LEN 1007 FLAGS 16   -Data #:  146
+Info: addPacket(): Window state (143, 147, 148)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 134 LEN   11 FLAGS  5   -RR #:    144
+Info: Received RR# 144. Removing from window...
+Info: removePacket(): Window state (144, 147, 149)
+Info: Sending data 147
+SEND MSG# 175 SEQ# 147 LEN 1007 FLAGS 16   -Data #:  147
+Info: addPacket(): Window state (144, 148, 149)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 135 LEN   11 FLAGS  5   -RR #:    145
+Info: Received RR# 145. Removing from window...
+Info: removePacket(): Window state (145, 148, 150)
+Info: Sending data 148
+SEND MSG# 176 SEQ# 148 LEN 1007 FLAGS 16   -Data #:  148 - FLIPPED BITS 
+Info: addPacket(): Window state (145, 149, 150)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 136 LEN   11 FLAGS  5   -RR #:    146
+Info: Received RR# 146. Removing from window...
+Info: removePacket(): Window state (146, 149, 151)
+Info: Sending data 149
+SEND MSG# 177 SEQ# 149 LEN 1007 FLAGS 16   -Data #:  149 - DROPPED 
+Info: addPacket(): Window state (146, 150, 151)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 137 LEN   11 FLAGS  5   -RR #:    147
+Info: Received RR# 147. Removing from window...
+Info: removePacket(): Window state (147, 150, 152)
+Info: Sending data 150
+SEND MSG# 178 SEQ# 150 LEN 1007 FLAGS 16   -Data #:  150
+Info: addPacket(): Window state (147, 151, 152)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 138 LEN   11 FLAGS  5   -RR #:    148
+Info: Received RR# 148. Removing from window...
+Info: removePacket(): Window state (148, 151, 153)
+Info: Sending data 151
+SEND MSG# 179 SEQ# 151 LEN 1007 FLAGS 16   -Data #:  151
+Info: addPacket(): Window state (148, 152, 153)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 139 LEN   11 FLAGS  6   -SREJ #:  148
+SEND MSG# 180 SEQ# 148 LEN 1007 FLAGS 17   -Resent Data #:  148
+Info: Sending data 152
+SEND MSG# 181 SEQ# 152 LEN 1007 FLAGS 16   -Data #:  152
+Info: addPacket(): Window state (148, 153, 153)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 140 LEN   11 FLAGS  6   -SREJ #:  149
+SEND MSG# 182 SEQ# 149 LEN 1007 FLAGS 17   -Resent Data #:  149
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 141 LEN   11 FLAGS  5   -RR #:    149
+Info: Received RR# 149. Removing from window...
+Info: removePacket(): Window state (149, 153, 154)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 153
+SEND MSG# 183 SEQ# 153 LEN 1007 FLAGS 16   -Data #:  153
+Info: addPacket(): Window state (149, 154, 154)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 142 LEN   11 FLAGS  6   -SREJ #:  150
+SEND MSG# 184 SEQ# 150 LEN 1007 FLAGS 17   -Resent Data #:  150
+RECV          SEQ# 143 LEN   11 FLAGS  5   -RR #:    150
+Info: Received RR# 150. Removing from window...
+Info: removePacket(): Window state (150, 154, 155)
+Info: Sending data 154
+SEND MSG# 185 SEQ# 154 LEN 1007 FLAGS 16   -Data #:  154
+Info: addPacket(): Window state (150, 155, 155)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 144 LEN   11 FLAGS  5   -RR #:    154
+Info: Received RR# 154. Removing from window...
+Info: removePacket(): Window state (154, 155, 159)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 155
+SEND MSG# 186 SEQ# 155 LEN 1007 FLAGS 16   -Data #:  155
+Info: addPacket(): Window state (154, 156, 159)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 145 LEN   11 FLAGS  5   -RR #:    155
+Info: Received RR# 155. Removing from window...
+Info: removePacket(): Window state (155, 156, 160)
+Info: Sending data 156
+SEND MSG# 187 SEQ# 156 LEN 1007 FLAGS 16   -Data #:  156
+Info: addPacket(): Window state (155, 157, 160)
+Info: Checking for RR's or SREJ's
+Info: Sending data 157
+SEND MSG# 188 SEQ# 157 LEN 1007 FLAGS 16   -Data #:  157 - DROPPED 
+Info: addPacket(): Window state (155, 158, 160)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 146 LEN   11 FLAGS  5   -RR #:    156
+Info: Received RR# 156. Removing from window...
+Info: removePacket(): Window state (156, 158, 161)
+Info: Sending data 158
+SEND MSG# 189 SEQ# 158 LEN 1007 FLAGS 16   -Data #:  158
+Info: addPacket(): Window state (156, 159, 161)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 147 LEN   11 FLAGS  5   -RR #:    157
+Info: Received RR# 157. Removing from window...
+Info: removePacket(): Window state (157, 159, 162)
+Info: Sending data 159
+SEND MSG# 190 SEQ# 159 LEN 1007 FLAGS 16   -Data #:  159
+Info: addPacket(): Window state (157, 160, 162)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 148 LEN   11 FLAGS  6   -SREJ #:  157
+SEND MSG# 191 SEQ# 157 LEN 1007 FLAGS 17   -Resent Data #:  157
+Info: Sending data 160
+SEND MSG# 192 SEQ# 160 LEN 1007 FLAGS 16   -Data #:  160
+Info: addPacket(): Window state (157, 161, 162)
+Info: Checking for RR's or SREJ's
+Info: Sending data 161
+SEND MSG# 193 SEQ# 161 LEN 1007 FLAGS 16   -Data #:  161
+Info: addPacket(): Window state (157, 162, 162)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 149 LEN   11 FLAGS  5   -RR #:    160
+Info: Received RR# 160. Removing from window...
+Info: removePacket(): Window state (160, 162, 165)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 162
+SEND MSG# 194 SEQ# 162 LEN 1007 FLAGS 16   -Data #:  162
+Info: addPacket(): Window state (160, 163, 165)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 150 LEN   11 FLAGS  5   -RR #:    161
+Info: Received RR# 161. Removing from window...
+Info: removePacket(): Window state (161, 163, 166)
+Info: Sending data 163
+SEND MSG# 195 SEQ# 163 LEN 1007 FLAGS 16   -Data #:  163
+Info: addPacket(): Window state (161, 164, 166)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 151 LEN   11 FLAGS  5   -RR #:    162
+Info: Received RR# 162. Removing from window...
+Info: removePacket(): Window state (162, 164, 167)
+Info: Sending data 164
+SEND MSG# 196 SEQ# 164 LEN 1007 FLAGS 16   -Data #:  164
+Info: addPacket(): Window state (162, 165, 167)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 152 LEN   11 FLAGS  5   -RR #:    163
+Info: Received RR# 163. Removing from window...
+Info: removePacket(): Window state (163, 165, 168)
+Info: Sending data 165
+SEND MSG# 197 SEQ# 165 LEN 1007 FLAGS 16   -Data #:  165
+Info: addPacket(): Window state (163, 166, 168)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 153 LEN   11 FLAGS  5   -RR #:    164
+Info: Received RR# 164. Removing from window...
+Info: removePacket(): Window state (164, 166, 169)
+Info: Sending data 166
+SEND MSG# 198 SEQ# 166 LEN 1007 FLAGS 16   -Data #:  166 - DROPPED 
+Info: addPacket(): Window state (164, 167, 169)
+Info: Checking for RR's or SREJ's
+Info: Sending data 167
+SEND MSG# 199 SEQ# 167 LEN 1007 FLAGS 16   -Data #:  167 - DROPPED 
+Info: addPacket(): Window state (164, 168, 169)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 154 LEN   11 FLAGS  5   -RR #:    165
+Info: Received RR# 165. Removing from window...
+Info: removePacket(): Window state (165, 168, 170)
+Info: Sending data 168
+SEND MSG# 200 SEQ# 168 LEN 1007 FLAGS 16   -Data #:  168
+Info: addPacket(): Window state (165, 169, 170)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 155 LEN   11 FLAGS  5   -RR #:    166
+Info: Received RR# 166. Removing from window...
+Info: removePacket(): Window state (166, 169, 171)
+Info: Sending data 169
+SEND MSG# 201 SEQ# 169 LEN 1007 FLAGS 16   -Data #:  169
+Info: addPacket(): Window state (166, 170, 171)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 156 LEN   11 FLAGS  6   -SREJ #:  166
+SEND MSG# 202 SEQ# 166 LEN 1007 FLAGS 17   -Resent Data #:  166
+Info: Sending data 170
+SEND MSG# 203 SEQ# 170 LEN 1007 FLAGS 16   -Data #:  170
+Info: addPacket(): Window state (166, 171, 171)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 204 SEQ# 166 LEN 1007 FLAGS 18   -Timeout resent data #:  166
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 159 LEN   11 FLAGS  6   -SREJ #:  167
+SEND MSG# 205 SEQ# 167 LEN 1007 FLAGS 17   -Resent Data #:  167
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 160 LEN   11 FLAGS  5   -RR #:    167
+Info: Received RR# 167. Removing from window...
+Info: removePacket(): Window state (167, 171, 172)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 171
+SEND MSG# 206 SEQ# 171 LEN 1007 FLAGS 16   -Data #:  171
+Info: addPacket(): Window state (167, 172, 172)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 161 LEN   11 FLAGS  6   -SREJ #:  168
+SEND MSG# 207 SEQ# 168 LEN 1007 FLAGS 17   -Resent Data #:  168
+RECV          SEQ# 162 LEN   11 FLAGS  5   -RR #:    168
+Info: Received RR# 168. Removing from window...
+Info: removePacket(): Window state (168, 172, 173)
+Info: Sending data 172
+SEND MSG# 208 SEQ# 172 LEN 1007 FLAGS 16   -Data #:  172
+Info: addPacket(): Window state (168, 173, 173)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 163 LEN   11 FLAGS  5   -RR #:    172
+Info: Received RR# 172. Removing from window...
+Info: removePacket(): Window state (172, 173, 177)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 173
+SEND MSG# 209 SEQ# 173 LEN 1007 FLAGS 16   -Data #:  173 - DROPPED 
+Info: addPacket(): Window state (172, 174, 177)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 164 LEN   11 FLAGS  5   -RR #:    173
+Info: Received RR# 173. Removing from window...
+Info: removePacket(): Window state (173, 174, 178)
+Info: Sending data 174
+SEND MSG# 210 SEQ# 174 LEN 1007 FLAGS 16   -Data #:  174
+Info: addPacket(): Window state (173, 175, 178)
+Info: Checking for RR's or SREJ's
+Info: Sending data 175
+SEND MSG# 211 SEQ# 175 LEN 1007 FLAGS 16   -Data #:  175
+Info: addPacket(): Window state (173, 176, 178)
+Info: Checking for RR's or SREJ's
+Info: Sending data 176
+SEND MSG# 212 SEQ# 176 LEN 1007 FLAGS 16   -Data #:  176 - DROPPED 
+Info: addPacket(): Window state (173, 177, 178)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 165 LEN   11 FLAGS  6   -SREJ #:  173
+SEND MSG# 213 SEQ# 173 LEN 1007 FLAGS 17   -Resent Data #:  173
+Info: Sending data 177
+SEND MSG# 214 SEQ# 177 LEN 1007 FLAGS 16   -Data #:  177
+Info: addPacket(): Window state (173, 178, 178)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 166 LEN   11 FLAGS  5   -RR #:    176
+Info: Received RR# 176. Removing from window...
+Info: removePacket(): Window state (176, 178, 181)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 178
+SEND MSG# 215 SEQ# 178 LEN 1007 FLAGS 16   -Data #:  178
+Info: addPacket(): Window state (176, 179, 181)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 167 LEN   11 FLAGS  6   -SREJ #:  176
+SEND MSG# 216 SEQ# 176 LEN 1007 FLAGS 17   -Resent Data #:  176
+Info: Sending data 179
+SEND MSG# 217 SEQ# 179 LEN 1007 FLAGS 16   -Data #:  179 - FLIPPED BITS 
+Info: addPacket(): Window state (176, 180, 181)
+Info: Checking for RR's or SREJ's
+Info: Sending data 180
+SEND MSG# 218 SEQ# 180 LEN 1007 FLAGS 16   -Data #:  180
+Info: addPacket(): Window state (176, 181, 181)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 168 LEN   11 FLAGS  5   -RR #:    179
+Info: Received RR# 179. Removing from window...
+Info: removePacket(): Window state (179, 181, 184)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 181
+SEND MSG# 219 SEQ# 181 LEN 1007 FLAGS 16   -Data #:  181
+Info: addPacket(): Window state (179, 182, 184)
+Info: Checking for RR's or SREJ's
+Info: Sending data 182
+SEND MSG# 220 SEQ# 182 LEN 1007 FLAGS 16   -Data #:  182
+Info: addPacket(): Window state (179, 183, 184)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 169 LEN   11 FLAGS  6   -SREJ #:  179
+SEND MSG# 221 SEQ# 179 LEN 1007 FLAGS 17   -Resent Data #:  179
+Info: Sending data 183
+SEND MSG# 222 SEQ# 183 LEN 1007 FLAGS 16   -Data #:  183
+Info: addPacket(): Window state (179, 184, 184)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 170 LEN   11 FLAGS  5   -RR #:    183
+Info: Received RR# 183. Removing from window...
+Info: removePacket(): Window state (183, 184, 188)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 184
+SEND MSG# 223 SEQ# 184 LEN 1007 FLAGS 16   -Data #:  184
+Info: addPacket(): Window state (183, 185, 188)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 171 LEN   11 FLAGS  5   -RR #:    184
+Info: Received RR# 184. Removing from window...
+Info: removePacket(): Window state (184, 185, 189)
+Info: Sending data 185
+SEND MSG# 224 SEQ# 185 LEN 1007 FLAGS 16   -Data #:  185
+Info: addPacket(): Window state (184, 186, 189)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 172 LEN   11 FLAGS  5   -RR #:    185
+Info: Received RR# 185. Removing from window...
+Info: removePacket(): Window state (185, 186, 190)
+Info: Sending data 186
+SEND MSG# 225 SEQ# 186 LEN 1007 FLAGS 16   -Data #:  186
+Info: addPacket(): Window state (185, 187, 190)
+Info: Checking for RR's or SREJ's
+Info: Sending data 187
+SEND MSG# 226 SEQ# 187 LEN 1007 FLAGS 16   -Data #:  187
+Info: addPacket(): Window state (185, 188, 190)
+Info: Checking for RR's or SREJ's
+Info: Sending data 188
+SEND MSG# 227 SEQ# 188 LEN 1007 FLAGS 16   -Data #:  188 - DROPPED 
+Info: addPacket(): Window state (185, 189, 190)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 173 LEN   11 FLAGS  5   -RR #:    186
+Info: Received RR# 186. Removing from window...
+Info: removePacket(): Window state (186, 189, 191)
+Info: Sending data 189
+SEND MSG# 228 SEQ# 189 LEN 1007 FLAGS 16   -Data #:  189
+Info: addPacket(): Window state (186, 190, 191)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 174 LEN   11 FLAGS  5   -RR #:    187
+Info: Received RR# 187. Removing from window...
+Info: removePacket(): Window state (187, 190, 192)
+Info: Sending data 190
+SEND MSG# 229 SEQ# 190 LEN 1007 FLAGS 16   -Data #:  190 - DROPPED 
+Info: addPacket(): Window state (187, 191, 192)
+Info: Checking for RR's or SREJ's
+Info: Sending data 191
+SEND MSG# 230 SEQ# 191 LEN 1007 FLAGS 16   -Data #:  191
+Info: addPacket(): Window state (187, 192, 192)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 175 LEN   11 FLAGS  5   -RR #:    188
+Info: Received RR# 188. Removing from window...
+Info: removePacket(): Window state (188, 192, 193)
+Info: Sending data 192
+SEND MSG# 231 SEQ# 192 LEN 1007 FLAGS 16   -Data #:  192
+Info: addPacket(): Window state (188, 193, 193)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 176 LEN   11 FLAGS  6   -SREJ #:  188
+SEND MSG# 232 SEQ# 188 LEN 1007 FLAGS 17   -Resent Data #:  188
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 177 LEN   11 FLAGS  6   -SREJ #:  189
+SEND MSG# 233 SEQ# 189 LEN 1007 FLAGS 17   -Resent Data #:  189
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 178 LEN   11 FLAGS  5   -RR #:    189
+Info: Received RR# 189. Removing from window...
+Info: removePacket(): Window state (189, 193, 194)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 193
+SEND MSG# 234 SEQ# 193 LEN 1007 FLAGS 16   -Data #:  193
+Info: addPacket(): Window state (189, 194, 194)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 179 LEN   11 FLAGS  6   -SREJ #:  190
+SEND MSG# 235 SEQ# 190 LEN 1007 FLAGS 17   -Resent Data #:  190
+RECV          SEQ# 180 LEN   11 FLAGS  5   -RR #:    190
+Info: Received RR# 190. Removing from window...
+Info: removePacket(): Window state (190, 194, 195)
+Info: Sending data 194
+SEND MSG# 236 SEQ# 194 LEN 1007 FLAGS 16   -Data #:  194
+Info: addPacket(): Window state (190, 195, 195)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 182 LEN   11 FLAGS  5   -RR #:    195
+Info: Received RR# 195. Removing from window...
+Info: removePacket(): Window state (195, 195, 200)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 195
+SEND MSG# 237 SEQ# 195 LEN 1007 FLAGS 16   -Data #:  195
+Info: addPacket(): Window state (195, 196, 200)
+Info: Checking for RR's or SREJ's
+Info: Sending data 196
+SEND MSG# 238 SEQ# 196 LEN 1007 FLAGS 16   -Data #:  196
+Info: addPacket(): Window state (195, 197, 200)
+Info: Checking for RR's or SREJ's
+Info: Sending data 197
+SEND MSG# 239 SEQ# 197 LEN 1007 FLAGS 16   -Data #:  197
+Info: addPacket(): Window state (195, 198, 200)
+Info: Checking for RR's or SREJ's
+Info: Sending data 198
+SEND MSG# 240 SEQ# 198 LEN 1007 FLAGS 16   -Data #:  198
+Info: addPacket(): Window state (195, 199, 200)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 183 LEN   11 FLAGS  5   -RR #:    196
+Info: Received RR# 196. Removing from window...
+Info: removePacket(): Window state (196, 199, 201)
+Info: Sending data 199
+SEND MSG# 241 SEQ# 199 LEN 1007 FLAGS 16   -Data #:  199
+Info: addPacket(): Window state (196, 200, 201)
+Info: Checking for RR's or SREJ's
+Info: Sending data 200
+SEND MSG# 242 SEQ# 200 LEN 1007 FLAGS 16   -Data #:  200
+Info: addPacket(): Window state (196, 201, 201)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 184 LEN   11 FLAGS  5   -RR #:    197
+Info: Received RR# 197. Removing from window...
+Info: removePacket(): Window state (197, 201, 202)
+RECV          SEQ# 185 LEN   11 FLAGS  5   -RR #:    198
+Info: Received RR# 198. Removing from window...
+Info: removePacket(): Window state (198, 201, 203)
+RECV          SEQ# 186 LEN   11 FLAGS  5   -RR #:    199
+Info: Received RR# 199. Removing from window...
+Info: removePacket(): Window state (199, 201, 204)
+RECV          SEQ# 187 LEN   11 FLAGS  5   -RR #:    200
+Info: Received RR# 200. Removing from window...
+Info: removePacket(): Window state (200, 201, 205)
+RECV          SEQ# 188 LEN   11 FLAGS  5   -RR #:    201
+Info: Received RR# 201. Removing from window...
+Info: removePacket(): Window state (201, 201, 206)
+Info: Sending data 201
+SEND MSG# 243 SEQ# 201 LEN 1007 FLAGS 16   -Data #:  201
+Info: addPacket(): Window state (201, 202, 206)
+Info: Checking for RR's or SREJ's
+Info: Sending data 202
+SEND MSG# 244 SEQ# 202 LEN 1007 FLAGS 16   -Data #:  202
+Info: addPacket(): Window state (201, 203, 206)
+Info: Checking for RR's or SREJ's
+Info: Sending data 203
+SEND MSG# 245 SEQ# 203 LEN 1007 FLAGS 16   -Data #:  203
+Info: addPacket(): Window state (201, 204, 206)
+Info: Checking for RR's or SREJ's
+Info: Sending data 204
+SEND MSG# 246 SEQ# 204 LEN 1007 FLAGS 16   -Data #:  204
+Info: addPacket(): Window state (201, 205, 206)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 189 LEN   11 FLAGS  5   -RR #:    202
+Info: Received RR# 202. Removing from window...
+Info: removePacket(): Window state (202, 205, 207)
+Info: Sending data 205
+SEND MSG# 247 SEQ# 205 LEN 1007 FLAGS 16   -Data #:  205
+Info: addPacket(): Window state (202, 206, 207)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 190 LEN   11 FLAGS  5   -RR #:    203
+Info: Received RR# 203. Removing from window...
+Info: removePacket(): Window state (203, 206, 208)
+Info: Sending data 206
+SEND MSG# 248 SEQ# 206 LEN 1007 FLAGS 16   -Data #:  206
+Info: addPacket(): Window state (203, 207, 208)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 191 LEN   11 FLAGS  5   -RR #:    204
+Info: Received RR# 204. Removing from window...
+Info: removePacket(): Window state (204, 207, 209)
+Info: Sending data 207
+SEND MSG# 249 SEQ# 207 LEN 1007 FLAGS 16   -Data #:  207
+Info: addPacket(): Window state (204, 208, 209)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 192 LEN   11 FLAGS  5   -RR #:    205
+Info: Received RR# 205. Removing from window...
+Info: removePacket(): Window state (205, 208, 210)
+Info: Sending data 208
+SEND MSG# 250 SEQ# 208 LEN 1007 FLAGS 16   -Data #:  208
+Info: addPacket(): Window state (205, 209, 210)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 193 LEN   11 FLAGS  5   -RR #:   65486 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+Info: Sending data 209
+SEND MSG# 251 SEQ# 209 LEN 1007 FLAGS 16   -Data #:  209
+Info: addPacket(): Window state (205, 210, 210)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 194 LEN   11 FLAGS  5   -RR #:    207
+Info: Received RR# 207. Removing from window...
+Info: removePacket(): Window state (207, 210, 212)
+Info: Sending data 210
+SEND MSG# 252 SEQ# 210 LEN 1007 FLAGS 16   -Data #:  210
+Info: addPacket(): Window state (207, 211, 212)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 195 LEN   11 FLAGS  5   -RR #:    208
+Info: Received RR# 208. Removing from window...
+Info: removePacket(): Window state (208, 211, 213)
+Info: Sending data 211
+SEND MSG# 253 SEQ# 211 LEN 1007 FLAGS 16   -Data #:  211
+Info: addPacket(): Window state (208, 212, 213)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 196 LEN   11 FLAGS  5   -RR #:    209
+Info: Received RR# 209. Removing from window...
+Info: removePacket(): Window state (209, 212, 214)
+Info: Sending data 212
+SEND MSG# 254 SEQ# 212 LEN 1007 FLAGS 16   -Data #:  212
+Info: addPacket(): Window state (209, 213, 214)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 197 LEN   11 FLAGS  5   -RR #:    210
+Info: Received RR# 210. Removing from window...
+Info: removePacket(): Window state (210, 213, 215)
+RECV          SEQ# 198 LEN   11 FLAGS  5   -RR #:    211
+Info: Received RR# 211. Removing from window...
+Info: removePacket(): Window state (211, 213, 216)
+Info: Sending data 213
+SEND MSG# 255 SEQ# 213 LEN 1007 FLAGS 16   -Data #:  213
+Info: addPacket(): Window state (211, 214, 216)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 199 LEN   11 FLAGS  5   -RR #:   16711892 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+Info: Sending data 214
+SEND MSG# 256 SEQ# 214 LEN 1007 FLAGS 16   -Data #:  214
+Info: addPacket(): Window state (211, 215, 216)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 200 LEN   11 FLAGS  5   -RR #:    213
+Info: Received RR# 213. Removing from window...
+Info: removePacket(): Window state (213, 215, 218)
+Info: Sending data 215
+SEND MSG# 257 SEQ# 215 LEN 1007 FLAGS 16   -Data #:  215 - DROPPED 
+Info: addPacket(): Window state (213, 216, 218)
+Info: Checking for RR's or SREJ's
+Info: Sending data 216
+SEND MSG# 258 SEQ# 216 LEN 1007 FLAGS 16   -Data #:  216 - DROPPED 
+Info: addPacket(): Window state (213, 217, 218)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 201 LEN   11 FLAGS  5   -RR #:    214
+Info: Received RR# 214. Removing from window...
+Info: removePacket(): Window state (214, 217, 219)
+Info: Sending data 217
+SEND MSG# 259 SEQ# 217 LEN 1007 FLAGS 16   -Data #:  217
+Info: addPacket(): Window state (214, 218, 219)
+Info: Checking for RR's or SREJ's
+Info: Sending data 218
+SEND MSG# 260 SEQ# 218 LEN 1007 FLAGS 16   -Data #:  218
+Info: addPacket(): Window state (214, 219, 219)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 202 LEN   11 FLAGS  5   -RR #:    215
+Info: Received RR# 215. Removing from window...
+Info: removePacket(): Window state (215, 219, 220)
+Info: Sending data 219
+SEND MSG# 261 SEQ# 219 LEN 1007 FLAGS 16   -Data #:  219
+Info: addPacket(): Window state (215, 220, 220)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 203 LEN   11 FLAGS  6   -SREJ #:  215
+SEND MSG# 262 SEQ# 215 LEN 1007 FLAGS 17   -Resent Data #:  215
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 204 LEN   11 FLAGS  6   -SREJ #:  216
+SEND MSG# 263 SEQ# 216 LEN 1007 FLAGS 17   -Resent Data #:  216
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 205 LEN   11 FLAGS  5   -RR #:    216
+Info: Received RR# 216. Removing from window...
+Info: removePacket(): Window state (216, 220, 221)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 220
+SEND MSG# 264 SEQ# 220 LEN 1007 FLAGS 16   -Data #:  220
+Info: addPacket(): Window state (216, 221, 221)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 206 LEN   11 FLAGS  6   -SREJ #:  217
+SEND MSG# 265 SEQ# 217 LEN 1007 FLAGS 17   -Resent Data #:  217
+RECV          SEQ# 207 LEN   11 FLAGS  5   -RR #:    217
+Info: Received RR# 217. Removing from window...
+Info: removePacket(): Window state (217, 221, 222)
+Info: Sending data 221
+SEND MSG# 266 SEQ# 221 LEN 1007 FLAGS 16   -Data #:  221
+Info: addPacket(): Window state (217, 222, 222)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 267 SEQ# 217 LEN 1007 FLAGS 18   -Timeout resent data #:  217
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 210 LEN   11 FLAGS  5   -RR #:    222
+Info: Received RR# 222. Removing from window...
+Info: removePacket(): Window state (222, 222, 227)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 222
+SEND MSG# 268 SEQ# 222 LEN 1007 FLAGS 16   -Data #:  222
+Info: addPacket(): Window state (222, 223, 227)
+Info: Checking for RR's or SREJ's
+Info: Sending data 223
+SEND MSG# 269 SEQ# 223 LEN 1007 FLAGS 16   -Data #:  223
+Info: addPacket(): Window state (222, 224, 227)
+Info: Checking for RR's or SREJ's
+Info: Sending data 224
+SEND MSG# 270 SEQ# 224 LEN 1007 FLAGS 16   -Data #:  224
+Info: addPacket(): Window state (222, 225, 227)
+Info: Checking for RR's or SREJ's
+Info: Sending data 225
+SEND MSG# 271 SEQ# 225 LEN 1007 FLAGS 16   -Data #:  225
+Info: addPacket(): Window state (222, 226, 227)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 211 LEN   11 FLAGS  5   -RR #:    223 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+Info: Sending data 226
+SEND MSG# 272 SEQ# 226 LEN 1007 FLAGS 16   -Data #:  226
+Info: addPacket(): Window state (222, 227, 227)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 212 LEN   11 FLAGS  5   -RR #:    224
+Info: Received RR# 224. Removing from window...
+Info: removePacket(): Window state (224, 227, 229)
+Info: Sending data 227
+SEND MSG# 273 SEQ# 227 LEN 1007 FLAGS 16   -Data #:  227
+Info: addPacket(): Window state (224, 228, 229)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 213 LEN   11 FLAGS  5   -RR #:    225
+Info: Received RR# 225. Removing from window...
+Info: removePacket(): Window state (225, 228, 230)
+Info: Sending data 228
+SEND MSG# 274 SEQ# 228 LEN 1007 FLAGS 16   -Data #:  228
+Info: addPacket(): Window state (225, 229, 230)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 214 LEN   11 FLAGS  5   -RR #:    226
+Info: Received RR# 226. Removing from window...
+Info: removePacket(): Window state (226, 229, 231)
+Info: Sending data 229
+SEND MSG# 275 SEQ# 229 LEN 1007 FLAGS 16   -Data #:  229
+Info: addPacket(): Window state (226, 230, 231)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 215 LEN   11 FLAGS  5   -RR #:    227
+Info: Received RR# 227. Removing from window...
+Info: removePacket(): Window state (227, 230, 232)
+Info: Sending data 230
+SEND MSG# 276 SEQ# 230 LEN 1007 FLAGS 16   -Data #:  230
+Info: addPacket(): Window state (227, 231, 232)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 216 LEN   11 FLAGS  5   -RR #:    228
+Info: Received RR# 228. Removing from window...
+Info: removePacket(): Window state (228, 231, 233)
+Info: Sending data 231
+SEND MSG# 277 SEQ# 231 LEN 1007 FLAGS 16   -Data #:  231
+Info: addPacket(): Window state (228, 232, 233)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 217 LEN   11 FLAGS  5   -RR #:    229
+Info: Received RR# 229. Removing from window...
+Info: removePacket(): Window state (229, 232, 234)
+Info: Sending data 232
+SEND MSG# 278 SEQ# 232 LEN 1007 FLAGS 16   -Data #:  232
+Info: addPacket(): Window state (229, 233, 234)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 218 LEN   11 FLAGS  5   -RR #:    230
+Info: Received RR# 230. Removing from window...
+Info: removePacket(): Window state (230, 233, 235)
+Info: Sending data 233
+SEND MSG# 279 SEQ# 233 LEN 1007 FLAGS 16   -Data #:  233 - DROPPED 
+Info: addPacket(): Window state (230, 234, 235)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 219 LEN   11 FLAGS  5   -RR #:    231
+Info: Received RR# 231. Removing from window...
+Info: removePacket(): Window state (231, 234, 236)
+Info: Sending data 234
+SEND MSG# 280 SEQ# 234 LEN 1007 FLAGS 16   -Data #:  234
+Info: addPacket(): Window state (231, 235, 236)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 220 LEN   11 FLAGS  5   -RR #:    232
+Info: Received RR# 232. Removing from window...
+Info: removePacket(): Window state (232, 235, 237)
+Info: Sending data 235
+SEND MSG# 281 SEQ# 235 LEN 1007 FLAGS 16   -Data #:  235
+Info: addPacket(): Window state (232, 236, 237)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 221 LEN   11 FLAGS  5   -RR #:    233
+Info: Received RR# 233. Removing from window...
+Info: removePacket(): Window state (233, 236, 238)
+Info: Sending data 236
+SEND MSG# 282 SEQ# 236 LEN 1007 FLAGS 16   -Data #:  236
+Info: addPacket(): Window state (233, 237, 238)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 222 LEN   11 FLAGS  6   -SREJ #:  233
+SEND MSG# 283 SEQ# 233 LEN 1007 FLAGS 17   -Resent Data #:  233
+Info: Sending data 237
+SEND MSG# 284 SEQ# 237 LEN 1007 FLAGS 16   -Data #:  237
+Info: addPacket(): Window state (233, 238, 238)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 223 LEN   11 FLAGS  6   -SREJ #:  234
+SEND MSG# 285 SEQ# 234 LEN 1007 FLAGS 17   -Resent Data #:  234
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 224 LEN   11 FLAGS  5   -RR #:    234
+Info: Received RR# 234. Removing from window...
+Info: removePacket(): Window state (234, 238, 239)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 238
+SEND MSG# 286 SEQ# 238 LEN 1007 FLAGS 16   -Data #:  238 - FLIPPED BITS 
+Info: addPacket(): Window state (234, 239, 239)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 225 LEN   11 FLAGS  5   -RR #:    238
+Info: Received RR# 238. Removing from window...
+Info: removePacket(): Window state (238, 239, 243)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 239
+SEND MSG# 287 SEQ# 239 LEN 1007 FLAGS 16   -Data #:  239
+Info: addPacket(): Window state (238, 240, 243)
+Info: Checking for RR's or SREJ's
+Info: Sending data 240
+SEND MSG# 288 SEQ# 240 LEN 1007 FLAGS 16   -Data #:  240
+Info: addPacket(): Window state (238, 241, 243)
+Info: Checking for RR's or SREJ's
+Info: Sending data 241
+SEND MSG# 289 SEQ# 241 LEN 1007 FLAGS 16   -Data #:  241
+Info: addPacket(): Window state (238, 242, 243)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 226 LEN   11 FLAGS  6   -SREJ #:  238
+SEND MSG# 290 SEQ# 238 LEN 1007 FLAGS 17   -Resent Data #:  238
+Info: Sending data 242
+SEND MSG# 291 SEQ# 242 LEN 1007 FLAGS 16   -Data #:  242 - FLIPPED BITS 
+Info: addPacket(): Window state (238, 243, 243)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 227 LEN   11 FLAGS  5   -RR #:    242
+Info: Received RR# 242. Removing from window...
+Info: removePacket(): Window state (242, 243, 247)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 243
+SEND MSG# 292 SEQ# 243 LEN 1007 FLAGS 16   -Data #:  243
+Info: addPacket(): Window state (242, 244, 247)
+Info: Checking for RR's or SREJ's
+Info: Sending data 244
+SEND MSG# 293 SEQ# 244 LEN 1007 FLAGS 16   -Data #:  244
+Info: addPacket(): Window state (242, 245, 247)
+Info: Checking for RR's or SREJ's
+Info: Sending data 245
+SEND MSG# 294 SEQ# 245 LEN 1007 FLAGS 16   -Data #:  245 - FLIPPED BITS 
+Info: addPacket(): Window state (242, 246, 247)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 228 LEN   11 FLAGS  6   -SREJ #:  242
+SEND MSG# 295 SEQ# 242 LEN 1007 FLAGS 17   -Resent Data #:  242
+Info: Sending data 246
+SEND MSG# 296 SEQ# 246 LEN 1007 FLAGS 16   -Data #:  246
+Info: addPacket(): Window state (242, 247, 247)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 229 LEN   11 FLAGS  5   -RR #:    245
+Info: Received RR# 245. Removing from window...
+Info: removePacket(): Window state (245, 247, 250)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 247
+SEND MSG# 297 SEQ# 247 LEN 1007 FLAGS 16   -Data #:  247
+Info: addPacket(): Window state (245, 248, 250)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 230 LEN   11 FLAGS  6   -SREJ #:  245
+SEND MSG# 298 SEQ# 245 LEN 1007 FLAGS 17   -Resent Data #:  245 - DROPPED 
+Info: Sending data 248
+SEND MSG# 299 SEQ# 248 LEN 1007 FLAGS 16   -Data #:  248
+Info: addPacket(): Window state (245, 249, 250)
+Info: Checking for RR's or SREJ's
+Info: Sending data 249
+SEND MSG# 300 SEQ# 249 LEN 1007 FLAGS 16   -Data #:  249
+Info: addPacket(): Window state (245, 250, 250)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 301 SEQ# 245 LEN 1007 FLAGS 18   -Timeout resent data #:  245
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 231 LEN   11 FLAGS  5   -RR #:    250
+Info: Received RR# 250. Removing from window...
+Info: removePacket(): Window state (250, 250, 255)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 250
+SEND MSG# 302 SEQ# 250 LEN 1007 FLAGS 16   -Data #:  250
+Info: addPacket(): Window state (250, 251, 255)
+Info: Checking for RR's or SREJ's
+Info: Sending data 251
+SEND MSG# 303 SEQ# 251 LEN 1007 FLAGS 16   -Data #:  251
+Info: addPacket(): Window state (250, 252, 255)
+Info: Checking for RR's or SREJ's
+Info: Sending data 252
+SEND MSG# 304 SEQ# 252 LEN 1007 FLAGS 16   -Data #:  252 - DROPPED 
+Info: addPacket(): Window state (250, 253, 255)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 232 LEN   11 FLAGS  5   -RR #:    251
+Info: Received RR# 251. Removing from window...
+Info: removePacket(): Window state (251, 253, 256)
+Info: Sending data 253
+SEND MSG# 305 SEQ# 253 LEN 1007 FLAGS 16   -Data #:  253
+Info: addPacket(): Window state (251, 254, 256)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 233 LEN   11 FLAGS  5   -RR #:    252
+Info: Received RR# 252. Removing from window...
+Info: removePacket(): Window state (252, 254, 257)
+Info: Sending data 254
+SEND MSG# 306 SEQ# 254 LEN 1007 FLAGS 16   -Data #:  254
+Info: addPacket(): Window state (252, 255, 257)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 234 LEN   11 FLAGS  6   -SREJ #:  252
+SEND MSG# 307 SEQ# 252 LEN 1007 FLAGS 17   -Resent Data #:  252
+Info: Sending data 255
+SEND MSG# 308 SEQ# 255 LEN 1007 FLAGS 16   -Data #:  255 - DROPPED 
+Info: addPacket(): Window state (252, 256, 257)
+Info: Checking for RR's or SREJ's
+Info: Sending data 256
+SEND MSG# 309 SEQ# 256 LEN 1007 FLAGS 16   -Data #:  256 - FLIPPED BITS 
+Info: addPacket(): Window state (252, 257, 257)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 235 LEN   11 FLAGS  5   -RR #:    255
+Info: Received RR# 255. Removing from window...
+Info: removePacket(): Window state (255, 257, 260)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 257
+SEND MSG# 310 SEQ# 257 LEN 1007 FLAGS 16   -Data #:  257
+Info: addPacket(): Window state (255, 258, 260)
+Info: Checking for RR's or SREJ's
+Info: Sending data 258
+SEND MSG# 311 SEQ# 258 LEN 1007 FLAGS 16   -Data #:  258
+Info: addPacket(): Window state (255, 259, 260)
+Info: Checking for RR's or SREJ's
+Info: Sending data 259
+SEND MSG# 312 SEQ# 259 LEN 1007 FLAGS 16   -Data #:  259
+Info: addPacket(): Window state (255, 260, 260)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 236 LEN   11 FLAGS  6   -SREJ #: 65535 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 313 SEQ# 255 LEN 1007 FLAGS 18   -Timeout resent data #:  255
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 237 LEN   11 FLAGS  6   -SREJ #:  256
+SEND MSG# 314 SEQ# 256 LEN 1007 FLAGS 17   -Resent Data #:  256
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 238 LEN   11 FLAGS  5   -RR #:    256
+Info: Received RR# 256. Removing from window...
+Info: removePacket(): Window state (256, 260, 261)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 260
+SEND MSG# 315 SEQ# 260 LEN 1007 FLAGS 16   -Data #:  260
+Info: addPacket(): Window state (256, 261, 261)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 239 LEN   11 FLAGS  5   -RR #:    260
+Info: Received RR# 260. Removing from window...
+Info: removePacket(): Window state (260, 261, 265)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 261
+SEND MSG# 316 SEQ# 261 LEN 1007 FLAGS 16   -Data #:  261
+Info: addPacket(): Window state (260, 262, 265)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 240 LEN   11 FLAGS  5   -RR #:    261
+Info: Received RR# 261. Removing from window...
+Info: removePacket(): Window state (261, 262, 266)
+Info: Sending data 262
+SEND MSG# 317 SEQ# 262 LEN 1007 FLAGS 16   -Data #:  262 - FLIPPED BITS 
+Info: addPacket(): Window state (261, 263, 266)
+Info: Checking for RR's or SREJ's
+Info: Sending data 263
+SEND MSG# 318 SEQ# 263 LEN 1007 FLAGS 16   -Data #:  263
+Info: addPacket(): Window state (261, 264, 266)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 241 LEN   11 FLAGS  5   -RR #:    262
+Info: Received RR# 262. Removing from window...
+Info: removePacket(): Window state (262, 264, 267)
+Info: Sending data 264
+SEND MSG# 319 SEQ# 264 LEN 1007 FLAGS 16   -Data #:  264
+Info: addPacket(): Window state (262, 265, 267)
+Info: Checking for RR's or SREJ's
+Info: Sending data 265
+SEND MSG# 320 SEQ# 265 LEN 1007 FLAGS 16   -Data #:  265
+Info: addPacket(): Window state (262, 266, 267)
+Info: Checking for RR's or SREJ's
+Info: Sending data 266
+SEND MSG# 321 SEQ# 266 LEN 1007 FLAGS 16   -Data #:  266
+Info: addPacket(): Window state (262, 267, 267)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 322 SEQ# 262 LEN 1007 FLAGS 18   -Timeout resent data #:  262
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 243 LEN   11 FLAGS  5   -RR #:    267
+Info: Received RR# 267. Removing from window...
+Info: removePacket(): Window state (267, 267, 272)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 267
+SEND MSG# 323 SEQ# 267 LEN 1007 FLAGS 16   -Data #:  267
+Info: addPacket(): Window state (267, 268, 272)
+Info: Checking for RR's or SREJ's
+Info: Sending data 268
+SEND MSG# 324 SEQ# 268 LEN 1007 FLAGS 16   -Data #:  268
+Info: addPacket(): Window state (267, 269, 272)
+Info: Checking for RR's or SREJ's
+Info: Sending data 269
+SEND MSG# 325 SEQ# 269 LEN 1007 FLAGS 16   -Data #:  269
+Info: addPacket(): Window state (267, 270, 272)
+Info: Checking for RR's or SREJ's
+Info: Sending data 270
+SEND MSG# 326 SEQ# 270 LEN 1007 FLAGS 16   -Data #:  270 - DROPPED 
+Info: addPacket(): Window state (267, 271, 272)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 244 LEN   11 FLAGS  5   -RR #:    268 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+Info: Sending data 271
+SEND MSG# 327 SEQ# 271 LEN 1007 FLAGS 16   -Data #:  271
+Info: addPacket(): Window state (267, 272, 272)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 245 LEN   11 FLAGS  5   -RR #:    269
+Info: Received RR# 269. Removing from window...
+Info: removePacket(): Window state (269, 272, 274)
+RECV          SEQ# 246 LEN   11 FLAGS  5   -RR #:    270
+Info: Received RR# 270. Removing from window...
+Info: removePacket(): Window state (270, 272, 275)
+Info: Sending data 272
+SEND MSG# 328 SEQ# 272 LEN 1007 FLAGS 16   -Data #:  272
+Info: addPacket(): Window state (270, 273, 275)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 247 LEN   11 FLAGS  6   -SREJ #:  270
+SEND MSG# 329 SEQ# 270 LEN 1007 FLAGS 17   -Resent Data #:  270 - DROPPED 
+Info: Sending data 273
+SEND MSG# 330 SEQ# 273 LEN 1007 FLAGS 16   -Data #:  273
+Info: addPacket(): Window state (270, 274, 275)
+Info: Checking for RR's or SREJ's
+Info: Sending data 274
+SEND MSG# 331 SEQ# 274 LEN 1007 FLAGS 16   -Data #:  274
+Info: addPacket(): Window state (270, 275, 275)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 332 SEQ# 270 LEN 1007 FLAGS 18   -Timeout resent data #:  270
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 248 LEN   11 FLAGS  5   -RR #:    275
+Info: Received RR# 275. Removing from window...
+Info: removePacket(): Window state (275, 275, 280)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 275
+SEND MSG# 333 SEQ# 275 LEN 1007 FLAGS 16   -Data #:  275
+Info: addPacket(): Window state (275, 276, 280)
+Info: Checking for RR's or SREJ's
+Info: Sending data 276
+SEND MSG# 334 SEQ# 276 LEN 1007 FLAGS 16   -Data #:  276
+Info: addPacket(): Window state (275, 277, 280)
+Info: Checking for RR's or SREJ's
+Info: Sending data 277
+SEND MSG# 335 SEQ# 277 LEN 1007 FLAGS 16   -Data #:  277
+Info: addPacket(): Window state (275, 278, 280)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 249 LEN   11 FLAGS  5   -RR #:    276
+Info: Received RR# 276. Removing from window...
+Info: removePacket(): Window state (276, 278, 281)
+Info: Sending data 278
+SEND MSG# 336 SEQ# 278 LEN 1007 FLAGS 16   -Data #:  278
+Info: addPacket(): Window state (276, 279, 281)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 250 LEN   11 FLAGS  5   -RR #:    277
+Info: Received RR# 277. Removing from window...
+Info: removePacket(): Window state (277, 279, 282)
+Info: Sending data 279
+SEND MSG# 337 SEQ# 279 LEN 1007 FLAGS 16   -Data #:  279 - FLIPPED BITS 
+Info: addPacket(): Window state (277, 280, 282)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 251 LEN   11 FLAGS 250   -User defined  - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+Info: Sending data 280
+SEND MSG# 338 SEQ# 280 LEN 1007 FLAGS 16   -Data #:  280
+Info: addPacket(): Window state (277, 281, 282)
+Info: Checking for RR's or SREJ's
+Info: Sending data 281
+SEND MSG# 339 SEQ# 281 LEN 1007 FLAGS 16   -Data #:  281 - FLIPPED BITS 
+Info: addPacket(): Window state (277, 282, 282)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 253 LEN   11 FLAGS  6   -SREJ #:  279
+SEND MSG# 340 SEQ# 279 LEN 1007 FLAGS 17   -Resent Data #:  279
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 254 LEN   11 FLAGS  5   -RR #:    280
+Info: Received RR# 280. Removing from window...
+Info: removePacket(): Window state (280, 282, 285)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 282
+SEND MSG# 341 SEQ# 282 LEN 1007 FLAGS 16   -Data #:  282
+Info: addPacket(): Window state (280, 283, 285)
+Info: Checking for RR's or SREJ's
+Info: Sending data 283
+SEND MSG# 342 SEQ# 283 LEN 1007 FLAGS 16   -Data #:  283
+Info: addPacket(): Window state (280, 284, 285)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 255 LEN   11 FLAGS  6   -SREJ #:  280
+SEND MSG# 343 SEQ# 280 LEN 1007 FLAGS 17   -Resent Data #:  280 - DROPPED 
+Info: Sending data 284
+SEND MSG# 344 SEQ# 284 LEN 1007 FLAGS 16   -Data #:  284
+Info: addPacket(): Window state (280, 285, 285)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 345 SEQ# 280 LEN 1007 FLAGS 18   -Timeout resent data #:  280
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 256 LEN   11 FLAGS  6   -SREJ #:  281
+SEND MSG# 346 SEQ# 281 LEN 1007 FLAGS 17   -Resent Data #:  281 - FLIPPED BITS 
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 257 LEN   11 FLAGS  5   -RR #:    281
+Info: Received RR# 281. Removing from window...
+Info: removePacket(): Window state (281, 285, 286)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 285
+SEND MSG# 347 SEQ# 285 LEN 1007 FLAGS 16   -Data #:  285 - FLIPPED BITS 
+Info: addPacket(): Window state (281, 286, 286)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 348 SEQ# 281 LEN 1007 FLAGS 18   -Timeout resent data #:  281
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 258 LEN   11 FLAGS  5   -RR #:    285
+Info: Received RR# 285. Removing from window...
+Info: removePacket(): Window state (285, 286, 290)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 286
+SEND MSG# 349 SEQ# 286 LEN 1007 FLAGS 16   -Data #:  286
+Info: addPacket(): Window state (285, 287, 290)
+Info: Checking for RR's or SREJ's
+Info: Sending data 287
+SEND MSG# 350 SEQ# 287 LEN 1007 FLAGS 16   -Data #:  287
+Info: addPacket(): Window state (285, 288, 290)
+Info: Checking for RR's or SREJ's
+Info: Sending data 288
+SEND MSG# 351 SEQ# 288 LEN 1007 FLAGS 16   -Data #:  288
+Info: addPacket(): Window state (285, 289, 290)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 259 LEN   11 FLAGS  6   -SREJ #:  285
+SEND MSG# 352 SEQ# 285 LEN 1007 FLAGS 17   -Resent Data #:  285
+Info: Sending data 289
+SEND MSG# 353 SEQ# 289 LEN 1007 FLAGS 16   -Data #:  289 - DROPPED 
+Info: addPacket(): Window state (285, 290, 290)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 260 LEN   11 FLAGS  5   -RR #:    289
+Info: Received RR# 289. Removing from window...
+Info: removePacket(): Window state (289, 290, 294)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 290
+SEND MSG# 354 SEQ# 290 LEN 1007 FLAGS 16   -Data #:  290
+Info: addPacket(): Window state (289, 291, 294)
+Info: Checking for RR's or SREJ's
+Info: Sending data 291
+SEND MSG# 355 SEQ# 291 LEN 1007 FLAGS 16   -Data #:  291
+Info: addPacket(): Window state (289, 292, 294)
+Info: Checking for RR's or SREJ's
+Info: Sending data 292
+SEND MSG# 356 SEQ# 292 LEN 1007 FLAGS 16   -Data #:  292
+Info: addPacket(): Window state (289, 293, 294)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 261 LEN   11 FLAGS  6   -SREJ #:  289
+SEND MSG# 357 SEQ# 289 LEN 1007 FLAGS 17   -Resent Data #:  289
+Info: Sending data 293
+SEND MSG# 358 SEQ# 293 LEN 1007 FLAGS 16   -Data #:  293
+Info: addPacket(): Window state (289, 294, 294)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 262 LEN   11 FLAGS  5   -RR #:    293
+Info: Received RR# 293. Removing from window...
+Info: removePacket(): Window state (293, 294, 298)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 294
+SEND MSG# 359 SEQ# 294 LEN 1007 FLAGS 16   -Data #:  294
+Info: addPacket(): Window state (293, 295, 298)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 263 LEN   11 FLAGS  5   -RR #:    294
+Info: Received RR# 294. Removing from window...
+Info: removePacket(): Window state (294, 295, 299)
+Info: Sending data 295
+SEND MSG# 360 SEQ# 295 LEN 1007 FLAGS 16   -Data #:  295
+Info: addPacket(): Window state (294, 296, 299)
+Info: Checking for RR's or SREJ's
+Info: Sending data 296
+SEND MSG# 361 SEQ# 296 LEN 1007 FLAGS 16   -Data #:  296
+Info: addPacket(): Window state (294, 297, 299)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 264 LEN   11 FLAGS  5   -RR #:    295 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+Info: Sending data 297
+SEND MSG# 362 SEQ# 297 LEN 1007 FLAGS 16   -Data #:  297
+Info: addPacket(): Window state (294, 298, 299)
+Info: Checking for RR's or SREJ's
+Info: Sending data 298
+SEND MSG# 363 SEQ# 298 LEN 1007 FLAGS 16   -Data #:  298
+Info: addPacket(): Window state (294, 299, 299)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 265 LEN   11 FLAGS  5   -RR #:   4278190376 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 266 LEN   11 FLAGS  5   -RR #:    297
+Info: Received RR# 297. Removing from window...
+Info: removePacket(): Window state (297, 299, 302)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 299
+SEND MSG# 364 SEQ# 299 LEN 1007 FLAGS 16   -Data #:  299 - FLIPPED BITS 
+Info: addPacket(): Window state (297, 300, 302)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 267 LEN   11 FLAGS  5   -RR #:    298
+Info: Received RR# 298. Removing from window...
+Info: removePacket(): Window state (298, 300, 303)
+Info: Sending data 300
+SEND MSG# 365 SEQ# 300 LEN 1007 FLAGS 16   -Data #:  300
+Info: addPacket(): Window state (298, 301, 303)
+Info: Checking for RR's or SREJ's
+Info: Sending data 301
+SEND MSG# 366 SEQ# 301 LEN 1007 FLAGS 16   -Data #:  301
+Info: addPacket(): Window state (298, 302, 303)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 268 LEN   11 FLAGS  5   -RR #:    299
+Info: Received RR# 299. Removing from window...
+Info: removePacket(): Window state (299, 302, 304)
+Info: Sending data 302
+SEND MSG# 367 SEQ# 302 LEN 1007 FLAGS 16   -Data #:  302
+Info: addPacket(): Window state (299, 303, 304)
+Info: Checking for RR's or SREJ's
+Info: Sending data 303
+SEND MSG# 368 SEQ# 303 LEN 1007 FLAGS 16   -Data #:  303
+Info: addPacket(): Window state (299, 304, 304)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 269 LEN   11 FLAGS  6   -SREJ #:  299
+SEND MSG# 369 SEQ# 299 LEN 1007 FLAGS 17   -Resent Data #:  299
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 270 LEN   11 FLAGS  6   -SREJ #:  300
+SEND MSG# 370 SEQ# 300 LEN 1007 FLAGS 17   -Resent Data #:  300
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 271 LEN   11 FLAGS  5   -RR #:    300
+Info: Received RR# 300. Removing from window...
+Info: removePacket(): Window state (300, 304, 305)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 304
+SEND MSG# 371 SEQ# 304 LEN 1007 FLAGS 16   -Data #:  304
+Info: addPacket(): Window state (300, 305, 305)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 272 LEN   11 FLAGS  5   -RR #:    304
+Info: Received RR# 304. Removing from window...
+Info: removePacket(): Window state (304, 305, 309)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 305
+SEND MSG# 372 SEQ# 305 LEN 1007 FLAGS 16   -Data #:  305
+Info: addPacket(): Window state (304, 306, 309)
+Info: Checking for RR's or SREJ's
+Info: Sending data 306
+SEND MSG# 373 SEQ# 306 LEN 1007 FLAGS 16   -Data #:  306
+Info: addPacket(): Window state (304, 307, 309)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 273 LEN   11 FLAGS  5   -RR #:    305
+Info: Received RR# 305. Removing from window...
+Info: removePacket(): Window state (305, 307, 310)
+Info: Sending data 307
+SEND MSG# 374 SEQ# 307 LEN 1007 FLAGS 16   -Data #:  307
+Info: addPacket(): Window state (305, 308, 310)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 274 LEN   11 FLAGS  5   -RR #:    306
+Info: Received RR# 306. Removing from window...
+Info: removePacket(): Window state (306, 308, 311)
+Info: Sending data 308
+SEND MSG# 375 SEQ# 308 LEN 1007 FLAGS 16   -Data #:  308 - DROPPED 
+Info: addPacket(): Window state (306, 309, 311)
+Info: Checking for RR's or SREJ's
+Info: Sending data 309
+SEND MSG# 376 SEQ# 309 LEN 1007 FLAGS 16   -Data #:  309
+Info: addPacket(): Window state (306, 310, 311)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 275 LEN   11 FLAGS  5   -RR #:    307
+Info: Received RR# 307. Removing from window...
+Info: removePacket(): Window state (307, 310, 312)
+Info: Sending data 310
+SEND MSG# 377 SEQ# 310 LEN 1007 FLAGS 16   -Data #:  310
+Info: addPacket(): Window state (307, 311, 312)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 276 LEN   11 FLAGS  5   -RR #:    308
+Info: Received RR# 308. Removing from window...
+Info: removePacket(): Window state (308, 311, 313)
+Info: Sending data 311
+SEND MSG# 378 SEQ# 311 LEN 1007 FLAGS 16   -Data #:  311
+Info: addPacket(): Window state (308, 312, 313)
+Info: Checking for RR's or SREJ's
+Info: Sending data 312
+SEND MSG# 379 SEQ# 312 LEN 1007 FLAGS 16   -Data #:  312
+Info: addPacket(): Window state (308, 313, 313)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 277 LEN   11 FLAGS  6   -SREJ #:  308
+SEND MSG# 380 SEQ# 308 LEN 1007 FLAGS 17   -Resent Data #:  308
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 278 LEN   11 FLAGS  6   -SREJ #:  309
+SEND MSG# 381 SEQ# 309 LEN 1007 FLAGS 17   -Resent Data #:  309
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 279 LEN   11 FLAGS  5   -RR #:    309
+Info: Received RR# 309. Removing from window...
+Info: removePacket(): Window state (309, 313, 314)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 313
+SEND MSG# 382 SEQ# 313 LEN 1007 FLAGS 16   -Data #:  313
+Info: addPacket(): Window state (309, 314, 314)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 280 LEN   11 FLAGS  5   -RR #:    313
+Info: Received RR# 313. Removing from window...
+Info: removePacket(): Window state (313, 314, 318)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 314
+SEND MSG# 383 SEQ# 314 LEN 1007 FLAGS 16   -Data #:  314
+Info: addPacket(): Window state (313, 315, 318)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 281 LEN   11 FLAGS  5   -RR #:    314
+Info: Received RR# 314. Removing from window...
+Info: removePacket(): Window state (314, 315, 319)
+Info: Sending data 315
+SEND MSG# 384 SEQ# 315 LEN 1007 FLAGS 16   -Data #:  315
+Info: addPacket(): Window state (314, 316, 319)
+Info: Checking for RR's or SREJ's
+Info: Sending data 316
+SEND MSG# 385 SEQ# 316 LEN 1007 FLAGS 16   -Data #:  316 - FLIPPED BITS 
+Info: addPacket(): Window state (314, 317, 319)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 282 LEN   11 FLAGS  5   -RR #:    315
+Info: Received RR# 315. Removing from window...
+Info: removePacket(): Window state (315, 317, 320)
+Info: Sending data 317
+SEND MSG# 386 SEQ# 317 LEN 1007 FLAGS 16   -Data #:  317
+Info: addPacket(): Window state (315, 318, 320)
+Info: Checking for RR's or SREJ's
+Info: Sending data 318
+SEND MSG# 387 SEQ# 318 LEN 1007 FLAGS 16   -Data #:  318
+Info: addPacket(): Window state (315, 319, 320)
+Info: Checking for RR's or SREJ's
+Info: Sending data 319
+SEND MSG# 388 SEQ# 319 LEN 1007 FLAGS 16   -Data #:  319
+Info: addPacket(): Window state (315, 320, 320)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 283 LEN   11 FLAGS  5   -RR #:    316
+Info: Received RR# 316. Removing from window...
+Info: removePacket(): Window state (316, 320, 321)
+Info: Sending data 320
+SEND MSG# 389 SEQ# 320 LEN 1007 FLAGS 16   -Data #:  320
+Info: addPacket(): Window state (316, 321, 321)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 284 LEN   11 FLAGS  6   -SREJ #:  316
+SEND MSG# 390 SEQ# 316 LEN 1007 FLAGS 17   -Resent Data #:  316
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 285 LEN   11 FLAGS  5   -RR #:    321
+Info: Received RR# 321. Removing from window...
+Info: removePacket(): Window state (321, 321, 326)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 321
+SEND MSG# 391 SEQ# 321 LEN 1007 FLAGS 16   -Data #:  321
+Info: addPacket(): Window state (321, 322, 326)
+Info: Checking for RR's or SREJ's
+Info: Sending data 322
+SEND MSG# 392 SEQ# 322 LEN 1007 FLAGS 16   -Data #:  322
+Info: addPacket(): Window state (321, 323, 326)
+Info: Checking for RR's or SREJ's
+Info: Sending data 323
+SEND MSG# 393 SEQ# 323 LEN 1007 FLAGS 16   -Data #:  323
+Info: addPacket(): Window state (321, 324, 326)
+Info: Checking for RR's or SREJ's
+Info: Sending data 324
+SEND MSG# 394 SEQ# 324 LEN 1007 FLAGS 16   -Data #:  324 - DROPPED 
+Info: addPacket(): Window state (321, 325, 326)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 286 LEN   11 FLAGS  5   -RR #:    322
+Info: Received RR# 322. Removing from window...
+Info: removePacket(): Window state (322, 325, 327)
+Info: Sending data 325
+SEND MSG# 395 SEQ# 325 LEN 1007 FLAGS 16   -Data #:  325 - DROPPED 
+Info: addPacket(): Window state (322, 326, 327)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 287 LEN   11 FLAGS  5   -RR #:    323
+Info: Received RR# 323. Removing from window...
+Info: removePacket(): Window state (323, 326, 328)
+Info: Sending data 326
+SEND MSG# 396 SEQ# 326 LEN 1007 FLAGS 16   -Data #:  326 - DROPPED 
+Info: addPacket(): Window state (323, 327, 328)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 288 LEN   11 FLAGS  5   -RR #:    324
+Info: Received RR# 324. Removing from window...
+Info: removePacket(): Window state (324, 327, 329)
+Info: Sending data 327
+SEND MSG# 397 SEQ# 327 LEN 1007 FLAGS 16   -Data #:  327
+Info: addPacket(): Window state (324, 328, 329)
+Info: Checking for RR's or SREJ's
+Info: Sending data 328
+SEND MSG# 398 SEQ# 328 LEN 1007 FLAGS 16   -Data #:  328
+Info: addPacket(): Window state (324, 329, 329)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 289 LEN   11 FLAGS  6   -SREJ #:  324
+SEND MSG# 399 SEQ# 324 LEN 1007 FLAGS 17   -Resent Data #:  324
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 290 LEN   11 FLAGS  6   -SREJ #:  325
+SEND MSG# 400 SEQ# 325 LEN 1007 FLAGS 17   -Resent Data #:  325
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 291 LEN   11 FLAGS  5   -RR #:    325
+Info: Received RR# 325. Removing from window...
+Info: removePacket(): Window state (325, 329, 330)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 329
+SEND MSG# 401 SEQ# 329 LEN 1007 FLAGS 16   -Data #:  329
+Info: addPacket(): Window state (325, 330, 330)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 292 LEN   11 FLAGS  6   -SREJ #:  326
+SEND MSG# 402 SEQ# 326 LEN 1007 FLAGS 17   -Resent Data #:  326
+RECV          SEQ# 293 LEN   11 FLAGS  5   -RR #:    326
+Info: Received RR# 326. Removing from window...
+Info: removePacket(): Window state (326, 330, 331)
+Info: Sending data 330
+SEND MSG# 403 SEQ# 330 LEN 1007 FLAGS 16   -Data #:  330
+Info: addPacket(): Window state (326, 331, 331)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 294 LEN   11 FLAGS  6   -SREJ #:  327
+SEND MSG# 404 SEQ# 327 LEN 1007 FLAGS 17   -Resent Data #:  327
+RECV          SEQ# 295 LEN   11 FLAGS  5   -RR #:    327
+Info: Received RR# 327. Removing from window...
+Info: removePacket(): Window state (327, 331, 332)
+Info: Sending data 331
+SEND MSG# 405 SEQ# 331 LEN 1007 FLAGS 16   -Data #:  331
+Info: addPacket(): Window state (327, 332, 332)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 296 LEN   11 FLAGS  5   -RR #:    331
+Info: Received RR# 331. Removing from window...
+Info: removePacket(): Window state (331, 332, 336)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 332
+SEND MSG# 406 SEQ# 332 LEN 1007 FLAGS 16   -Data #:  332
+Info: addPacket(): Window state (331, 333, 336)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 297 LEN   11 FLAGS  5   -RR #:    332
+Info: Received RR# 332. Removing from window...
+Info: removePacket(): Window state (332, 333, 337)
+Info: Sending data 333
+SEND MSG# 407 SEQ# 333 LEN 1007 FLAGS 16   -Data #:  333 - FLIPPED BITS 
+Info: addPacket(): Window state (332, 334, 337)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 298 LEN   11 FLAGS  5   -RR #:    333
+Info: Received RR# 333. Removing from window...
+Info: removePacket(): Window state (333, 334, 338)
+Info: Sending data 334
+SEND MSG# 408 SEQ# 334 LEN 1007 FLAGS 16   -Data #:  334
+Info: addPacket(): Window state (333, 335, 338)
+Info: Checking for RR's or SREJ's
+Info: Sending data 335
+SEND MSG# 409 SEQ# 335 LEN 1007 FLAGS 16   -Data #:  335
+Info: addPacket(): Window state (333, 336, 338)
+Info: Checking for RR's or SREJ's
+Info: Sending data 336
+SEND MSG# 410 SEQ# 336 LEN 1007 FLAGS 16   -Data #:  336 - FLIPPED BITS 
+Info: addPacket(): Window state (333, 337, 338)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 299 LEN   11 FLAGS  6   -SREJ #:  333
+SEND MSG# 411 SEQ# 333 LEN 1007 FLAGS 17   -Resent Data #:  333
+Info: Sending data 337
+SEND MSG# 412 SEQ# 337 LEN 1007 FLAGS 16   -Data #:  337
+Info: addPacket(): Window state (333, 338, 338)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 300 LEN   11 FLAGS  5   -RR #:    336
+Info: Received RR# 336. Removing from window...
+Info: removePacket(): Window state (336, 338, 341)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 338
+SEND MSG# 413 SEQ# 338 LEN 1007 FLAGS 16   -Data #:  338 - FLIPPED BITS 
+Info: addPacket(): Window state (336, 339, 341)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 301 LEN   11 FLAGS  6   -SREJ #:  336
+SEND MSG# 414 SEQ# 336 LEN 1007 FLAGS 17   -Resent Data #:  336
+Info: Sending data 339
+SEND MSG# 415 SEQ# 339 LEN 1007 FLAGS 16   -Data #:  339
+Info: addPacket(): Window state (336, 340, 341)
+Info: Checking for RR's or SREJ's
+Info: Sending data 340
+SEND MSG# 416 SEQ# 340 LEN 1007 FLAGS 16   -Data #:  340
+Info: addPacket(): Window state (336, 341, 341)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 302 LEN   11 FLAGS  5   -RR #:    338
+Info: Received RR# 338. Removing from window...
+Info: removePacket(): Window state (338, 341, 343)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 341
+SEND MSG# 417 SEQ# 341 LEN 1007 FLAGS 16   -Data #:  341
+Info: addPacket(): Window state (338, 342, 343)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 303 LEN   11 FLAGS  6   -SREJ #:  338
+SEND MSG# 418 SEQ# 338 LEN 1007 FLAGS 17   -Resent Data #:  338 - DROPPED 
+Info: Sending data 342
+SEND MSG# 419 SEQ# 342 LEN 1007 FLAGS 16   -Data #:  342
+Info: addPacket(): Window state (338, 343, 343)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 420 SEQ# 338 LEN 1007 FLAGS 18   -Timeout resent data #:  338
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 304 LEN   11 FLAGS  5   -RR #:    343
+Info: Received RR# 343. Removing from window...
+Info: removePacket(): Window state (343, 343, 348)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 343
+SEND MSG# 421 SEQ# 343 LEN 1007 FLAGS 16   -Data #:  343
+Info: addPacket(): Window state (343, 344, 348)
+Info: Checking for RR's or SREJ's
+Info: Sending data 344
+SEND MSG# 422 SEQ# 344 LEN 1007 FLAGS 16   -Data #:  344 - DROPPED 
+Info: addPacket(): Window state (343, 345, 348)
+Info: Checking for RR's or SREJ's
+Info: Sending data 345
+SEND MSG# 423 SEQ# 345 LEN 1007 FLAGS 16   -Data #:  345
+Info: addPacket(): Window state (343, 346, 348)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 305 LEN   11 FLAGS  5   -RR #:    344
+Info: Received RR# 344. Removing from window...
+Info: removePacket(): Window state (344, 346, 349)
+Info: Sending data 346
+SEND MSG# 424 SEQ# 346 LEN 1007 FLAGS 16   -Data #:  346
+Info: addPacket(): Window state (344, 347, 349)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 306 LEN   11 FLAGS  6   -SREJ #:  344
+SEND MSG# 425 SEQ# 344 LEN 1007 FLAGS 17   -Resent Data #:  344
+Info: Sending data 347
+SEND MSG# 426 SEQ# 347 LEN 1007 FLAGS 16   -Data #:  347
+Info: addPacket(): Window state (344, 348, 349)
+Info: Checking for RR's or SREJ's
+Info: Sending data 348
+SEND MSG# 427 SEQ# 348 LEN 1007 FLAGS 16   -Data #:  348 - FLIPPED BITS 
+Info: addPacket(): Window state (344, 349, 349)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 307 LEN   11 FLAGS  5   -RR #:    347
+Info: Received RR# 347. Removing from window...
+Info: removePacket(): Window state (347, 349, 352)
+Info: Sending data 349
+SEND MSG# 428 SEQ# 349 LEN 1007 FLAGS 16   -Data #:  349
+Info: addPacket(): Window state (347, 350, 352)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 308 LEN   11 FLAGS  5   -RR #:    348
+Info: Received RR# 348. Removing from window...
+Info: removePacket(): Window state (348, 350, 353)
+Info: Sending data 350
+SEND MSG# 429 SEQ# 350 LEN 1007 FLAGS 16   -Data #:  350
+Info: addPacket(): Window state (348, 351, 353)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 309 LEN   11 FLAGS  6   -SREJ #:  348
+SEND MSG# 430 SEQ# 348 LEN 1007 FLAGS 17   -Resent Data #:  348 - FLIPPED BITS 
+Info: Sending data 351
+SEND MSG# 431 SEQ# 351 LEN 1007 FLAGS 16   -Data #:  351
+Info: addPacket(): Window state (348, 352, 353)
+Info: Checking for RR's or SREJ's
+Info: Sending data 352
+SEND MSG# 432 SEQ# 352 LEN 1007 FLAGS 16   -Data #:  352
+Info: addPacket(): Window state (348, 353, 353)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 433 SEQ# 348 LEN 1007 FLAGS 18   -Timeout resent data #:  348
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 310 LEN   11 FLAGS  5   -RR #:    353
+Info: Received RR# 353. Removing from window...
+Info: removePacket(): Window state (353, 353, 358)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 353
+SEND MSG# 434 SEQ# 353 LEN 1007 FLAGS 16   -Data #:  353
+Info: addPacket(): Window state (353, 354, 358)
+Info: Checking for RR's or SREJ's
+Info: Sending data 354
+SEND MSG# 435 SEQ# 354 LEN 1007 FLAGS 16   -Data #:  354
+Info: addPacket(): Window state (353, 355, 358)
+Info: Checking for RR's or SREJ's
+Info: Sending data 355
+SEND MSG# 436 SEQ# 355 LEN 1007 FLAGS 16   -Data #:  355
+Info: addPacket(): Window state (353, 356, 358)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 311 LEN   11 FLAGS  5   -RR #:    354
+Info: Received RR# 354. Removing from window...
+Info: removePacket(): Window state (354, 356, 359)
+Info: Sending data 356
+SEND MSG# 437 SEQ# 356 LEN 1007 FLAGS 16   -Data #:  356
+Info: addPacket(): Window state (354, 357, 359)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 312 LEN   11 FLAGS  5   -RR #:    355
+Info: Received RR# 355. Removing from window...
+Info: removePacket(): Window state (355, 357, 360)
+Info: Sending data 357
+SEND MSG# 438 SEQ# 357 LEN 1007 FLAGS 16   -Data #:  357
+Info: addPacket(): Window state (355, 358, 360)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 313 LEN   11 FLAGS  5   -RR #:    356
+Info: Received RR# 356. Removing from window...
+Info: removePacket(): Window state (356, 358, 361)
+Info: Sending data 358
+SEND MSG# 439 SEQ# 358 LEN 1007 FLAGS 16   -Data #:  358
+Info: addPacket(): Window state (356, 359, 361)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 314 LEN   11 FLAGS  5   -RR #:    357
+Info: Received RR# 357. Removing from window...
+Info: removePacket(): Window state (357, 359, 362)
+Info: Sending data 359
+SEND MSG# 440 SEQ# 359 LEN 1007 FLAGS 16   -Data #:  359
+Info: addPacket(): Window state (357, 360, 362)
+Info: Checking for RR's or SREJ's
+Info: Sending data 360
+SEND MSG# 441 SEQ# 360 LEN 1007 FLAGS 16   -Data #:  360
+Info: addPacket(): Window state (357, 361, 362)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 315 LEN   11 FLAGS  5   -RR #:    358
+Info: Received RR# 358. Removing from window...
+Info: removePacket(): Window state (358, 361, 363)
+Info: Sending data 361
+SEND MSG# 442 SEQ# 361 LEN 1007 FLAGS 16   -Data #:  361
+Info: addPacket(): Window state (358, 362, 363)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 316 LEN   11 FLAGS  5   -RR #:    359
+Info: Received RR# 359. Removing from window...
+Info: removePacket(): Window state (359, 362, 364)
+Info: Sending data 362
+SEND MSG# 443 SEQ# 362 LEN 1007 FLAGS 16   -Data #:  362 - FLIPPED BITS 
+Info: addPacket(): Window state (359, 363, 364)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 317 LEN   11 FLAGS  5   -RR #:    360
+Info: Received RR# 360. Removing from window...
+Info: removePacket(): Window state (360, 363, 365)
+Info: Sending data 363
+SEND MSG# 444 SEQ# 363 LEN 1007 FLAGS 16   -Data #:  363
+Info: addPacket(): Window state (360, 364, 365)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 318 LEN   11 FLAGS  5   -RR #:    361
+Info: Received RR# 361. Removing from window...
+Info: removePacket(): Window state (361, 364, 366)
+Info: Sending data 364
+SEND MSG# 445 SEQ# 364 LEN 1007 FLAGS 16   -Data #:  364
+Info: addPacket(): Window state (361, 365, 366)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 319 LEN   11 FLAGS  5   -RR #:    362
+Info: Received RR# 362. Removing from window...
+Info: removePacket(): Window state (362, 365, 367)
+Info: Sending data 365
+SEND MSG# 446 SEQ# 365 LEN 1007 FLAGS 16   -Data #:  365 - DROPPED 
+Info: addPacket(): Window state (362, 366, 367)
+Info: Checking for RR's or SREJ's
+Info: Sending data 366
+SEND MSG# 447 SEQ# 366 LEN 1007 FLAGS 16   -Data #:  366
+Info: addPacket(): Window state (362, 367, 367)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 320 LEN   11 FLAGS  6   -SREJ #:  362
+SEND MSG# 448 SEQ# 362 LEN 1007 FLAGS 17   -Resent Data #:  362 - DROPPED 
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 449 SEQ# 362 LEN 1007 FLAGS 18   -Timeout resent data #:  362
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 321 LEN   11 FLAGS  6   -SREJ #:  363
+SEND MSG# 450 SEQ# 363 LEN 1007 FLAGS 17   -Resent Data #:  363
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 322 LEN   11 FLAGS  5   -RR #:    363
+Info: Received RR# 363. Removing from window...
+Info: removePacket(): Window state (363, 367, 368)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 367
+SEND MSG# 451 SEQ# 367 LEN 1007 FLAGS 16   -Data #:  367 - DROPPED 
+Info: addPacket(): Window state (363, 368, 368)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 324 LEN   11 FLAGS  5   -RR #:    365
+Info: Received RR# 365. Removing from window...
+Info: removePacket(): Window state (365, 368, 370)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 368
+SEND MSG# 452 SEQ# 368 LEN 1007 FLAGS 16   -Data #:  368
+Info: addPacket(): Window state (365, 369, 370)
+Info: Checking for RR's or SREJ's
+Info: Sending data 369
+SEND MSG# 453 SEQ# 369 LEN 1007 FLAGS 16   -Data #:  369 - FLIPPED BITS 
+Info: addPacket(): Window state (365, 370, 370)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 454 SEQ# 365 LEN 1007 FLAGS 18   -Timeout resent data #:  365
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 325 LEN   11 FLAGS  6   -SREJ #:  367
+SEND MSG# 455 SEQ# 367 LEN 1007 FLAGS 17   -Resent Data #:  367
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 326 LEN   11 FLAGS  5   -RR #:    367
+Info: Received RR# 367. Removing from window...
+Info: removePacket(): Window state (367, 370, 372)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 370
+SEND MSG# 456 SEQ# 370 LEN 1007 FLAGS 16   -Data #:  370
+Info: addPacket(): Window state (367, 371, 372)
+Info: Checking for RR's or SREJ's
+Info: Sending data 371
+SEND MSG# 457 SEQ# 371 LEN 1007 FLAGS 16   -Data #:  371
+Info: addPacket(): Window state (367, 372, 372)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 327 LEN   11 FLAGS  5   -RR #:    369
+Info: Received RR# 369. Removing from window...
+Info: removePacket(): Window state (369, 372, 374)
+Info: Sending data 372
+SEND MSG# 458 SEQ# 372 LEN 1007 FLAGS 16   -Data #:  372
+Info: addPacket(): Window state (369, 373, 374)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 328 LEN   11 FLAGS  6   -SREJ #:  369
+SEND MSG# 459 SEQ# 369 LEN 1007 FLAGS 17   -Resent Data #:  369
+Info: Sending data 373
+SEND MSG# 460 SEQ# 373 LEN 1007 FLAGS 16   -Data #:  373
+Info: addPacket(): Window state (369, 374, 374)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 329 LEN   11 FLAGS  5   -RR #:    373
+Info: Received RR# 373. Removing from window...
+Info: removePacket(): Window state (373, 374, 378)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 374
+SEND MSG# 461 SEQ# 374 LEN 1007 FLAGS 16   -Data #:  374
+Info: addPacket(): Window state (373, 375, 378)
+Info: Checking for RR's or SREJ's
+Info: Sending data 375
+SEND MSG# 462 SEQ# 375 LEN 1007 FLAGS 16   -Data #:  375
+Info: addPacket(): Window state (373, 376, 378)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 330 LEN   11 FLAGS  5   -RR #:    374
+Info: Received RR# 374. Removing from window...
+Info: removePacket(): Window state (374, 376, 379)
+RECV          SEQ# 331 LEN   11 FLAGS  5   -RR #:    375
+Info: Received RR# 375. Removing from window...
+Info: removePacket(): Window state (375, 376, 380)
+Info: Sending data 376
+SEND MSG# 463 SEQ# 376 LEN 1007 FLAGS 16   -Data #:  376
+Info: addPacket(): Window state (375, 377, 380)
+Info: Checking for RR's or SREJ's
+Info: Sending data 377
+SEND MSG# 464 SEQ# 377 LEN 1007 FLAGS 16   -Data #:  377
+Info: addPacket(): Window state (375, 378, 380)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 332 LEN   11 FLAGS  5   -RR #:    376
+Info: Received RR# 376. Removing from window...
+Info: removePacket(): Window state (376, 378, 381)
+Info: Sending data 378
+SEND MSG# 465 SEQ# 378 LEN 1007 FLAGS 16   -Data #:  378 - FLIPPED BITS 
+Info: addPacket(): Window state (376, 379, 381)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 333 LEN   11 FLAGS  5   -RR #:    377
+Info: Received RR# 377. Removing from window...
+Info: removePacket(): Window state (377, 379, 382)
+Info: Sending data 379
+SEND MSG# 466 SEQ# 379 LEN 1007 FLAGS 16   -Data #:  379
+Info: addPacket(): Window state (377, 380, 382)
+Info: Checking for RR's or SREJ's
+Info: Sending data 380
+SEND MSG# 467 SEQ# 380 LEN 1007 FLAGS 16   -Data #:  380
+Info: addPacket(): Window state (377, 381, 382)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 334 LEN   11 FLAGS  5   -RR #:    378
+Info: Received RR# 378. Removing from window...
+Info: removePacket(): Window state (378, 381, 383)
+Info: Sending data 381
+SEND MSG# 468 SEQ# 381 LEN 1007 FLAGS 16   -Data #:  381
+Info: addPacket(): Window state (378, 382, 383)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 335 LEN   11 FLAGS  6   -SREJ #:  378
+SEND MSG# 469 SEQ# 378 LEN 1007 FLAGS 17   -Resent Data #:  378
+Info: Sending data 382
+SEND MSG# 470 SEQ# 382 LEN 1007 FLAGS 16   -Data #:  382
+Info: addPacket(): Window state (378, 383, 383)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 336 LEN   11 FLAGS  6   -SREJ #:  379
+SEND MSG# 471 SEQ# 379 LEN 1007 FLAGS 17   -Resent Data #:  379
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 337 LEN   11 FLAGS  5   -RR #:    379
+Info: Received RR# 379. Removing from window...
+Info: removePacket(): Window state (379, 383, 384)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 383
+SEND MSG# 472 SEQ# 383 LEN 1007 FLAGS 16   -Data #:  383
+Info: addPacket(): Window state (379, 384, 384)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 338 LEN   11 FLAGS  5   -RR #:    383
+Info: Received RR# 383. Removing from window...
+Info: removePacket(): Window state (383, 384, 388)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 384
+SEND MSG# 473 SEQ# 384 LEN 1007 FLAGS 16   -Data #:  384
+Info: addPacket(): Window state (383, 385, 388)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 339 LEN   11 FLAGS  5   -RR #:   4278190464 - RECV Corrupted packet
+Error: Malformed packet receieved!
+Error: Invalid RR/SREJ packet recieved! Throwing out...
+Info: Sending data 385
+SEND MSG# 474 SEQ# 385 LEN 1007 FLAGS 16   -Data #:  385
+Info: addPacket(): Window state (383, 386, 388)
+Info: Checking for RR's or SREJ's
+Info: Sending data 386
+SEND MSG# 475 SEQ# 386 LEN 1007 FLAGS 16   -Data #:  386
+Info: addPacket(): Window state (383, 387, 388)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 340 LEN   11 FLAGS  5   -RR #:    385
+Info: Received RR# 385. Removing from window...
+Info: removePacket(): Window state (385, 387, 390)
+Info: Sending data 387
+SEND MSG# 476 SEQ# 387 LEN 1007 FLAGS 16   -Data #:  387 - DROPPED 
+Info: addPacket(): Window state (385, 388, 390)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 341 LEN   11 FLAGS  5   -RR #:    386
+Info: Received RR# 386. Removing from window...
+Info: removePacket(): Window state (386, 388, 391)
+Info: Sending data 388
+SEND MSG# 477 SEQ# 388 LEN 1007 FLAGS 16   -Data #:  388 - DROPPED 
+Info: addPacket(): Window state (386, 389, 391)
+Info: Checking for RR's or SREJ's
+Info: Sending data 389
+SEND MSG# 478 SEQ# 389 LEN 1007 FLAGS 16   -Data #:  389
+Info: addPacket(): Window state (386, 390, 391)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 342 LEN   11 FLAGS  5   -RR #:    387
+Info: Received RR# 387. Removing from window...
+Info: removePacket(): Window state (387, 390, 392)
+Info: Sending data 390
+SEND MSG# 479 SEQ# 390 LEN 1007 FLAGS 16   -Data #:  390
+Info: addPacket(): Window state (387, 391, 392)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 343 LEN   11 FLAGS  6   -SREJ #:  387
+SEND MSG# 480 SEQ# 387 LEN 1007 FLAGS 17   -Resent Data #:  387
+Info: Sending data 391
+SEND MSG# 481 SEQ# 391 LEN 1007 FLAGS 16   -Data #:  391
+Info: addPacket(): Window state (387, 392, 392)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 344 LEN   11 FLAGS  6   -SREJ #:  388
+SEND MSG# 482 SEQ# 388 LEN 1007 FLAGS 17   -Resent Data #:  388
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 345 LEN   11 FLAGS  5   -RR #:    388
+Info: Received RR# 388. Removing from window...
+Info: removePacket(): Window state (388, 392, 393)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 392
+SEND MSG# 483 SEQ# 392 LEN 1007 FLAGS 16   -Data #:  392
+Info: addPacket(): Window state (388, 393, 393)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 346 LEN   11 FLAGS  6   -SREJ #:  389
+SEND MSG# 484 SEQ# 389 LEN 1007 FLAGS 17   -Resent Data #:  389
+RECV          SEQ# 347 LEN   11 FLAGS  5   -RR #:    389
+Info: Received RR# 389. Removing from window...
+Info: removePacket(): Window state (389, 393, 394)
+Info: Sending data 393
+SEND MSG# 485 SEQ# 393 LEN 1007 FLAGS 16   -Data #:  393
+Info: addPacket(): Window state (389, 394, 394)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 348 LEN   11 FLAGS  5   -RR #:    393
+Info: Received RR# 393. Removing from window...
+Info: removePacket(): Window state (393, 394, 398)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 394
+SEND MSG# 486 SEQ# 394 LEN 1007 FLAGS 16   -Data #:  394
+Info: addPacket(): Window state (393, 395, 398)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 349 LEN   11 FLAGS  5   -RR #:    394
+Info: Received RR# 394. Removing from window...
+Info: removePacket(): Window state (394, 395, 399)
+Info: Sending data 395
+SEND MSG# 487 SEQ# 395 LEN 1007 FLAGS 16   -Data #:  395
+Info: addPacket(): Window state (394, 396, 399)
+Info: Checking for RR's or SREJ's
+Info: Sending data 396
+SEND MSG# 488 SEQ# 396 LEN 1007 FLAGS 16   -Data #:  396
+Info: addPacket(): Window state (394, 397, 399)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 350 LEN   11 FLAGS  5   -RR #:    395
+Info: Received RR# 395. Removing from window...
+Info: removePacket(): Window state (395, 397, 400)
+Info: Sending data 397
+SEND MSG# 489 SEQ# 397 LEN 1007 FLAGS 16   -Data #:  397
+Info: addPacket(): Window state (395, 398, 400)
+Info: Checking for RR's or SREJ's
+Info: Sending data 398
+SEND MSG# 490 SEQ# 398 LEN 1007 FLAGS 16   -Data #:  398
+Info: addPacket(): Window state (395, 399, 400)
+Info: Checking for RR's or SREJ's
+Info: Sending data 399
+SEND MSG# 491 SEQ# 399 LEN 1007 FLAGS 16   -Data #:  399
+Info: addPacket(): Window state (395, 400, 400)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 352 LEN   11 FLAGS  5   -RR #:    397
+Info: Received RR# 397. Removing from window...
+Info: removePacket(): Window state (397, 400, 402)
+Info: Sending data 400
+SEND MSG# 492 SEQ# 400 LEN 1007 FLAGS 16   -Data #:  400
+Info: addPacket(): Window state (397, 401, 402)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 353 LEN   11 FLAGS  5   -RR #:    398
+Info: Received RR# 398. Removing from window...
+Info: removePacket(): Window state (398, 401, 403)
+Info: Sending data 401
+SEND MSG# 493 SEQ# 401 LEN 1007 FLAGS 16   -Data #:  401
+Info: addPacket(): Window state (398, 402, 403)
+Info: Checking for RR's or SREJ's
+Info: Sending data 402
+SEND MSG# 494 SEQ# 402 LEN 1007 FLAGS 16   -Data #:  402
+Info: addPacket(): Window state (398, 403, 403)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 354 LEN   11 FLAGS  5   -RR #:    399
+Info: Received RR# 399. Removing from window...
+Info: removePacket(): Window state (399, 403, 404)
+Info: Sending data 403
+SEND MSG# 495 SEQ# 403 LEN 1007 FLAGS 16   -Data #:  403 - FLIPPED BITS 
+Info: addPacket(): Window state (399, 404, 404)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 355 LEN   11 FLAGS  5   -RR #:    400
+Info: Received RR# 400. Removing from window...
+Info: removePacket(): Window state (400, 404, 405)
+Info: Sending data 404
+SEND MSG# 496 SEQ# 404 LEN 1007 FLAGS 16   -Data #:  404
+Info: addPacket(): Window state (400, 405, 405)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 356 LEN   11 FLAGS  5   -RR #:    401
+Info: Received RR# 401. Removing from window...
+Info: removePacket(): Window state (401, 405, 406)
+Info: Sending data 405
+SEND MSG# 497 SEQ# 405 LEN 1007 FLAGS 16   -Data #:  405
+Info: addPacket(): Window state (401, 406, 406)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 357 LEN   11 FLAGS  5   -RR #:    402
+Info: Received RR# 402. Removing from window...
+Info: removePacket(): Window state (402, 406, 407)
+Info: Sending data 406
+SEND MSG# 498 SEQ# 406 LEN 1007 FLAGS 16   -Data #:  406
+Info: addPacket(): Window state (402, 407, 407)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 358 LEN   11 FLAGS  5   -RR #:    403
+Info: Received RR# 403. Removing from window...
+Info: removePacket(): Window state (403, 407, 408)
+Info: Sending data 407
+SEND MSG# 499 SEQ# 407 LEN 1007 FLAGS 16   -Data #:  407
+Info: addPacket(): Window state (403, 408, 408)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 359 LEN   11 FLAGS  6   -SREJ #:  403
+SEND MSG# 500 SEQ# 403 LEN 1007 FLAGS 17   -Resent Data #:  403
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 360 LEN   11 FLAGS  6   -SREJ #:  404
+SEND MSG# 501 SEQ# 404 LEN 1007 FLAGS 17   -Resent Data #:  404
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 361 LEN   11 FLAGS  5   -RR #:    404
+Info: Received RR# 404. Removing from window...
+Info: removePacket(): Window state (404, 408, 409)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 408
+SEND MSG# 502 SEQ# 408 LEN 1007 FLAGS 16   -Data #:  408
+Info: addPacket(): Window state (404, 409, 409)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 362 LEN   11 FLAGS  5   -RR #:    408
+Info: Received RR# 408. Removing from window...
+Info: removePacket(): Window state (408, 409, 413)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 409
+SEND MSG# 503 SEQ# 409 LEN 1007 FLAGS 16   -Data #:  409 - DROPPED 
+Info: addPacket(): Window state (408, 410, 413)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 363 LEN   11 FLAGS  5   -RR #:    409
+Info: Received RR# 409. Removing from window...
+Info: removePacket(): Window state (409, 410, 414)
+Info: Sending data 410
+SEND MSG# 504 SEQ# 410 LEN 1007 FLAGS 16   -Data #:  410
+Info: addPacket(): Window state (409, 411, 414)
+Info: Checking for RR's or SREJ's
+Info: Sending data 411
+SEND MSG# 505 SEQ# 411 LEN 1007 FLAGS 16   -Data #:  411
+Info: addPacket(): Window state (409, 412, 414)
+Info: Checking for RR's or SREJ's
+Info: Sending data 412
+SEND MSG# 506 SEQ# 412 LEN 1007 FLAGS 16   -Data #:  412
+Info: addPacket(): Window state (409, 413, 414)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 364 LEN   11 FLAGS  6   -SREJ #:  409
+SEND MSG# 507 SEQ# 409 LEN 1007 FLAGS 17   -Resent Data #:  409
+Info: Sending data 413
+SEND MSG# 508 SEQ# 413 LEN 1007 FLAGS 16   -Data #:  413
+Info: addPacket(): Window state (409, 414, 414)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 365 LEN   11 FLAGS  5   -RR #:    413
+Info: Received RR# 413. Removing from window...
+Info: removePacket(): Window state (413, 414, 418)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 414
+SEND MSG# 509 SEQ# 414 LEN 1007 FLAGS 16   -Data #:  414
+Info: addPacket(): Window state (413, 415, 418)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 366 LEN   11 FLAGS  5   -RR #:    414
+Info: Received RR# 414. Removing from window...
+Info: removePacket(): Window state (414, 415, 419)
+Info: Sending data 415
+SEND MSG# 510 SEQ# 415 LEN 1007 FLAGS 16   -Data #:  415
+Info: addPacket(): Window state (414, 416, 419)
+Info: Checking for RR's or SREJ's
+Info: Sending data 416
+SEND MSG# 511 SEQ# 416 LEN 1007 FLAGS 16   -Data #:  416
+Info: addPacket(): Window state (414, 417, 419)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 367 LEN   11 FLAGS  5   -RR #:    415
+Info: Received RR# 415. Removing from window...
+Info: removePacket(): Window state (415, 417, 420)
+Info: Sending data 417
+SEND MSG# 512 SEQ# 417 LEN 1007 FLAGS 16   -Data #:  417
+Info: addPacket(): Window state (415, 418, 420)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 368 LEN   11 FLAGS  5   -RR #:    416
+Info: Received RR# 416. Removing from window...
+Info: removePacket(): Window state (416, 418, 421)
+Info: Sending data 418
+SEND MSG# 513 SEQ# 418 LEN 1007 FLAGS 16   -Data #:  418
+Info: addPacket(): Window state (416, 419, 421)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 369 LEN   11 FLAGS  5   -RR #:    417
+Info: Received RR# 417. Removing from window...
+Info: removePacket(): Window state (417, 419, 422)
+Info: Sending data 419
+SEND MSG# 514 SEQ# 419 LEN 1007 FLAGS 16   -Data #:  419
+Info: addPacket(): Window state (417, 420, 422)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 370 LEN   11 FLAGS  5   -RR #:    418
+Info: Received RR# 418. Removing from window...
+Info: removePacket(): Window state (418, 420, 423)
+Info: Sending data 420
+SEND MSG# 515 SEQ# 420 LEN 1007 FLAGS 16   -Data #:  420
+Info: addPacket(): Window state (418, 421, 423)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 371 LEN   11 FLAGS  5   -RR #:    419
+Info: Received RR# 419. Removing from window...
+Info: removePacket(): Window state (419, 421, 424)
+Info: Sending data 421
+SEND MSG# 516 SEQ# 421 LEN 1007 FLAGS 16   -Data #:  421
+Info: addPacket(): Window state (419, 422, 424)
+Info: Checking for RR's or SREJ's
+Info: Sending data 422
+SEND MSG# 517 SEQ# 422 LEN 1007 FLAGS 16   -Data #:  422 - DROPPED 
+Info: addPacket(): Window state (419, 423, 424)
+Info: Checking for RR's or SREJ's
+Info: Sending data 423
+SEND MSG# 518 SEQ# 423 LEN 1007 FLAGS 16   -Data #:  423
+Info: addPacket(): Window state (419, 424, 424)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 373 LEN   11 FLAGS  5   -RR #:    421
+Info: Received RR# 421. Removing from window...
+Info: removePacket(): Window state (421, 424, 426)
+Info: Sending data 424
+SEND MSG# 519 SEQ# 424 LEN 1007 FLAGS 16   -Data #:  424
+Info: addPacket(): Window state (421, 425, 426)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 374 LEN   11 FLAGS  5   -RR #:    422
+Info: Received RR# 422. Removing from window...
+Info: removePacket(): Window state (422, 425, 427)
+Info: Sending data 425
+SEND MSG# 520 SEQ# 425 LEN 1007 FLAGS 16   -Data #:  425
+Info: addPacket(): Window state (422, 426, 427)
+Info: Checking for RR's or SREJ's
+RECV          SEQ# 375 LEN   11 FLAGS  6   -SREJ #:  422
+SEND MSG# 521 SEQ# 422 LEN 1007 FLAGS 17   -Resent Data #:  422 - DROPPED 
+Info: Sending data 426
+SEND MSG# 522 SEQ# 426 LEN 1007 FLAGS 16   -Data #:  426
+Info: addPacket(): Window state (422, 427, 427)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 523 SEQ# 422 LEN 1007 FLAGS 18   -Timeout resent data #:  422
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 376 LEN   11 FLAGS  6   -SREJ #:  423
+SEND MSG# 524 SEQ# 423 LEN 1007 FLAGS 17   -Resent Data #:  423 - FLIPPED BITS 
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 377 LEN   11 FLAGS  5   -RR #:    423
+Info: Received RR# 423. Removing from window...
+Info: removePacket(): Window state (423, 427, 428)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 427
+SEND MSG# 525 SEQ# 427 LEN 1007 FLAGS 16   -Data #:  427
+Info: addPacket(): Window state (423, 428, 428)
+Info: Checking for RR's or SREJ's
+
+Info: --------------------
+Info: --- Window Closed ---
+Info: ---------------------
+
+Info: Waiting on RR/SREJs...
+Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...
+SEND MSG# 526 SEQ# 423 LEN 1007 FLAGS 18   -Timeout resent data #:  423
+Info: Waiting on RR/SREJs...
+RECV          SEQ# 378 LEN   11 FLAGS  5   -RR #:    428
+Info: Received RR# 428. Removing from window...
+Info: removePacket(): Window state (428, 428, 433)
+
+Info: -------------------
+Info: --- Window Open ---
+Info: -------------------
+
+Info: Sending data 428
+SEND MSG# 527 SEQ# 428 LEN 1007 FLAGS 16   -Data #:  428
+Info: addPacket(): Window state (428, 429, 433)
+Info: Checking for RR's or SREJ's
+Info: Sending data 429
+SEND MSG# 528 SEQ# 429 LEN 1007 FLAGS 16   -Data #:  429
+Info: addPacket(): Window state (428, 430, 433)
+Info: Checking for RR's or SREJ's
+Info: Sending data 430
+SEND MSG# 529 SEQ# 430 LEN 1007 FLAGS 16   -Data #:  430
+Info: addPacket(): Window state (428, 431, 433)
+Info: Checking for RR's or SREJ's
+Info: End of file reached! Sending last bit of data...
+Info: Sending data 431
+SEND MSG# 530 SEQ# 431 LEN   87 FLAGS 10   -User defined 
+Info: addPacket(): Window state (428, 432, 433)
+
+Info: ------------------------------------
+Info: Entering last data teardown state...
+Info: ------------------------------------
+
+RECV          SEQ# 379 LEN   11 FLAGS  5   -RR #:    429
+Info: Received RR# 429. Removing from window...
+Info: removePacket(): Window state (429, 432, 434)
+RECV          SEQ# 380 LEN   11 FLAGS  5   -RR #:    430
+Info: Received RR# 430. Removing from window...
+Info: removePacket(): Window state (430, 432, 435)
+RECV          SEQ# 381 LEN   11 FLAGS  5   -RR #:    431
+Info: Received RR# 431. Removing from window...
+Info: removePacket(): Window state (431, 432, 436)
+RECV          SEQ# 382 LEN   11 FLAGS  5   -RR #:    432
+Info: Received RR# 432. Removing from window...
+Info: removePacket(): Window state (432, 432, 437)
+RECV          SEQ# 383 LEN   11 FLAGS 32   -User defined 
+Info: EOF ack recievied! Closing file...
+Info: Exiting Gracefully...
+======== SeqNo Report ========
+  Msgs (Total)       :   530
+  Msgs (Unique SeqNo):   432
+==============================

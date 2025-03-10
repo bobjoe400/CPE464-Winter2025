@@ -464,7 +464,7 @@ stateMachine(
 		}
 		case STATE_PROCESS_FILENAME: 
 		{
-			fork()
+			//fork()
 			//sendErr_init(settings.errorRate, DROP_ON, FLIP_ON, __DEBUG_ON, RSEED_ON);
 
 			nextState = processFileName(&currPacket, &client);

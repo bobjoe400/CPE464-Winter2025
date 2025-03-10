@@ -175,6 +175,7 @@ processFileName(
 
 		exit(1);
 	} else if (pid != 0){
+		printf("in parent");
 		//Parent
 		return STATE_WAIT_FILENAME;
 	}

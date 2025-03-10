@@ -62,7 +62,18 @@ enum rcopyState{
 	NUM_STATES,
 };
 
-static rcopySettings_t settings = {0};
+static rcopySettings_t settings = 
+	{
+		{0},
+		{0},
+		0,
+		0,
+		0,
+		0,
+		{0},
+		0
+	};
+
 static SeqNum_t seqNum = 0;
 static SeqNum_t expected = SEQ_NUM_START;
 static SeqNum_t highest = SEQ_NUM_START;

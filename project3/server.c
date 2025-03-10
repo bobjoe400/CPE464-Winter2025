@@ -595,7 +595,7 @@ main(
 
 	settings.socketNum = udpServerSetup(settings.port);
 
-	sendErr_init(settings.errorRate, DROP_ON, FLIP_ON, ERR_LIB_DEBUG, RSEED_ON);
+	sendErr_init(settings.errorRate, DROP_ON, FLIP_ON, DEBUG_ON, RSEED_ON);
 
 	setupPollSet();
 	addToPollSet(settings.socketNum);

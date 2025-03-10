@@ -804,7 +804,7 @@ main(
 	settings.server = &server;
 	settings.serverAddrLen = sizeof(struct sockaddr_in6);
 
-	sendErr_init(settings.errorRate, DROP_ON, FLIP_ON, ERR_LIB_DEBUG, RSEED_ON);
+	sendErr_init(settings.errorRate, DROP_ON, FLIP_ON, DEBUG_ON, RSEED_ON);
 
 	setupPollSet();
 	addToPollSet(settings.socketNum);

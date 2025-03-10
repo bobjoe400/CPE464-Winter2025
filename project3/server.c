@@ -137,6 +137,22 @@ waitFileName(
 	}
 }
 
+void print_sockaddr_in6(const struct sockaddr_in6 *addr) {
+    char ip_str[INET6_ADDRSTRLEN];
+
+    // Convert the IPv6 address to a string
+    if (inet_ntop(AF_INET6, &addr->sin6_addr, ip_str, sizeof(ip_str)) == NULL) {
+        perror("inet_ntop");
+        return;
+    }
+
+    printf("Address Family: %d\n", addr->sin6_family);
+    printf("Port: %d\n", ntohs(addr->sin6_port));
+    printf("Flow Info: %u\n", addr->sin6_flowinfo);
+    printf("IPv6 Address: %s\n", ip_str);
+    printf("Scope ID: %u\n", addr->sin6_scope_id);
+}
+
 int
 processFileName(
 	Packet_t* packetPtr,
@@ -163,6 +179,8 @@ processFileName(
 		return STATE_WAIT_FILENAME;
 	}
 	
+	print_sockaddr_in6(client->client);
+
 	//Child
 	if((client->socketNum = socket(AF_INET6, SOCK_DGRAM, 0)) < 0){
 			perror("processFileName: socket() call");

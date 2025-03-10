@@ -21,3 +21,4 @@ server
 windowTests
 .server_*
 *.a
+test-results

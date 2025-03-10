@@ -67,6 +67,8 @@ static SeqNum_t seqNum = 0;
 static SeqNum_t expected = SEQ_NUM_START;
 static SeqNum_t highest = SEQ_NUM_START;
 
+static bool wroteLastData = false;
+
 bool 
 receiveAndValidateData(
 	Packet_t* packetPtr,
@@ -160,6 +162,7 @@ waitForFileNameAck(
 		#ifdef __DEBUG_ON
 			printf("Error: Bad filename! Gracefully Exiting...\n");
 		#endif //__DEBUG_ON
+			printf("Error: file %s not found.\n", settings.fromFileName);
 			return STATE_KILL;
 		}
 	#ifdef __DEBUG_ON
@@ -269,6 +272,14 @@ flushWindow(
 		currSeqNum = validPackets[i].seqNum;
 
 		getPacket(&packet, &dataSize, currSeqNum);
+
+	#ifdef __DEBUG_ON
+		printf("Info: Writing data %i to disk.\n", currSeqNum);
+	#endif // __DEBUG_ON
+
+		if(packet.header.flag == FLAG_TYPE_EOF){
+			wroteLastData = true;
+		}
 
 		writeDataToDisk(packet.payload.data.payload, dataSize - sizeof(PacketHeader_t));
 
@@ -406,7 +417,15 @@ processData(
 		printf("Info: Regular data packet recieved! Writing to disk...\n");
 	#endif // __DEBUG_ON
 
+	#ifdef __DEBUG_ON
+		printf("Info: Writing data %i to disk.\n", expected);
+	#endif // __DEBUG_ON
+
 		writeDataToDisk(packetPtr->payload.data.payload, dataSize - sizeof(PacketHeader_t));
+
+		if(packetPtr->header.flag == FLAG_TYPE_EOF){
+			wroteLastData = true;
+		}
 
 	#ifdef __DEBUG_ON
 		printf("Info: Good packet received! Moving up window...\n");
@@ -474,11 +493,12 @@ lastData(
 	uint16_t dataSize = 0;
 
 	do{
-		if(!buffering){
+		if(wroteLastData){
 		#ifdef __DEBUG_ON
 			printf("Info: All data written to disk! Sending Ack and closing file...\n");
 		#endif // __DEBUG_ON
-			buildRrPacket(&packet, seqNum++, highest);
+
+			buildRrPacket(&packet, seqNum++, expected);
 
 			packet.header.cksum = 0;
 			packet.header.flag = FLAG_TYPE_EOF_ACK;
@@ -495,8 +515,8 @@ lastData(
 		#ifdef __DEBUG_ON
 			printf("Timeout: Timedout while receiving last data packets! Trying again...\n");
 		#endif // __DEBUG_ON
-			timeout++;
 
+			timeout++;
 		}else{
 			timeout = 0;
 
@@ -504,9 +524,12 @@ lastData(
 			#ifdef __DEBUG_ON
 				printf("Error: Bad data received! Sending SREJ...\n");
 			#endif // __DEBUG_ON
+
 				sendSREJ(ntohl(packet.header.seqNum));
-			} else {
+			} else if (buffering) {
 				processDataBuffering(&packet, dataSize, &buffering);
+			} else {
+				processData(&packet, dataSize, &buffering);
 			}
 		}
 

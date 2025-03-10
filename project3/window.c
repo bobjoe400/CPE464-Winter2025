@@ -86,7 +86,7 @@ addPacket(
 	
 	if(ntohl(packetPtr->header.seqNum) + 1 == window.windowState.current + 1){
 		window.windowState.current++;
-	} else {
+	} else if (ntohl(packetPtr->header.seqNum) + 1 > window.windowState.current + 1){
 		for(uint32_t i = window.windowState.current; i < ntohl(packetPtr->header.seqNum); i++){
 			window.elements[i % window.windowSize].valid = false;
 			window.elements[i % window.windowSize].dataSize = 0;

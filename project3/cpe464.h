@@ -33,6 +33,12 @@ unsigned short in_cksum(unsigned short *addr, int len);
 #define DEBUG_ON  1
 #define DEBUG_OFF 0
 
+#ifdef __DEBUG_ON
+#define ERR_LIB_DEBUG DEBUG_ON
+#else
+#define ERR_LIB_DEBUG DEBUG_OFF
+#endif
+
 #define FLIP_ON   1
 #define FLIP_OFF  0
 

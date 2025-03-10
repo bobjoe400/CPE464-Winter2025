@@ -79,8 +79,13 @@ packetValidInWindow(
 bool
 addPacket(
     Packet_t* packetPtr,
-	uint16_t dataSize, 
-	bool valid
+	uint16_t dataSize
+);
+
+void
+replacePacket(
+	Packet_t* packetPtr,
+	uint16_t dataSize
 );
 
 Packet_t*
@@ -102,11 +107,9 @@ removePacket(
 );
 
 void
-getWindowPacketState(
-	PacketState_t* validPacketArray,
-	PacketState_t* invalidPacketArray,
-	uint32_t* numValidPackets,
-	uint32_t* numInvalidPackets
+inorderValidPackets(
+	PacketState_t** validPacketArray,
+	uint32_t* numValidPackets
 );
 
 

@@ -14,7 +14,7 @@
 
 #define FLAG_SIZE 8
 
-#define SEQ_NUM_START 0
+#define SEQ_NUM_START 1
 
 typedef uint32_t SeqNum_t;
 

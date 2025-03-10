@@ -16,7 +16,7 @@
 #include "networks.h"
 #include "safeUtil.h"
 #include "pollLib.h"
-// #include "cpe464.h"
+#include "cpe464.h"
 
 #include "packet.h"
 #include "window.h"
@@ -94,22 +94,20 @@ receiveAndValidateData(
 	#endif // __DEBUG_ON
 		retVal = false;
 	}
-
-	retVal = true;
 	
-#ifdef __DEBUG_ON
-	char * ipString = NULL;
-	ipString = ipAddressToString(client->client);
+// #ifdef __DEBUG_ON
+// 	char * ipString = NULL;
+// 	ipString = ipAddressToString(client->client);
 
-	printf("Received from client with IP: %s and port %d:\n", ipString, ntohs(client->client->sin6_port));
+// 	printf("Info: Received from client with IP: %s and port %d:\n", ipString, ntohs(client->client->sin6_port));
 
-	// print out bytes received
-	for(int i=0; i < dataLen; i++){
-		printf("%02x ", buffer[i]);
-	}
+// 	// print out bytes received
+// 	for(int i=0; i < dataLen; i++){
+// 		printf("%02x ", buffer[i]);
+// 	}
 
-	printf("\n");
-#endif // __DEBUG_ON
+// 	printf("\n");
+// #endif // __DEBUG_ON
 
 	return retVal;
 }
@@ -126,6 +124,9 @@ waitFileName(
 		#endif // __DEBUG_ON
 			return STATE_WAIT_FILENAME;
 		}
+	#ifdef __DEBUG_ON
+		printf("Info: Filename received! Processing filename...\n");
+	#endif // __DEBUG_ON
 
 		return STATE_PROCESS_FILENAME;
 	} else {
@@ -147,25 +148,27 @@ processFileName(
 	if((client->file = fopen((char*) packetPtr->payload.fileName.fileName, "r")) == NULL){
 		// Bad filename
 	#ifdef __DEBUG_ON
-		printf("Bad filename received! Sending response...\n");
+		printf("Error: Bad filename received! Sending response...\n");
 	#endif // __DEBUG_ONf
 		goodFile = false;
 
 		retVal = STATE_WAIT_FILENAME;
 	}
+	
+	if(goodFile){
+		if((client->socketNum = socket(AF_INET6, SOCK_DGRAM, 0)) < 0){
+			perror("processFileName: socket() call");
+		}
+	
+		client->windowSize = ntohl(packetPtr->payload.fileName.windowSize);
+		client->bufferSize = ntohs(packetPtr->payload.fileName.bufferSize);
+	#ifdef __DEBUG_ON
+		printf("Info: Client window size received as: %i buffer size received as: %i\n", client->windowSize, client->bufferSize);
+	#endif // __DEBUG_ON
+	}
 
 	Packet_t respPacket;
 	buildFileNameRespPacket(&respPacket, seqNum++, goodFile);
-
-	if((client->socketNum = socket(AF_INET6, SOCK_DGRAM, 0)) < 0){
-		perror("processFileName: socket() call");
-	}
-
-	client->windowSize = ntohl(packetPtr->payload.fileName.windowSize);
-	client->bufferSize = ntohs(packetPtr->payload.fileName.bufferSize);
-#ifdef __DEBUG_ON
-	printf("Info: Client window size received as: %i buffer size received as: %i\n", client->windowSize, client->bufferSize);
-#endif // __DEBUG_ON
 
 	safeSendto(client->socketNum, (uint8_t*) &respPacket, FILENAME_RESP_PACKET_SSIZE, 0, (struct sockaddr*) client->client, client->clientAddrlen);
 
@@ -183,7 +186,7 @@ processRrSrej(
 
 	if(!receiveAndValidateData(packetPtr, &dataSize, RR_PACKET_SSIZE, client, true, false)){
 	#ifdef __DEBUG_ON
-		printf("Info: Invalid RR/SREJ packet recieved! Throwing out...\n");
+		printf("Error: Invalid RR/SREJ packet recieved! Throwing out...\n");
 	#endif // __DEBUG_ON
 
 		return -1;
@@ -203,7 +206,7 @@ processRrSrej(
 	case FLAG_TYPE_SREJ:
 	{
 		Packet_t srejDataPacket;
-		getPacket(&srejDataPacket, &dataSize, (packetPtr->payload.srej.seqNum));
+		getPacket(&srejDataPacket, &dataSize, ntohl(packetPtr->payload.srej.seqNum));
 
 		srejDataPacket.header.cksum = 0;
 		srejDataPacket.header.flag = FLAG_TYPE_SREJ_DATA;
@@ -220,11 +223,11 @@ processRrSrej(
 	
 	default:
 	#ifdef __DEBUG_ON
-		printf("Info: Recieved packet not SREJ or RR Type! Throwing out...\n");
+		printf("Error: Recieved packet not SREJ or RR Type! Throwing out...\n");
 	#endif // __DEBUG_ON
-	}
 
-	return -1;
+		return -1;
+	}
 }
 
 void
@@ -243,7 +246,7 @@ readFromDiskAndSend(
 	if(dataLen < client->bufferSize){
 		if(feof(client->file)){
 		#ifdef __DEBUG_ON
-			printf("Info: End of file reached! Moving to teardown...\n");
+			printf("Info: End of file reached! Sending last bit of data...\n");
 		#endif // __DEBUG_ON
 
 			*atEof = true;
@@ -272,7 +275,7 @@ printf("Info: Sending data %i\n", seqNum);
 
 	safeSendto(client->socketNum, (uint8_t*) packetPtr, *dataSize, 0, (struct sockaddr*) client->client, client->clientAddrlen);
 
-	addPacket(packetPtr, *dataSize, false);
+	addPacket(packetPtr, *dataSize);
 }
 
 int
@@ -290,12 +293,17 @@ sendAndReceiveData(
 	removeFromPollSet(settings.socketNum);
 	addToPollSet(client->socketNum);
 
+	static int timeout = 0;
+
 	while(!atEof){
-		while(isWindowOpen()){
 		#ifdef __DEBUG_ON
-			printf("Info: Window open sending data...\n");
+			printf("\nInfo: -------------------\n");
+			printf("Info: --- Window Open ---\n");
+			printf("Info: -------------------\n\n");
 		#endif // __DEBUG_ON
-			
+
+		while(isWindowOpen()){
+
 			readFromDiskAndSend(packetPtr, client, data, &dataSize, &atEof);
 
 			if(atEof){
@@ -316,16 +324,32 @@ sendAndReceiveData(
 			return STATE_LAST_DATA;
 		}
 
+		#ifdef __DEBUG_ON
+			printf("\nInfo: --------------------\n");
+			printf("Info: --- Window Closed ---\n");
+			printf("Info: ---------------------\n\n");
+		#endif // __DEBUG_ON
+
 		while(!isWindowOpen()){
 		#ifdef __DEBUG_ON
-			printf("Info: Window closed. Waiting on RR/SREJs...\n");
+			printf("Info: Waiting on RR/SREJs...\n");
 		#endif // __DEBUG_ON
+
+			if(timeout > TIMEOUT_MAX){
+			#ifdef __DEBUG_ON
+				printf("Timeout: Timed out waiting for client response! Ending session...\n");
+			#endif // __DEBUG_ON
+				
+				return STATE_KILL;
+			}
 
 			if(pollCall(1) < 0){
 			#ifdef __DEBUG_ON
 				printf("Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...\n");
 			#endif // __DEBUG_ON
-				
+
+				timeout++;
+
 				memset(packetPtr, 0, PACKET_MAX_SSIZE);
 
 				getLowestPacket(packetPtr, &dataSize);
@@ -337,6 +361,8 @@ sendAndReceiveData(
 
 				safeSendto(client->socketNum, (uint8_t*) packetPtr, dataSize, 0, (struct sockaddr*) client->client, client->clientAddrlen);
 			} else {
+				timeout = 0;
+
 				processRrSrej(packetPtr, client);
 			}
 		}
@@ -354,24 +380,50 @@ lastData(
 	ClientSettings_t* client
 ){
 #ifdef __DEBUG_ON
-	printf("Entering last data teardown state...\n");
+	printf("\nInfo: ------------------------------------\n");
+	printf("Info: Entering last data teardown state...\n");
+	printf("Info: ------------------------------------\n\n");
 #endif // __DEBUG_ON
 
 	Packet_t currPacket;
+	uint16_t dataSize;
 	int timeout = 0;
 
 	do{
 		memset(&currPacket, 0, sizeof(Packet_t));
 
 		if(pollCall(1) < 0){
+		#ifdef __DEBUG_ON
+			printf("Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...\n");
+		#endif // __DEBUG_ON
+
 			timeout++;
+			
+			memset(&currPacket, 0, PACKET_MAX_SSIZE);
+
+			getLowestPacket(&currPacket, &dataSize);
+
+			currPacket.header.cksum = 0;
+			currPacket.header.flag = FLAG_TYPE_TIMEOUT_DATA;
+
+			currPacket.header.cksum = in_cksum((uint16_t*) &currPacket, dataSize);
+
+			safeSendto(client->socketNum, (uint8_t*) &currPacket, dataSize, 0, (struct sockaddr*) client->client, client->clientAddrlen);
 		} else {			
 			if (processRrSrej(&currPacket, client) == FLAG_TYPE_EOF_ACK){
+			#ifdef __DEBUG_ON
+				printf("Info: EOF ack recievied! Closing file...\n");
+			#endif // __DEBUG_ON
 				fclose(client->file);
 				return;
 			}
 		}
 	}while(timeout < TIMEOUT_MAX);
+
+#ifdef __DEBUG_ON
+	printf("Timeout: Timed out while waiting for EOF ack! Closing file...\n");
+#endif // __DEBUG_ON
+	fclose(client->file);
 }
 
 void
@@ -412,7 +464,7 @@ stateMachine(
 		}
 		case STATE_PROCESS_FILENAME: 
 		{
-			//Fork
+			fork()
 			//sendErr_init(settings.errorRate, DROP_ON, FLIP_ON, __DEBUG_ON, RSEED_ON);
 
 			nextState = processFileName(&currPacket, &client);
@@ -427,6 +479,10 @@ stateMachine(
 		{
 			lastData(&client);
 
+		#ifdef __DEBUG_ON
+			printf("Info: Exiting Gracefully...\n");
+		#endif // __DEBUG_ON
+
 			close(client.socketNum);
 			windowDestroy();
 
@@ -434,8 +490,8 @@ stateMachine(
 			break;
 		}
 		case STATE_KILL:
-			exit(1);
-			break;
+			return;
+
 		default:
 			break;
 		}
@@ -499,7 +555,7 @@ main(
 
 	settings.socketNum = udpServerSetup(settings.port);
 
-	//sendErr_init(settings.errorRate, DROP_ON, FLIP_ON, __DEBUG_ON, RSEED_ON);
+	sendErr_init(settings.errorRate, DROP_ON, FLIP_ON, ERR_LIB_DEBUG, RSEED_ON);
 
 	setupPollSet();
 	addToPollSet(settings.socketNum);

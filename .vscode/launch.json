@@ -31,11 +31,43 @@
 			"request": "launch",
 			"program": "${workspaceFolder}/project3/server",
 			"args": [
-				"0.5"
+				"0.2"
 			],
 			"stopAtEntry": false,
 			"cwd": "${fileDirname}",
-			"environment": [],
+			"envFile": "${workspaceFolder}/project3/.env",
+			"externalConsole": false,
+			"MIMode": "gdb",
+			"setupCommands": [
+				{
+				"description": "Enable pretty-printing for gdb",
+				"text": "-enable-pretty-printing",
+				"ignoreFailures": true
+				},
+				{
+				"description": "Set Disassembly Flavor to Intel",
+				"text": "-gdb-set disassembly-flavor intel",
+				"ignoreFailures": true
+				}
+			]
+		},
+		{
+			"name": "Debug rcopy from server start",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/project3/rcopy",
+			"args": [
+				"random_medium_text.txt",
+				"myfile.txt",
+				"10",
+				"1000",
+				"0",
+				"localhost",
+				"${input:serverPort}"
+			],
+			"stopAtEntry": false,
+			"cwd": "${fileDirname}",
+			"envFile": "${workspaceFolder}/project3/.env",
 			"externalConsole": false,
 			"MIMode": "gdb",
 			"setupCommands": [
@@ -57,17 +89,16 @@
 			"request": "launch",
 			"program": "${workspaceFolder}/project3/rcopy",
 			"args": [
-				"yourfile.txt",
+				"random_medium_text.txt",
 				"myfile.txt",
-				"123",
 				"10",
-				"0.5",
+				"100",
+				"0",
 				"localhost",
-				"${input:serverPort}"
+				"56794"
 			],
 			"stopAtEntry": false,
 			"cwd": "${fileDirname}",
-			"environment": [],
 			"externalConsole": false,
 			"MIMode": "gdb",
 			"setupCommands": [
@@ -91,7 +122,6 @@
 			"args": [],
 			"stopAtEntry": false,
 			"cwd": "${fileDirname}",
-			"environment": [],
 			"externalConsole": false,
 			"MIMode": "gdb",
 			"setupCommands": [
@@ -209,7 +239,7 @@
 	"compounds": [
 		{
 		  "name": "Debug Server and rcopy",
-		  "configurations": ["Attach to Server", "Debug rcopy"],
+		  "configurations": ["Attach to Server", "Debug rcopy from server start"],
       "preLaunchTask": "Run Server Script"
 		}
 	]

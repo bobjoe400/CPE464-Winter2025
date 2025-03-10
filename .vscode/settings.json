@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.Java": "java",
+        "*.css": "tailwindcss",
+        "packet.h": "c",
+        "in.h": "c",
+        "window.h": "c",
+        "gethostbyname.h": "c",
+        "networks.h": "c"
+    }
+}

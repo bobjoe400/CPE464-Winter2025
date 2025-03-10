@@ -23,6 +23,7 @@ windowInit(
 
 	for(uint32_t i = 0; i < windowSize; i++){
 		window.elements[i % windowSize].valid = false;
+		window.elements[i % windowSize].dataSize = 0;
 
 		WINDOW_ELEMENT_PACKET(window, i % windowSize) = (Packet_t*) malloc(WINDOW_ELEMENT_PACKET_SSIZE(window));
 		memset(WINDOW_ELEMENT_PACKET(window, i % windowSize), 0, WINDOW_ELEMENT_PACKET_SSIZE(window));
@@ -70,21 +71,51 @@ packetValidInWindow(
 bool
 addPacket(
 	Packet_t* packetPtr,
-	uint16_t dataSize,
-	bool valid
+	uint16_t dataSize
 ){
 	if(!isWindowOpen()){
 		return false;
 	}
 
-	window.elements[WINDOW_INDEX(packetPtr, window)].valid = valid;
+	window.elements[WINDOW_INDEX(packetPtr, window)].valid = true;
+
 	window.elements[WINDOW_INDEX(packetPtr, window)].dataSize = dataSize;
 
 	memcpy(WINDOW_ELEMENT_PACKET(window, WINDOW_INDEX(packetPtr, window)), packetPtr, WINDOW_ELEMENT_PACKET_SSIZE(window));
 
-	window.windowState.current++;
+	
+	if(ntohl(packetPtr->header.seqNum) + 1 == window.windowState.current + 1){
+		window.windowState.current++;
+	} else {
+		for(uint32_t i = window.windowState.current; i < ntohl(packetPtr->header.seqNum); i++){
+			window.elements[i % window.windowSize].valid = false;
+			window.elements[i % window.windowSize].dataSize = 0;
+		}
+
+		window.windowState.current = ntohl(packetPtr->header.seqNum) + 1;
+	}
+
+#ifdef __DEBUG_ON
+	printf("Info: addPacket(): Window state (%i, %i, %i)\n", window.windowState.lower, window.windowState.current, window.windowState.upper);
+#endif // __DEBUG_ON
 
 	return true;
+}
+
+void
+replacePacket(
+	Packet_t* packetPtr,
+	uint16_t dataSize
+){
+	window.elements[WINDOW_INDEX(packetPtr, window)].valid = true;
+
+	window.elements[WINDOW_INDEX(packetPtr, window)].dataSize = dataSize;
+
+	memcpy(WINDOW_ELEMENT_PACKET(window, WINDOW_INDEX(packetPtr, window)), packetPtr, WINDOW_ELEMENT_PACKET_SSIZE(window));
+
+#ifdef __DEBUG_ON
+	printf("Info: replacePacket(): Window state (%i, %i, %i)\n", window.windowState.lower, window.windowState.current, window.windowState.upper);
+#endif // __DEBUG_ON
 }
 
 Packet_t*
@@ -115,43 +146,36 @@ removePacket(
 	SeqNum_t seqNum
 ){
 	for(uint32_t i = window.windowState.lower; i < seqNum; i++){
-		window.elements[i % window.windowSize].valid = true;
+		window.elements[i % window.windowSize].valid = false;
 	}
 
 	window.windowState.lower = seqNum;
 	window.windowState.upper = seqNum + window.windowSize;
+
+#ifdef __DEBUG_ON
+	printf("Info: removePacket(): Window state (%i, %i, %i)\n", window.windowState.lower, window.windowState.current, window.windowState.upper);
+#endif // __DEBUG_ON
 }
 
 void
-getWindowPacketState(
-	PacketState_t* validPacketArray,
-	PacketState_t* invalidPacketArray,
-	uint32_t* numValidPackets,
-	uint32_t* numInvalidPackets
+inorderValidPackets(
+	PacketState_t** validPacketArray,
+	uint32_t* numValidPackets
 ){
-	uint32_t invalidPacketArrayIdx = 0;
 	uint32_t validPacketArrayIdx = 0;
 
-	for(uint32_t i = window.windowState.lower; i <= window.windowState.current; i++){
+	for(uint32_t i = window.windowState.lower; i < window.windowState.current; i++){
 		WindowElement_t currElement = window.elements[i % window.windowSize];
 
-		if (currElement.valid == false){ // Invalid Packet
-			if(invalidPacketArray != NULL){
-				if (invalidPacketArrayIdx > 0) {
-					invalidPacketArray = (PacketState_t*) realloc(invalidPacketArray, sizeof(PacketState_t) *  (invalidPacketArrayIdx + 1));
-				}
-	
-				invalidPacketArray[invalidPacketArrayIdx].seqNum = ntohl(currElement.packet->header.seqNum);
-			}
-
-			invalidPacketArrayIdx++;
+		if (currElement.valid == false){ // Invalid Packet, stop providing inorder
+			break;
 		} else { // Valid Packet
-			if(validPacketArray != NULL){
+			if(*validPacketArray != NULL){
 				if (validPacketArrayIdx > 0) {
-					validPacketArray = (PacketState_t*) realloc(validPacketArray, sizeof(PacketState_t) * (invalidPacketArrayIdx + 1));
+					*validPacketArray = (PacketState_t*) realloc(*validPacketArray, sizeof(PacketState_t) * (validPacketArrayIdx + 1));
 				}
 
-				validPacketArray[invalidPacketArrayIdx].seqNum = ntohl(currElement.packet->header.seqNum);
+				(*validPacketArray)[validPacketArrayIdx].seqNum = ntohl(currElement.packet->header.seqNum);
 			}
 
 			validPacketArrayIdx++;
@@ -160,9 +184,5 @@ getWindowPacketState(
 	
 	if (numValidPackets != NULL){
 		*numValidPackets = validPacketArrayIdx;
-	}	
-
-	if (numInvalidPackets != NULL){
-		*numInvalidPackets = invalidPacketArrayIdx;
 	}
 }

@@ -6,7 +6,7 @@
       "type": "shell",
       "command": "${workspaceFolder}/project3/launch_server.sh",
       "args": [
-        "0.5"
+        "0.2"
       ],
       "options": {
         "cwd": "${workspaceFolder}/project3"

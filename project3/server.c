@@ -142,7 +142,6 @@ processFileName(
 	Packet_t* packetPtr,
 	ClientSettings_t* client
 ){
-	int retVal = STATE_SEND_RECEIVE_DATA;
 	bool goodFile = true;
 
 	if((client->file = fopen((char*) packetPtr->payload.fileName.fileName, "r")) == NULL){
@@ -151,28 +150,40 @@ processFileName(
 		printf("Error: Bad filename received! Sending response...\n");
 	#endif // __DEBUG_ONf
 		goodFile = false;
+	}
 
-		retVal = STATE_WAIT_FILENAME;
+	pid_t pid;
+
+	if((pid = fork()) < 0){
+		perror("processFileName: fork() error. Exiting...");
+
+		exit(1);
+	} else if (pid != 0){
+		//Parent
+		return STATE_WAIT_FILENAME;
 	}
 	
-	if(goodFile){
-		if((client->socketNum = socket(AF_INET6, SOCK_DGRAM, 0)) < 0){
+	//Child
+	if((client->socketNum = socket(AF_INET6, SOCK_DGRAM, 0)) < 0){
 			perror("processFileName: socket() call");
-		}
-	
-		client->windowSize = ntohl(packetPtr->payload.fileName.windowSize);
-		client->bufferSize = ntohs(packetPtr->payload.fileName.bufferSize);
-	#ifdef __DEBUG_ON
-		printf("Info: Client window size received as: %i buffer size received as: %i\n", client->windowSize, client->bufferSize);
-	#endif // __DEBUG_ON
 	}
+	
+	client->windowSize = ntohl(packetPtr->payload.fileName.windowSize);
+	client->bufferSize = ntohs(packetPtr->payload.fileName.bufferSize);
+#ifdef __DEBUG_ON
+	printf("Info: Client window size received as: %i buffer size received as: %i\n", client->windowSize, client->bufferSize);
+#endif // __DEBUG_ON
 
 	Packet_t respPacket;
 	buildFileNameRespPacket(&respPacket, seqNum++, goodFile);
 
 	safeSendto(client->socketNum, (uint8_t*) &respPacket, FILENAME_RESP_PACKET_SSIZE, 0, (struct sockaddr*) client->client, client->clientAddrlen);
 
-	return retVal;
+	if(goodFile){
+		return STATE_SEND_RECEIVE_DATA;
+	} else {
+		return STATE_KILL;
+	}
 }
 
 int
@@ -409,13 +420,23 @@ lastData(
 			currPacket.header.cksum = in_cksum((uint16_t*) &currPacket, dataSize);
 
 			safeSendto(client->socketNum, (uint8_t*) &currPacket, dataSize, 0, (struct sockaddr*) client->client, client->clientAddrlen);
-		} else {			
-			if (processRrSrej(&currPacket, client) == FLAG_TYPE_EOF_ACK){
+		} else {		
+			uint8_t respType = processRrSrej(&currPacket, client);
+
+			if ( respType == FLAG_TYPE_EOF_ACK){
 			#ifdef __DEBUG_ON
 				printf("Info: EOF ack recievied! Closing file...\n");
 			#endif // __DEBUG_ON
 				fclose(client->file);
 				return;
+			} else if (respType == FLAG_TYPE_RR){
+				SeqNum_t nextSeqNum = currPacket.payload.rr.seqNum;
+
+				memset(&currPacket, 0, PACKET_MAX_SSIZE);
+
+				getPacket(&currPacket, &dataSize, nextSeqNum);
+
+				safeSendto(client->socketNum, (uint8_t*) &currPacket, dataSize, 0, (struct sockaddr*) client->client, client->clientAddrlen);
 			}
 		}
 	}while(timeout < TIMEOUT_MAX);

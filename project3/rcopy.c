@@ -113,6 +113,45 @@ receiveAndValidateData(
 	return retVal;
 }
 
+void print_address(const struct sockaddr *addr, socklen_t addrlen, const char *label) {
+    char ip_str[INET6_ADDRSTRLEN];
+    uint16_t port;
+
+    if (addr->sa_family == AF_INET) {
+        struct sockaddr_in *s = (struct sockaddr_in *)addr;
+        inet_ntop(AF_INET, &s->sin_addr, ip_str, sizeof(ip_str));
+        port = ntohs(s->sin_port);
+        printf("%s (IPv4): %s:%d\n", label, ip_str, port);
+    } else if (addr->sa_family == AF_INET6) {
+        struct sockaddr_in6 *s = (struct sockaddr_in6 *)addr;
+        inet_ntop(AF_INET6, &s->sin6_addr, ip_str, sizeof(ip_str));
+        port = ntohs(s->sin6_port);
+        printf("%s (IPv6): [%s]:%d\n", label, ip_str, port);
+    } else {
+        printf("%s: Unknown address family.\n", label);
+    }
+}
+
+void print_socket_info(int sockfd) {
+    struct sockaddr_storage local_addr;
+    socklen_t addrlen = sizeof(local_addr);
+
+    // Get local socket address.
+    if (getsockname(sockfd, (struct sockaddr *)&local_addr, &addrlen) < 0) {
+        perror("getsockname");
+        return;
+    }
+    print_address((struct sockaddr *)&local_addr, addrlen, "Local Address");
+
+    // Attempt to get peer address. This will succeed only if the socket is connected.
+    addrlen = sizeof(local_addr);
+    if (getpeername(sockfd, (struct sockaddr *)&local_addr, &addrlen) == 0) {
+        print_address((struct sockaddr *)&local_addr, addrlen, "Peer Address");
+    } else {
+        perror("getpeername (socket might not be connected)");
+    }
+}
+
 void
 sendFileName(
 	void
@@ -128,6 +167,8 @@ sendFileName(
 	int packetSize = FILENAME_PACKET_SSIZE(fileNameLen);
 
 	safeSendto(settings.socketNum, (uint8_t*) &packet, packetSize, 0, (struct sockaddr*) settings.server, settings.serverAddrLen);
+
+	print_socket_info(settings.socketNum);
 }
 
 int 
@@ -734,45 +775,6 @@ openToFile(
 	}
 }
 
-void print_address(const struct sockaddr *addr, socklen_t addrlen, const char *label) {
-    char ip_str[INET6_ADDRSTRLEN];
-    uint16_t port;
-
-    if (addr->sa_family == AF_INET) {
-        struct sockaddr_in *s = (struct sockaddr_in *)addr;
-        inet_ntop(AF_INET, &s->sin_addr, ip_str, sizeof(ip_str));
-        port = ntohs(s->sin_port);
-        printf("%s (IPv4): %s:%d\n", label, ip_str, port);
-    } else if (addr->sa_family == AF_INET6) {
-        struct sockaddr_in6 *s = (struct sockaddr_in6 *)addr;
-        inet_ntop(AF_INET6, &s->sin6_addr, ip_str, sizeof(ip_str));
-        port = ntohs(s->sin6_port);
-        printf("%s (IPv6): [%s]:%d\n", label, ip_str, port);
-    } else {
-        printf("%s: Unknown address family.\n", label);
-    }
-}
-
-void print_socket_info(int sockfd) {
-    struct sockaddr_storage local_addr;
-    socklen_t addrlen = sizeof(local_addr);
-
-    // Get local socket address.
-    if (getsockname(sockfd, (struct sockaddr *)&local_addr, &addrlen) < 0) {
-        perror("getsockname");
-        return;
-    }
-    print_address((struct sockaddr *)&local_addr, addrlen, "Local Address");
-
-    // Attempt to get peer address. This will succeed only if the socket is connected.
-    addrlen = sizeof(local_addr);
-    if (getpeername(sockfd, (struct sockaddr *)&local_addr, &addrlen) == 0) {
-        print_address((struct sockaddr *)&local_addr, addrlen, "Peer Address");
-    } else {
-        perror("getpeername (socket might not be connected)");
-    }
-}
-
 int 
 main(
 	int argc, 
@@ -787,8 +789,6 @@ main(
 	struct sockaddr_in6 server;		// Supports 4 and 6 but requires IPv6 struct
 
 	settings.socketNum = setupUdpClientToServer(&server, (char*) settings.serverName, settings.serverPort);
-
-	print_socket_info(settings.socketNum);
 
 	settings.server = &server;
 	settings.serverAddrLen = sizeof(struct sockaddr_in6);

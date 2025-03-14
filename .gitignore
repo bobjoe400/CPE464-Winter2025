@@ -22,3 +22,4 @@ windowTests
 .server_*
 *.a
 test-results
+myfile.txt

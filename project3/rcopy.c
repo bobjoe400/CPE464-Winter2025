@@ -145,7 +145,7 @@ int
 waitForFileNameAck(
 	Packet_t* packetPtr
 ){
-	if(pollCall(1) < 0){
+	if(pollCall(1000) < 0){
 		// Timeout
 	#ifdef __DEBUG_ON
 		printf("Timeout: Filename response timed out! Resending filename...\n");
@@ -195,7 +195,7 @@ recvData(
 #ifdef __DEBUG_ON
 	printf("Info: Expected SeqNum: %i\n", expected);
 #endif // __DEBUG_ON
-	if(pollCall(10) < 0){
+	if(pollCall(10000) < 0){
 		// Timeout
 		if (firstPacket) {
 		#ifdef __DEBUG_ON
@@ -522,7 +522,7 @@ lastData(
 			return;
 		}
 
-		if(pollCall(10) < 0){
+		if(pollCall(10000) < 0){
 		#ifdef __DEBUG_ON
 			printf("Timeout: Timedout while receiving last data packets! Trying again...\n");
 		#endif // __DEBUG_ON

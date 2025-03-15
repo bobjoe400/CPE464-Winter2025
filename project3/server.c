@@ -167,7 +167,9 @@ processFileName(
 	if((client->socketNum = socket(AF_INET6, SOCK_DGRAM, 0)) < 0){
 			perror("processFileName: socket() call");
 	}
-	
+
+	sendErr_init(settings.errorRate, DROP_ON, FLIP_ON, DEBUG_ON, RSEED_ON);
+
 	client->windowSize = ntohl(packetPtr->payload.fileName.windowSize);
 	client->bufferSize = ntohs(packetPtr->payload.fileName.bufferSize);
 #ifdef __DEBUG_ON
@@ -219,10 +221,12 @@ processRrSrej(
 		Packet_t srejDataPacket;
 		getPacket(&srejDataPacket, &dataSize, ntohl(packetPtr->payload.srej.seqNum));
 
-		srejDataPacket.header.cksum = 0;
-		srejDataPacket.header.flag = FLAG_TYPE_SREJ_DATA;
+		if(srejDataPacket.header.flag != FLAG_TYPE_EOF){
+			srejDataPacket.header.cksum = 0;
+			srejDataPacket.header.flag = FLAG_TYPE_SREJ_DATA;
 
-		srejDataPacket.header.cksum = in_cksum((uint16_t*) &srejDataPacket, dataSize);
+			srejDataPacket.header.cksum = in_cksum((uint16_t*) &srejDataPacket, dataSize);
+		}
 
 		safeSendto(client->socketNum, (uint8_t*) &srejDataPacket, dataSize, 0, (struct sockaddr*) client->client, client->clientAddrlen);
 		return FLAG_TYPE_SREJ;
@@ -354,7 +358,7 @@ sendAndReceiveData(
 				return STATE_KILL;
 			}
 
-			if(pollCall(1) < 0){
+			if(pollCall(1000) < 0){
 			#ifdef __DEBUG_ON
 				printf("Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...\n");
 			#endif // __DEBUG_ON
@@ -403,7 +407,7 @@ lastData(
 	do{
 		memset(&currPacket, 0, sizeof(Packet_t));
 
-		if(pollCall(1) < 0){
+		if(pollCall(1000) < 0){
 		#ifdef __DEBUG_ON
 			printf("Timeout: Timeout waiting for RR/SREJs. Sending lowest packet...\n");
 		#endif // __DEBUG_ON
@@ -414,10 +418,12 @@ lastData(
 
 			getLowestPacket(&currPacket, &dataSize);
 
-			currPacket.header.cksum = 0;
-			currPacket.header.flag = FLAG_TYPE_TIMEOUT_DATA;
+			if(currPacket.header.flag != FLAG_TYPE_EOF){
+				currPacket.header.cksum = 0;
+				currPacket.header.flag = FLAG_TYPE_TIMEOUT_DATA;
 
-			currPacket.header.cksum = in_cksum((uint16_t*) &currPacket, dataSize);
+				currPacket.header.cksum = in_cksum((uint16_t*) &currPacket, dataSize);
+			}
 
 			safeSendto(client->socketNum, (uint8_t*) &currPacket, dataSize, 0, (struct sockaddr*) client->client, client->clientAddrlen);
 		} else {		
@@ -436,7 +442,7 @@ lastData(
 
 				getPacket(&currPacket, &dataSize, nextSeqNum);
 
-				safeSendto(client->socketNum, (uint8_t*) &currPacket, dataSize, 0, (struct sockaddr*) client->client, client->clientAddrlen);
+				//safeSendto(client->socketNum, (uint8_t*) &currPacket, dataSize, 0, (struct sockaddr*) client->client, client->clientAddrlen);
 			}
 		}
 	}while(timeout < TIMEOUT_MAX);

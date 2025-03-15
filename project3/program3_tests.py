@@ -4,6 +4,7 @@ import time
 import os
 import hashlib
 import signal
+import shutil
 
 # Configuration
 SERVER_EXEC = "./server"
@@ -185,10 +186,14 @@ def run_concurrent_clients_test(results_dir):
 # ---------------------------
 def main():
     results_dir = "test-results"
+
+    if os.path.isdir(results_dir):
+        shutil.rmtree(results_dir)
+
     create_dir(results_dir)
     
     # Sequential test cases: Create a subdirectory for each test.
-    test1_dir = os.path.join(results_dir, "test1")
+    test1_dir = os.path.join(results_dir, "small")
     create_dir(test1_dir)
     run_sequential_test(
         from_file="random_small_text.txt",
@@ -202,7 +207,7 @@ def main():
         test_dir=test1_dir
     )
     
-    test2_dir = os.path.join(results_dir, "test2")
+    test2_dir = os.path.join(results_dir, "medium")
     create_dir(test2_dir)
     run_sequential_test(
         from_file="random_medium_text.txt",
@@ -216,7 +221,7 @@ def main():
         test_dir=test2_dir
     )
     
-    test3_dir = os.path.join(results_dir, "test3")
+    test3_dir = os.path.join(results_dir, "bigw50")
     create_dir(test3_dir)
     run_sequential_test(
         from_file="random_big_text.txt",
@@ -230,7 +235,7 @@ def main():
         test_dir=test3_dir
     )
     
-    test4_dir = os.path.join(results_dir, "test4")
+    test4_dir = os.path.join(results_dir, "bigw5")
     create_dir(test4_dir)
     run_sequential_test(
         from_file="random_big_text.txt",

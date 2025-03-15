@@ -5,11 +5,12 @@ import os
 import hashlib
 import signal
 import shutil
+import socket
 
 # Configuration
 SERVER_EXEC = "./server"
 RCOPY_EXEC  = "./rcopy"
-SERVER_PORT = "12345"
+BASE_PORT = 12345
 
 # ---------------------------
 # Helper Functions
@@ -36,7 +37,6 @@ def run_command(cmd, log_filename):
     Returns the subprocess.Popen object and its log file handle.
     """
     log_file = open(log_filename, "w")
-    # Note: We pass the file handle for both stdout and stderr.
     proc = subprocess.Popen(cmd, stdout=log_file, stderr=log_file)
     return proc, log_file
 
@@ -47,52 +47,71 @@ def kill_process(proc):
     except Exception as e:
         print(f"Error terminating process: {e}")
 
+def is_port_free(port, host='localhost'):
+    """Return True if the port is free to use, False if it is in use."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        try:
+            # Try binding to the port.
+            sock.bind((host, int(port)))
+            return True
+        except socket.error:
+            return False
+
 # ---------------------------
 # Test Case Functions
 # ---------------------------
 def run_sequential_test(from_file, base_downloaded, window_size, buffer_size, error_rate,
-                          base_server_log, base_client_log, test_name, test_dir):
+                          base_server_log, base_client_log, test_name, test_dir, server_port):
     """
-    Runs a single test case up to 3 attempts.
-    For each attempt, unique log and downloaded file names are generated and stored
-    in the specified test subdirectory.
+    Runs a single test case up to 3 attempts on the given port.
     Returns the best (shortest) successful time in seconds or None if failed.
     """
     best_time = None
-    print(f"\n=== Running {test_name} ===")
+    print(f"\n=== Running {test_name} on port {server_port} ===")
+
+    # Poll until the port is free.
+    timeout = 10      # total time to wait (in seconds)
+    interval = 0.5    # interval between checks (in seconds)
+    start_time_check = time.time()
+
+    while not is_port_free(server_port) and time.time() - start_time_check < timeout:
+        time.sleep(interval)
+
+    if is_port_free(server_port):
+        print(f"Port {server_port} is free and ready to use!")
+    else:
+        print(f"FATAL: Timeout reached: port {server_port} is still in use. Test {test_name} FAILED.")
+        return None
     
     for attempt in range(1, 4):
         print(f"Attempt {attempt} of 3...")
-        
+
         # Build unique filenames inside the test directory.
         downloaded_file = os.path.join(test_dir, f"{base_downloaded}_attempt{attempt}")
         server_log_file = os.path.join(test_dir, f"{base_server_log}_attempt{attempt}.log")
         client_log_file = os.path.join(test_dir, f"{base_client_log}_attempt{attempt}.log")
-        
-        # Build server command: stdbuf -oL -eL ./server <error_rate> <SERVER_PORT>
-        server_cmd = ["stdbuf", "-oL", "-eL", SERVER_EXEC, f"{error_rate:.2f}", SERVER_PORT]
+
+        # Build server command: stdbuf -oL -eL ./server <error_rate> <server_port>
+        server_cmd = ["stdbuf", "-oL", "-eL", SERVER_EXEC, f"{error_rate:.2f}", str(server_port)]
         server_proc, server_log_handle = run_command(server_cmd, server_log_file)
-        
+
         # Allow server time to start.
         time.sleep(2)
         
         # Build client command:
-        # stdbuf -oL -eL ./rcopy <from_file> <downloaded_file> <window_size> <buffer_size> <error_rate> localhost <SERVER_PORT>
+        # stdbuf -oL -eL ./rcopy <from_file> <downloaded_file> <window_size> <buffer_size> <error_rate> localhost <server_port>
         client_cmd = ["stdbuf", "-oL", "-eL", RCOPY_EXEC, from_file, downloaded_file,
-                      str(window_size), str(buffer_size), f"{error_rate:.2f}", "localhost", SERVER_PORT]
-        start_time = time.monotonic()
+                      str(window_size), str(buffer_size), f"{error_rate:.2f}", "localhost", str(server_port)]
+        start_time_monotonic = time.monotonic()
         client_proc, client_log_handle = run_command(client_cmd, client_log_file)
         
         client_proc.wait()
-        elapsed = time.monotonic() - start_time
+        elapsed = time.monotonic() - start_time_monotonic
         
         # Stop the server.
         kill_process(server_proc)
         server_log_handle.close()
         client_log_handle.close()
-        
-        # Give OS a moment to free the port.
-        time.sleep(1)
         
         # Compare checksums.
         orig_hash = compute_md5(from_file)
@@ -112,16 +131,28 @@ def run_sequential_test(from_file, base_downloaded, window_size, buffer_size, er
         print(f"Test {test_name} PASSED with best run time: {best_time:.3f} seconds.")
     return best_time
 
-def run_concurrent_clients_test(results_dir):
+def run_concurrent_clients_test(results_dir, server_port):
     """
-    Runs a concurrent test where one server handles up to three concurrent clients.
+    Runs a concurrent test where one server handles up to four concurrent clients on the given port.
     Each client downloads a file concurrently.
-    Unique downloaded file names and log files are generated and stored in a dedicated
-    subdirectory under results_dir.
     """
     test_dir = os.path.join(results_dir, "concurrent")
     create_dir(test_dir)
-    print("\n=== Running Concurrent Clients Test ===")
+    print(f"\n=== Running Concurrent Clients Test on port {server_port} ===")
+    
+    # Poll until the port is free.
+    timeout = 10      # total time to wait (in seconds)
+    interval = 0.5    # interval between checks (in seconds)
+    start_time_check = time.time()
+
+    while not is_port_free(server_port) and time.time() - start_time_check < timeout:
+        time.sleep(interval)
+
+    if is_port_free(server_port):
+        print(f"Port {server_port} is free and ready to use!")
+    else:
+        print(f"Timeout reached: port {server_port} is still in use.")
+        return
     
     # Define the client test parameters as a list of dictionaries.
     client_tests = [
@@ -145,7 +176,7 @@ def run_concurrent_clients_test(results_dir):
     
     # Start one server for all concurrent clients.
     server_log_file = os.path.join(test_dir, "server_concurrent_attempt1.log")
-    server_cmd = ["stdbuf", "-oL", "-eL", SERVER_EXEC, "0.20", SERVER_PORT]
+    server_cmd = ["stdbuf", "-oL", "-eL", SERVER_EXEC, "0.20", str(server_port)]
     server_proc, server_log_handle = run_command(server_cmd, server_log_file)
     time.sleep(2)  # Allow server to initialize.
     
@@ -155,30 +186,37 @@ def run_concurrent_clients_test(results_dir):
         downloaded_file = os.path.join(test_dir, f"{test['downloaded']}_attempt1")
         client_log_file = os.path.join(test_dir, f"{test['base_client_log']}_attempt1.log")
         client_cmd = ["stdbuf", "-oL", "-eL", RCOPY_EXEC, test["from_file"], downloaded_file,
-                      str(test["window"]), str(test["buffer"]), f"{test['error']:.2f}", "localhost", SERVER_PORT]
+                      str(test["window"]), str(test["buffer"]), f"{test['error']:.2f}", "localhost", str(server_port)]
         proc, log_handle = run_command(client_cmd, client_log_file)
         client_procs.append((proc, test, downloaded_file, log_handle))
         start_times[proc.pid] = time.monotonic()
     
-    for proc, test, downloaded_file, log_handle in client_procs:
-        proc.wait()
-        elapsed = time.monotonic() - start_times[proc.pid]
-        log_handle.close()
-        exit_code = proc.returncode
-        if exit_code == 0:
-            print(f"SUCCESS: {test['test_name']} completed in {elapsed:.3f} seconds.")
-        else:
-            print(f"FAIL: {test['test_name']} failed with exit code {exit_code}.")
-        orig_hash = compute_md5(test["from_file"])
-        downloaded_hash = compute_md5(downloaded_file)
-        if orig_hash == downloaded_hash:
-            print(f"SUCCESS: Checksums match for {test['test_name']}.")
-        else:
-            print(f"FAIL: Checksums differ for {test['test_name']}. Original: {orig_hash}, Downloaded: {downloaded_hash}.")
-    
+    remaining_procs = client_procs.copy()
+
+    while remaining_procs:
+        for proc, test, downloaded_file, log_handle in remaining_procs.copy():
+            exit_code = proc.poll()
+            if exit_code is not None:
+                elapsed = time.monotonic() - start_times[proc.pid]
+                log_handle.close()
+                
+                if exit_code == 0:
+                    print(f"SUCCESS: {test['test_name']} completed in {elapsed:.3f} seconds.")
+                else:
+                    print(f"FAIL: {test['test_name']} failed with exit code {exit_code}.")
+                
+                orig_hash = compute_md5(test["from_file"])
+                downloaded_hash = compute_md5(downloaded_file)
+                if orig_hash == downloaded_hash:
+                    print(f"SUCCESS: Checksums match for {test['test_name']}.")
+                else:
+                    print(f"FAIL: Checksums differ for {test['test_name']}. Original: {orig_hash}, Downloaded: {downloaded_hash}.")
+                
+                remaining_procs.remove((proc, test, downloaded_file, log_handle))
+        time.sleep(0.1)
+
     kill_process(server_proc)
     server_log_handle.close()
-    time.sleep(1)
     print("Concurrent Clients Test completed.")
 
 # ---------------------------
@@ -186,12 +224,13 @@ def run_concurrent_clients_test(results_dir):
 # ---------------------------
 def main():
     results_dir = "test-results"
-
     if os.path.isdir(results_dir):
         shutil.rmtree(results_dir)
-
     create_dir(results_dir)
     
+    # Use a different port for each test.
+    next_port = BASE_PORT
+
     # Sequential test cases: Create a subdirectory for each test.
     test1_dir = os.path.join(results_dir, "small")
     create_dir(test1_dir)
@@ -204,8 +243,10 @@ def main():
         base_server_log="server_small_w10",
         base_client_log="client_small_w10",
         test_name="Test #1 (small, window=10, buffer=1000, error=0.2)",
-        test_dir=test1_dir
+        test_dir=test1_dir,
+        server_port=next_port
     )
+    next_port += 1
     
     test2_dir = os.path.join(results_dir, "medium")
     create_dir(test2_dir)
@@ -218,9 +259,11 @@ def main():
         base_server_log="server_medium_w10",
         base_client_log="client_medium_w10",
         test_name="Test #2 (medium, window=10, buffer=1000, error=0.2)",
-        test_dir=test2_dir
+        test_dir=test2_dir,
+        server_port=next_port
     )
-    
+    next_port += 1
+
     test3_dir = os.path.join(results_dir, "bigw50")
     create_dir(test3_dir)
     run_sequential_test(
@@ -232,9 +275,11 @@ def main():
         base_server_log="server_big_w50",
         base_client_log="client_big_w50",
         test_name="Test #3 (big, window=50, buffer=1000, error=0.1)",
-        test_dir=test3_dir
+        test_dir=test3_dir,
+        server_port=next_port
     )
-    
+    next_port += 1
+
     test4_dir = os.path.join(results_dir, "bigw5")
     create_dir(test4_dir)
     run_sequential_test(
@@ -245,12 +290,14 @@ def main():
         error_rate=0.15,
         base_server_log="server_big_w5",
         base_client_log="client_big_w5",
-        test_name="Test #4 (big, window=5, buffer=1000, error=0.1)",
-        test_dir=test4_dir
+        test_name="Test #4 (big, window=5, buffer=1000, error=0.15)",
+        test_dir=test4_dir,
+        server_port=next_port
     )
-    
+    next_port += 1
+
     # Concurrent test.
-    run_concurrent_clients_test(results_dir)
+    run_concurrent_clients_test(results_dir, server_port=next_port)
     
     print("\nAll tests completed.")
     print("Check the 'test-results' directory for detailed output files and logs.")
